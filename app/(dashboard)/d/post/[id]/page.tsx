@@ -13,9 +13,6 @@ export default async function Page({ params }: { params: { id: string } }) {
         </h1>
         <p className="font-medium text-gray-500">{data.body}</p>
       </div>
-      {/* <div className="-order-1 col-span-full lg:order-none lg:col-span-2">
-        <RenderingInfo type="ssr" />
-      </div> */}
     </div>
   );
 }

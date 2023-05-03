@@ -1,5 +1,6 @@
 "use client";
 
+import { LinkItem } from "@/app/(dashboard)/d/layout";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +14,11 @@ import { HomeIcon, StoreIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Navbar({ links }: any) {
+interface Navbar {
+  links: LinkItem;
+}
+
+export const Sidebar: React.FC<Navbar> = ({ links }) => {
   let pathname = usePathname() || "/";
 
   return (
@@ -44,7 +49,6 @@ export default function Navbar({ links }: any) {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 side="bottom"
-                className={`w-full hover:bg-neutral-100/10`}
               >
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -64,7 +68,7 @@ export default function Navbar({ links }: any) {
                 key={link}
                 href={link}
                 className={clsx(
-                  "focus:outline-none whitespace-nowrap flex items-center py-1.5 pl-4 hover:bg-neutral-200 dark:hover:bg-neutral-100/10",
+                  "whitespace-nowrap flex items-center py-1.5 pl-4 hover:bg-neutral-200 dark:hover:bg-neutral-100/10",
                   { "text-neutral-600 dark:text-neutral-400": !isActive }
                 )}
               >
@@ -83,4 +87,6 @@ export default function Navbar({ links }: any) {
       </nav>
     </aside>
   );
-}
+};
+
+export default Sidebar;
