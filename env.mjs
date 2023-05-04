@@ -10,6 +10,7 @@ export const env = createEnv({
     DISCORD_SECRET: z.string().optional(),
     NEXTAUTH_URL: z.string().url(),
     NEXTAUTH_SECRET: z.string(),
+    NODE_ENV: z.string().optional(),
   },
   client: {},
   runtimeEnv: {
@@ -20,5 +21,6 @@ export const env = createEnv({
     DISCORD_SECRET: process.env.DISCORD_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    NODE_ENV: process.env.NODE_ENV,
   },
 });

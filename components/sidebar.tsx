@@ -1,6 +1,6 @@
 "use client";
 
-import { LinkItem } from "@/app/(dashboard)/d/layout";
+import { LinkItem } from "@/app/(dashboard)/layout";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,12 +13,14 @@ import clsx from "clsx";
 import { HomeIcon, StoreIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React from "react";
 
 interface Navbar {
   links: LinkItem;
+  store: any;
 }
 
-export const Sidebar: React.FC<Navbar> = ({ links }) => {
+export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
   let pathname = usePathname() || "/";
 
   return (
@@ -33,23 +35,21 @@ export const Sidebar: React.FC<Navbar> = ({ links }) => {
               <DropdownMenuTrigger className="p-4 w-full text-left hover:bg-neutral-200 dark:hover:bg-neutral-100/10">
                 <span
                   className={
-                    "flex flex-row text-center items-center mx-1 text-neutral-400 outline-none"
+                    "flex flex-row text-center items-center mx-1 outline-none"
                   }
                 >
-                  <StoreIcon size={16} className="mr-2" />{" "}
+                  <StoreIcon size={23} className="mr-2" />{" "}
                   <div className="flex-1 grow overflow-hidden">
                     <div className="text-black dark:text-white truncate text-sm font-medium text-left">
-                      Store name
+                      {store.name}
                     </div>
                     <div className="-mt-0.5 text-black dark:text-white truncate text-xs !text-opacity-50 text-left">
-                      Store domain
+                      {store.domain}
                     </div>
                   </div>
                 </span>
               </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="bottom"
-              >
+              <DropdownMenuContent side="bottom">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Profile</DropdownMenuItem>
@@ -61,7 +61,7 @@ export const Sidebar: React.FC<Navbar> = ({ links }) => {
           </div>
         </div>
         <div className="flex flex-row md:flex-col space-x-0 mb-2 mt-2 md:mt-0 w-full">
-          {Object.entries(links).map(([link, { name }]) => {
+          {Object.entries(links).map(([link, { name, icon }]) => {
             const isActive = link == pathname;
             return (
               <Link
@@ -72,7 +72,7 @@ export const Sidebar: React.FC<Navbar> = ({ links }) => {
                   { "text-neutral-600 dark:text-neutral-400": !isActive }
                 )}
               >
-                <HomeIcon size={15} />
+                {icon}
                 <span
                   className={clsx(
                     "flex-1 text-sm font-medium ml-3 !text-opacity-60"

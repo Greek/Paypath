@@ -2,7 +2,6 @@
 
 import clsx from "clsx";
 import {
-  HelpCircle,
   HelpCircleIcon,
   HomeIcon,
   SettingsIcon,
@@ -19,37 +18,37 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "./ui/dropdown-menu";
-import { LinkItem } from "@/app/(dashboard)/d/layout";
+import { LinkItem } from "@/app/(dashboard)/layout";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 interface Header {
   links: LinkItem;
+  store: any;
 }
 
-export const Header: React.FC<Header> = ({ links }) => {
+export const Header: React.FC<Header> = ({ links, store }) => {
   const pathname = usePathname();
 
   return (
     <header className="w-full space-y-2 md:space-y-0 border-b md:border-none">
-      <div className="w-100 md:hidden bg-neutral-100 dark:bg-gray-800">
+      <div className="w-100 md:hidden bg-neutral-100 dark:bg-neutral-100/10">
         <div className="relative z-30">
           <DropdownMenu>
-            <DropdownMenuTrigger  type="button">
-              <div className="flex items-center space-x-3 px-4 py-2">
+            <DropdownMenuTrigger type="button">
+              <div className="flex items-center space-x-3 px-4 py-2 text-neutral-400">
                 <StoreIcon scale={16} />
                 <div className="flex-1 grow overflow-hidden">
                   <div className="text-black dark:text-white truncate text-sm font-medium text-left">
-                    Store name
+                    {store.name}
                   </div>
                   <div className="-mt-0.5 text-black dark:text-white truncate text-xs !text-opacity-50 text-left">
-                    Store domain
+                    {store.domain}
                   </div>
                 </div>
                 <div className="flex-none flex flex-col -space-y-1.5 text-black dark:text-white !text-opacity-50"></div>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              side="bottom"
-            >
+            <DropdownMenuContent side="bottom">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>
@@ -64,7 +63,7 @@ export const Header: React.FC<Header> = ({ links }) => {
         <div className="flex items-center space-x-1">
           <Link
             className="rounded px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-700"
-            href="/d/"
+            href="/overview"
           >
             <div className="overflow-hidden max-w-xs text-black dark:text-white truncate text-sm font-medium !text-opacity-70">
               <HomeIcon size={16} />
@@ -104,18 +103,16 @@ export const Header: React.FC<Header> = ({ links }) => {
             </button>
           </div>
           <div className="relative z-20">
-            <button className="rounded p-1 hover:bg-gray-200 dark:hover:bg-gray-700 text-black dark:text-white !text-opacity-70">
-              <UserIcon width={20} />
-            </button>
+            <ProfileDropdown />
           </div>
         </div>
       </div>
-      <MobileNav links={links} />
+      <MobileNav links={links} store={store} />
     </header>
   );
 };
 
-export const MobileNav: React.FC<Header> = ({ links }) => {
+export const MobileNav: React.FC<Header> = ({ links, store }) => {
   let pathname = usePathname() || "/";
 
   return (
@@ -145,6 +142,31 @@ export const MobileNav: React.FC<Header> = ({ links }) => {
         );
       })}
     </nav>
+  );
+};
+export const ProfileDropdown: React.FC<any> = ({}) => {
+  const { data: session } = useSession();
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="rounded p-1 hover:bg-gray-200 dark:hover:bg-gray-700 text-black dark:text-white !text-opacity-70">
+        <UserIcon width={20} />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>
+          You {session ? `(${session.user?.name})` : "are not signed in.."}
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {!session ? (
+          <DropdownMenuItem onClick={() => signIn("github")}>
+            Sign in
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem onClick={() => signOut()}>
+            Sign out
+          </DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
