@@ -9,55 +9,64 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Store } from "@prisma/client";
 import clsx from "clsx";
-import { HomeIcon, StoreIcon } from "lucide-react";
+import { StoreIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 interface Navbar {
   links: LinkItem;
-  store: any;
+  store: Store | undefined;
 }
 
 export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
   let pathname = usePathname() || "/";
 
+  // const { data: session } = useSession();
+  // const params = useSearchParams();
+
+  // const [store, setStore] = useState<Store | null>(null);
+
+  // useEffect(() => {
+  //   setStore(
+  //     // @ts-ignore
+  //     session?.user?.stores.find((store) => {
+  //       store.id == params.get("s");
+  //     }) ??
+  //       session?.user?.stores[0]
+  //   );
+  // }, [session]);
+
   return (
-    <aside className="hidden md:block md:w-[250px] md:flex-shrink-0 -mx-4 md:mx-0 md:px-0">
+    <aside className="hidden md:block md:w-[250px] md:flex-shrink-0 -mx-4 md:mx-0 md:px-0 fixed">
       <nav
-        className="flex flex-row md:flex-col items-start relative px-4 md:px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative bg-neutral-100 dark:bg-neutral-100/10 h-screen"
+        className="flex flex-row md:flex-col items-start relative px-4 md:px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative bg-neutral-100 dark:bg-neutral-100/10 min-h-screen "
         id="nav"
       >
         <div className="shrink-0 w-full">
           <div className="relative z-30">
             <DropdownMenu>
-              <DropdownMenuTrigger className="p-4 w-full text-left hover:bg-neutral-200 dark:hover:bg-neutral-100/10">
+              <DropdownMenuTrigger className="px-4 py-4 w-full text-left hover:bg-neutral-200 dark:hover:bg-neutral-100/10">
                 <span
                   className={
-                    "flex flex-row text-center items-center mx-1 outline-none"
+                    "flex flex-row text-center items-center outline-none"
                   }
                 >
-                  <StoreIcon size={23} className="mr-2" />{" "}
+                  <StoreIcon size={24} className="mr-3" />{" "}
                   <div className="flex-1 grow overflow-hidden">
                     <div className="text-black dark:text-white truncate text-sm font-medium text-left">
-                      {store.name}
+                      {store?.name ?? "n/a"}
                     </div>
                     <div className="-mt-0.5 text-black dark:text-white truncate text-xs !text-opacity-50 text-left">
-                      {store.domain}
+                      {store?.domain ?? "n/a"}
                     </div>
                   </div>
                 </span>
               </DropdownMenuTrigger>
-              <DropdownMenuContent side="bottom">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
-                <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem>Subscription</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </DropdownMenu>
           </div>
         </div>
         <div className="flex flex-row md:flex-col space-x-0 mb-2 mt-2 md:mt-0 w-full">

@@ -9,7 +9,7 @@ import {
   UserIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,14 +20,30 @@ import {
 } from "./ui/dropdown-menu";
 import { LinkItem } from "@/app/(dashboard)/layout";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { Store } from "@prisma/client";
 
 interface Header {
   links: LinkItem;
-  store: any;
+  store: Store | undefined;
 }
 
 export const Header: React.FC<Header> = ({ links, store }) => {
-  const pathname = usePathname();
+  let pathname = usePathname() || "/";
+  // const { data: session } = useSession();
+  // const params = useSearchParams();
+
+  // const [store, setStore] = useState<Store | null>(null);
+
+  // useEffect(() => {
+  //   setStore(
+  //     // @ts-ignore
+  //     session?.user?.stores.find((store) => {
+  //       store.id == params.get("s");
+  //     }) ??
+  //       session?.user?.stores[0]
+  //   );
+  // }, [session]);
 
   return (
     <header className="w-full space-y-2 md:space-y-0 border-b md:border-none">
@@ -35,27 +51,19 @@ export const Header: React.FC<Header> = ({ links, store }) => {
         <div className="relative z-30">
           <DropdownMenu>
             <DropdownMenuTrigger type="button">
-              <div className="flex items-center space-x-3 px-4 py-2 text-neutral-400">
+              <div className="flex items-center space-x-3 px-4 py-2">
                 <StoreIcon scale={16} />
                 <div className="flex-1 grow overflow-hidden">
                   <div className="text-black dark:text-white truncate text-sm font-medium text-left">
-                    {store.name}
+                    {store?.name}
                   </div>
                   <div className="-mt-0.5 text-black dark:text-white truncate text-xs !text-opacity-50 text-left">
-                    {store.domain}
+                    {store?.domain}
                   </div>
                 </div>
                 <div className="flex-none flex flex-col -space-y-1.5 text-black dark:text-white !text-opacity-50"></div>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="bottom">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Team</DropdownMenuItem>
-              <DropdownMenuItem>Subscription</DropdownMenuItem>
-            </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
@@ -107,12 +115,12 @@ export const Header: React.FC<Header> = ({ links, store }) => {
           </div>
         </div>
       </div>
-      <MobileNav links={links} store={store} />
+      <MobileNav links={links} store={undefined} />
     </header>
   );
 };
 
-export const MobileNav: React.FC<Header> = ({ links, store }) => {
+export const MobileNav: React.FC<Header> = ({ links }) => {
   let pathname = usePathname() || "/";
 
   return (

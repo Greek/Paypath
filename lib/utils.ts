@@ -5,18 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getAbsoluteUrl(path: string) {
-  if (typeof window !== "undefined") {
-    // In the browser, we return a relative URL
-    return "";
-  }
-  // When rendering on the server, we return an absolute URL
+export const fetchAbsoluteUrl = (path: string) => {
+  let base_url =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : "https://gatekeep.vercel.app"; // https://v2ds.netlify.app
 
-  // reference for vercel.com
-  // if (process.env.VERCEL_URL) {
-  //   return `https://${process.env.VERCEL_URL}${path}`;
-  // }
-
-  // assume localhost
-  return `http://localhost:${process.env.PORT ?? 3000}${path}`;
-}
+  return base_url + path;
+};

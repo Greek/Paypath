@@ -43,6 +43,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  stores        Store[]
 }
 
 model VerificationToken {
@@ -51,4 +52,15 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Store {
+  id     String @id
+  name   String
+  domain String
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }

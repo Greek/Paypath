@@ -1,9 +1,11 @@
-import { authConfig } from "@/app/api/auth/[...nextauth]/route";
 import Header from "@/components/header";
 import Sidebar from "@/components/sidebar";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
-import { getAbsoluteUrl } from "@/lib/utils";
 import { CircleSlashIcon, HomeIcon } from "lucide-react";
+import { getServerSession } from "next-auth";
+import { authConfig } from "../(internal)/api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 
 export type LinkItem = {
   [key: string]: { name: string; icon: JSX.Element; breadcrumb: string };
@@ -14,11 +16,13 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const storeInfo = await fetch(getAbsoluteUrl("/ajax/user")).then((res) => {
-    return res.json();
-  });
+  const session = await getServerSession(authConfig);
+  if (!session?.user) return redirect("/");
+  if (session.user?.stores.length! < 1) redirect("/onboarding");
 
-  console.log(storeInfo);
+  const store = session?.user.stores.find((store) => {
+    return store;
+  });
 
   const links: LinkItem = {
     "/overview": {
@@ -35,9 +39,9 @@ export default async function DashboardLayout({
 
   return (
     <div className={`flex flex-row`}>
-      <Sidebar links={links} store={storeInfo.user.store} />
-      <div className={`flex flex-col md:px-10 w-full `}>
-        <Header links={links} store={storeInfo.user.store} />
+      <Sidebar links={links} store={store} />
+      <div className={`flex flex-col md:px-10 md:ml-56 w-full`}>
+        <Header links={links} store={store} />
         <div className="w-auto pt-4 px-4">
           {children}
           <TailwindIndicator />
