@@ -15,10 +15,8 @@ import SignInButton from "@/components/sign-in";
 const inter = Inter({ subsets: ["latin"] });
 
 export default async function Home() {
-  console.log("hi");
-
   const session = await getServerSession(authConfig);
-  if (session.user) redirect("/overview");
+  if (session?.user) redirect("/overview");
 
   return (
     <div className="flex flex-col px-10 py-10 min-h-screen box-border relative">
