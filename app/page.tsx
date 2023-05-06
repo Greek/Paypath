@@ -1,4 +1,3 @@
-import { Inter } from "next/font/google";
 import { getServerSession } from "next-auth";
 import { authConfig } from "./(internal)/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
