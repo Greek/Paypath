@@ -40,9 +40,9 @@ export default async function DashboardLayout({
   return (
     <div className={`flex flex-row`}>
       <Sidebar links={links} store={store} />
-      <div className={`flex flex-col md:px-10 md:ml-56 w-full`}>
+      <div className={`flex flex-col w-full`}>
         <Header links={links} store={store} />
-        <div className="w-auto pt-4 px-4">
+        <div className="w-auto pt-4">
           {children}
           <TailwindIndicator />
         </div>
