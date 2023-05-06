@@ -41,7 +41,7 @@ export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
   // }, [session]);
 
   return (
-    <aside className="hidden md:block md:w-[250px] md:flex-shrink-0 -mx-4 md:mx-0 md:px-0 fixed">
+    <aside className="hidden md:block md:w-[250px] md:flex-shrink-0 -mx-4 md:mx-0 md:px-0">
       <nav
         className="flex flex-row md:flex-col items-start relative px-4 md:px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative bg-neutral-100 dark:bg-neutral-100/10 min-h-screen "
         id="nav"

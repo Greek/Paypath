@@ -67,7 +67,7 @@ export const Header: React.FC<Header> = ({ links, store }) => {
           </DropdownMenu>
         </div>
       </div>
-      <div className="h-12 px-4 flex items-center justify-between py-2">
+      <div className="h-12 px-10 flex items-center justify-between py-2">
         <div className="flex items-center space-x-1">
           <Link
             className="rounded px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-700"
