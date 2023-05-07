@@ -2,20 +2,14 @@
 
 import { LinkItem } from "@/app/(dashboard)/layout";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Store } from "@prisma/client";
 import clsx from "clsx";
 import { StoreIcon } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import React from "react";
 
 interface Navbar {
   links: LinkItem;
@@ -25,26 +19,10 @@ interface Navbar {
 export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
   let pathname = usePathname() || "/";
 
-  // const { data: session } = useSession();
-  // const params = useSearchParams();
-
-  // const [store, setStore] = useState<Store | null>(null);
-
-  // useEffect(() => {
-  //   setStore(
-  //     // @ts-ignore
-  //     session?.user?.stores.find((store) => {
-  //       store.id == params.get("s");
-  //     }) ??
-  //       session?.user?.stores[0]
-  //   );
-  // }, [session]);
-
   return (
-    <aside className="hidden md:block md:w-[250px] md:flex-shrink-0 -mx-4 md:mx-0 md:px-0">
+    <aside className="hidden md:flex md:flex-shrink-0 -mx-4 md:mx-0 md:px-0">
       <nav
-        className="flex flex-row md:flex-col items-start relative px-4 md:px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative bg-neutral-100 dark:bg-neutral-100/10 min-h-screen "
-        id="nav"
+        className="flex flex-row w-60 shrink-0 md:flex-col items-start relative px-4 md:px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative bg-neutral-100 dark:bg-neutral-100/10"
       >
         <div className="shrink-0 w-full">
           <div className="relative z-30">

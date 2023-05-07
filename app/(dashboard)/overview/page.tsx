@@ -4,18 +4,8 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -32,7 +22,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   });
 
   return (
-    <>
+    <> 
       <div className={`border-b-[.1em] border-foreground-muted w-full`}>
         <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
           <span className="font-semibold text-4xl lg:text-5xl">
@@ -44,42 +34,38 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-3 px-10 -mt-10">
+      <div className="grid grid-cols-4 gap-x-6 gap-y-3 px-10 -mt-10">
         <Card>
-          <CardHeader>
-            <CardTitle>Card Title</CardTitle>
-            <CardDescription>Card Description</CardDescription>
+          <CardHeader className={`pb-2`}>
+            <CardDescription>Total customers</CardDescription>
           </CardHeader>
           <CardContent>
-            <p>Total customers</p>
+            <span className="text-3xl">3</span>
           </CardContent>
-          <CardFooter>
-            <p>Card Footer</p>
-          </CardFooter>
         </Card>
         <Card>
-          <CardHeader>
-            <CardTitle>Card Title</CardTitle>
-            <CardDescription>Card Description</CardDescription>
+          <CardHeader className={`pb-2`}>
+            <CardDescription>Upcoming cancellations</CardDescription>
           </CardHeader>
           <CardContent>
-            <p>Card Content</p>
+            <span className="text-3xl">3</span>
           </CardContent>
-          <CardFooter>
-            <p>Card Footer</p>
-          </CardFooter>
         </Card>
         <Card>
-          <CardHeader>
-            <CardTitle>Card Title</CardTitle>
-            <CardDescription>Card Description</CardDescription>
+          <CardHeader className={`pb-2`}>
+            <CardDescription>Monthly revenue</CardDescription>
           </CardHeader>
           <CardContent>
-            <p>Card Content</p>
+            <span className="text-3xl">$3,000</span>
           </CardContent>
-          <CardFooter>
-            <p>Card Footer</p>
-          </CardFooter>
+        </Card>
+        <Card>
+          <CardHeader className={`pb-2`}>
+            <CardDescription>Available balance</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <span className="text-3xl">$10</span>
+          </CardContent>
         </Card>
       </div>
     </>
