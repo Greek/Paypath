@@ -34,6 +34,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
+    {/* } */}
       <div className="grid grid-cols-4 gap-x-6 gap-y-3 px-10 -mt-10">
         <Card>
           <CardHeader className={`pb-2`}>
@@ -67,6 +68,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             <span className="text-3xl">$10</span>
           </CardContent>
         </Card>
+
       </div>
     </>
   );

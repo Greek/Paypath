@@ -1,9 +1,9 @@
 import * as z from "zod"
-import * as imports from "../../prisma/null"
 import { CompleteAccount, RelatedAccountModel, CompleteSession, RelatedSessionModel, CompleteStore, RelatedStoreModel } from "./index"
 
 export const UserModel = z.object({
   id: z.string(),
+  customerId: z.string(),
   name: z.string().nullish(),
   email: z.string().nullish(),
   emailVerified: z.date().nullish(),

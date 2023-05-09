@@ -18,7 +18,7 @@ export default async function DashboardLayout({
 }) {
   const session = await getServerSession(authConfig);
   if (!session?.user) return redirect("/");
-  if (session.user?.stores.length! < 1) redirect("/onboarding");
+  if (session?.user?.stores.length! < 1) redirect("/onboarding");
 
   const store = session?.user.stores.find((store) => {
     return store;

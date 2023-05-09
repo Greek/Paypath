@@ -2,9 +2,7 @@ import "./env.mjs";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: false
-  }
+  generateBuildId: () => { return "hi" }
 };
 
 export default nextConfig;

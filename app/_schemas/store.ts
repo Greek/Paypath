@@ -1,17 +1,21 @@
 import * as z from "zod"
-import * as imports from "../../prisma/null"
-import { CompleteUser, RelatedUserModel } from "./index"
+import { Plan } from "@prisma/client"
+import { CompleteUser, RelatedUserModel, CompleteProduct, RelatedProductModel, CompleteLicense, RelatedLicenseModel } from "./index"
 
 export const StoreModel = z.object({
-  id: z.string(),
-  name: z.string().max(32, { message: "Your store name must be at most 32 characters." }),
-  description: z.string().max(256, { message: "Your description can't be longer than this!" }),
-  domain: z.string(),
-  userId: z.string(),
+  id: z.string().optional(),
+  name: z.string().min(1, { message: "Your store name can't be empty." }).max(32, { message: "Your store name can't be longer than 32 characters." }),
+  description: z.string().max(256, { message: "Your description can't be longer than 256 characters." }),
+  domain: z.string().optional(),
+  stripeId: z.string(),
+  plan: z.nativeEnum(Plan),
+  owner: z.string().optional(),
 })
 
 export interface CompleteStore extends z.infer<typeof StoreModel> {
   User: CompleteUser
+  Product: CompleteProduct[]
+  License: CompleteLicense[]
 }
 
 /**
@@ -21,4 +25,6 @@ export interface CompleteStore extends z.infer<typeof StoreModel> {
  */
 export const RelatedStoreModel: z.ZodSchema<CompleteStore> = z.lazy(() => StoreModel.extend({
   User: RelatedUserModel,
+  Product: RelatedProductModel.array(),
+  License: RelatedLicenseModel.array(),
 }))

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { AuthContext } from "./AuthContext";
 import { ThemeProvider } from "@/components/themes-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryContext } from "./QueryContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} h-screen md:h-full`}>
-        {/* <QueryClientProvider client={queryClient}> */}
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <AuthContext>{children}</AuthContext>
-        </ThemeProvider>
-        {/* </QueryClientProvider> */}
+        <QueryContext>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <AuthContext>{children}</AuthContext>
+          </ThemeProvider>
+        </QueryContext>
       </body>
     </html>
   );

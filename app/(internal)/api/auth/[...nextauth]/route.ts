@@ -32,7 +32,11 @@ export const authConfig: AuthOptions = {
 
       const dbUser = await prisma.user.findUnique({
         where: { email: user.email as string },
-        include: { stores: { select: { id: true, name: true, domain: true } } },
+        include: {
+          stores: {
+            select: { id: true, name: true, description: true, domain: true },
+          },
+        },
       });
 
       if (!dbUser) return token;
@@ -46,7 +50,11 @@ export const authConfig: AuthOptions = {
       if (!params.session) return false;
       const dbUser = await prisma.user.findUnique({
         where: { email: params.token.email as string },
-        include: { stores: { select: { id: true, name: true, domain: true } } },
+        include: {
+          stores: {
+            select: { id: true, name: true, description: true, domain: true },
+          },
+        },
       });
 
       return { ...params.session, user: dbUser };
