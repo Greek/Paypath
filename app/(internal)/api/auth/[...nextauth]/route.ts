@@ -1,4 +1,4 @@
-import { env } from "@/env.mjs";
+// import { env } from "@/env.mjs";
 import { prisma } from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth, { AuthOptions, NextAuthOptions } from "next-auth";
@@ -7,7 +7,7 @@ import DiscordProvider, { DiscordProfile } from "next-auth/providers/discord";
 
 export const authConfig: AuthOptions = {
   adapter: PrismaAdapter(prisma),
-  secret: env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   jwt: {
     // The maximum age of the NextAuth.js issued JWT in seconds.
     // Defaults to `session.maxAge`.
@@ -18,12 +18,12 @@ export const authConfig: AuthOptions = {
   },
   providers: [
     GithubProvider({
-      clientId: env.GITHUB_ID as string,
-      clientSecret: env.GITHUB_SECRET as string,
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string,
     }),
     DiscordProvider({
-      clientId: env.DISCORD_ID as string,
-      clientSecret: env.DISCORD_SECRET as string,
+      clientId: process.env.DISCORD_ID as string,
+      clientSecret: process.env.DISCORD_SECRET as string,
     }),
   ],
   callbacks: {
