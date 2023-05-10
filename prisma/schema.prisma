@@ -58,7 +58,7 @@ model Session {
 model User {
   id            String    @id @default(cuid())
   // ID of each user stored inside our Stripe.
-  customerId    String
+  customerId    String?
   name          String?
   email         String?   @unique
   emailVerified DateTime?
@@ -152,16 +152,16 @@ model License {
   @@index([productId, storeId])
 }
 
-enum CancelAction {
-  Kick
-  RemoveRoles
-}
+// enum CancelAction {
+//   Kick
+//   RemoveRoles
+// }
 
 model DiscordIntegration {
   id String @id @default(cuid())
 
   guildId       String
-  cancelAction  CancelAction
-  pastDueAction CancelAction
+  // cancelAction  CancelAction
+  // pastDueAction CancelAction
   // roles
 }

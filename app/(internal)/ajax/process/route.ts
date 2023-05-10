@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authConfig } from "../../api/auth/[...nextauth]/route";
+import { Plan } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
   const formData = await req.json();
@@ -14,7 +15,9 @@ export async function POST(req: NextRequest) {
       name: formData.name,
       description: "lol",
       domain: `${formData.name.replaceAll([" "], "")}`,
-      userId: session?.user?.id as string,
+      owner: session?.user?.id as string,
+      plan: Plan.Starter,
+      stripeId: ''
     },
   });
 
