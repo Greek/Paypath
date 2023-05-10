@@ -3,7 +3,7 @@ import { CompleteAccount, RelatedAccountModel, CompleteSession, RelatedSessionMo
 
 export const UserModel = z.object({
   id: z.string(),
-  customerId: z.string(),
+  customerId: z.string().nullish(),
   name: z.string().nullish(),
   email: z.string().nullish(),
   emailVerified: z.date().nullish(),

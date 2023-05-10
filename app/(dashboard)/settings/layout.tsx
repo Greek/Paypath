@@ -1,5 +1,9 @@
 import { Button } from "@/components/ui/button";
 
+export const metadata = {
+  title: "Settings",
+};
+
 export default function SettingsLayout({
   children,
 }: {

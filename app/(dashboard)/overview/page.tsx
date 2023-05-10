@@ -13,6 +13,10 @@ const wait = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+export const metadata = {
+  title: "Overview",
+};
+
 export default async function Page({ params }: { params: { id: string } }) {
   const session = await getServerSession(authConfig);
   if (!session) return redirect("/");
@@ -22,7 +26,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   });
 
   return (
-    <> 
+    <>
       <div className={`border-b-[.1em] border-foreground-muted w-full`}>
         <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
           <span className="font-semibold text-4xl lg:text-5xl">
@@ -34,7 +38,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
-    {/* } */}
+      {/* } */}
       <div className="grid grid-cols-4 gap-x-6 gap-y-3 px-10 -mt-10">
         <Card>
           <CardHeader className={`pb-2`}>
@@ -68,7 +72,6 @@ export default async function Page({ params }: { params: { id: string } }) {
             <span className="text-3xl">$10</span>
           </CardContent>
         </Card>
-
       </div>
     </>
   );

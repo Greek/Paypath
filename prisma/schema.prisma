@@ -1,6 +1,6 @@
 datasource db {
-  provider     = "postgres"
-  url          = env("DATABASE_URL")
+  provider = "postgres"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -58,7 +58,7 @@ model Session {
 model User {
   id            String    @id @default(cuid())
   // ID of each user stored inside our Stripe.
-  customerId    String?
+  customerId    String?   @default("")
   name          String?
   email         String?   @unique
   emailVerified DateTime?
@@ -160,7 +160,7 @@ model License {
 model DiscordIntegration {
   id String @id @default(cuid())
 
-  guildId       String
+  guildId String
   // cancelAction  CancelAction
   // pastDueAction CancelAction
   // roles
