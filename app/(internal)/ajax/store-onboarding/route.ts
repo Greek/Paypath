@@ -13,8 +13,8 @@ export async function POST(req: NextRequest) {
     data: {
       id: nanoid(30),
       name: formData.name,
-      description: "lol",
-      domain: `${formData.name.replaceAll([" "], "")}`,
+      description: "",
+      domain: `${formData.name.replaceAll([" "], "-")}`,
       owner: session?.user?.id as string,
       plan: Plan.Starter,
       stripeId: ''

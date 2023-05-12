@@ -7,8 +7,8 @@ export const StoreModel = z.object({
   name: z.string().min(1, { message: "Your store name can't be empty." }).max(32, { message: "Your store name can't be longer than 32 characters." }),
   description: z.string().max(256, { message: "Your description can't be longer than 256 characters." }),
   domain: z.string().optional(),
-  stripeId: z.string(),
-  plan: z.nativeEnum(Plan),
+  stripeId: z.string().optional(),
+  plan: z.nativeEnum(Plan).optional(),
   owner: z.string().optional(),
 })
 

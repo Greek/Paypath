@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authConfig } from "../../api/auth/[...nextauth]/route";
-import { StoreModel } from "@/app/_schemas/store";
 import { prisma } from "@/lib/prisma";
+import { StoreModel } from "@/app/_schemas";
 
 export async function PATCH(req: NextRequest) {
   const body = await req.json();

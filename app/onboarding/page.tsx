@@ -23,7 +23,7 @@ export default function Onboarding() {
   const { push } = useRouter();
 
   const handleOnboarding: SubmitHandler<OnboardingInput> = async (formData) => {
-    const data = await fetch("/ajax/process", {
+    const data = await fetch("/ajax/store-onboarding", {
       method: "POST",
       body: JSON.stringify(formData),
     }).then(async (res) => {
