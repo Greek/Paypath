@@ -102,8 +102,10 @@ model Store {
   /// @zod.optional()
   domain String
 
+  /// @zod.optional()
   stripeId String
 
+  /// @zod.optional()
   plan Plan
 
   /// @zod.optional()

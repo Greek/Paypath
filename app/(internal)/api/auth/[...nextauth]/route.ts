@@ -8,11 +8,6 @@ import DiscordProvider, { DiscordProfile } from "next-auth/providers/discord";
 export const authConfig: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
-  jwt: {
-    // The maximum age of the NextAuth.js issued JWT in seconds.
-    // Defaults to `session.maxAge`.
-    maxAge: 60 * 60 * 24 * 30,
-  },
   session: {
     strategy: "jwt",
   },
@@ -24,10 +19,28 @@ export const authConfig: AuthOptions = {
     DiscordProvider({
       clientId: process.env.DISCORD_ID as string,
       clientSecret: process.env.DISCORD_SECRET as string,
+      authorization:
+        "https://discord.com/api/oauth2/authorize?scope=identify+email+guilds+guilds.join+guilds.members.read",
+      profile(profile) {
+        if (profile.avatar === null) {
+          const defaultAvatarNumber = parseInt(profile.discriminator) % 5;
+          profile.image_url = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`;
+        } else {
+          const format = profile.avatar.startsWith("a_") ? "gif" : "png";
+          profile.image_url = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.${format}`;
+        }
+
+        return {
+          id: profile.id,
+          name: profile.username,
+          email: profile.email,
+          image: profile.image_url,
+        };
+      },
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, profile }) {
       if (!account) return token;
 
       const dbUser = await prisma.user.findUnique({
@@ -36,28 +49,36 @@ export const authConfig: AuthOptions = {
           stores: {
             select: { id: true, name: true, description: true, domain: true },
           },
+          accounts: true,
         },
       });
 
       if (!dbUser) return token;
-      return {
-        ...token,
-        user: dbUser,
-      };
+      return { ...token, profile: profile };
     },
     // @ts-ignore - cba to fix
-    async session(params) {
-      if (!params.session) return false;
+    async session({ session, token, a }, params) {
+      if (!session) return false;
+
       const dbUser = await prisma.user.findUnique({
-        where: { email: params.token.email as string },
+        where: { email: token.email as string },
         include: {
           stores: {
             select: { id: true, name: true, description: true, domain: true },
           },
+          accounts: true,
         },
       });
 
-      return { ...params.session, user: dbUser };
+      return {
+        ...session,
+        user: dbUser,
+        discord: token?.profile,
+        guilds: token?.guilds,
+        account: dbUser?.accounts.find((acc) => {
+          return acc.provider == "discord";
+        }),
+      };
     },
   },
 };

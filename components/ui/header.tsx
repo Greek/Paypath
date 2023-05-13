@@ -17,7 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from "./ui/dropdown-menu";
+} from "./dropdown-menu";
 import { LinkItem } from "@/app/(dashboard)/layout";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -86,6 +86,7 @@ export const Header: React.FC<Header> = ({ links, store }) => {
           >
             <div className="overflow-hidden max-w-xs text-black dark:text-white truncate text-sm font-medium !text-opacity-70">
               {Object.entries(links)
+
                 .find(([link, { name }]) => {
                   return pathname == link;
                 })
