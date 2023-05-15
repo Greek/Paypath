@@ -15,12 +15,22 @@ import { SessionProvider, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+export interface Guild {
+  id: string;
+  name: string;
+  permissions: string;
+}
+
 export default function DemoPage() {
   const { data: session } = useSession();
-  const { data: guilds, isLoading, isError } = useQuery([], {
+  const {
+    data: guilds,
+    isLoading,
+    isError,
+  } = useQuery([], {
     queryFn: async () => {
       return await fetch("/ajax/discord/guilds", {}).then(async (res) => {
-        return await res.json() as Guild;
+        return await res.json() as Guild[];
       });
     },
     enabled: !!session,
@@ -53,12 +63,12 @@ export default function DemoPage() {
                 <DialogFooter>
                   <form onSubmit={handleSubmit((data) => console.log(data))}>
                     <select
-                    placeholder="Select a server.."
+                      placeholder="Select a server.."
                       {...register("server", {
                         required: "select one option",
                       })}
                     >
-                      <option  disabled>Select a server..</option>
+                      <option disabled>Select a server..</option>
                       {!isLoading && (
                         <>
                           {guilds?.map((guild) => {
