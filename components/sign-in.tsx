@@ -8,7 +8,7 @@ export default function SignInButton() {
     <Button
       onClick={() => signIn("discord")}
       size="sm"
-      className={`w-full bg-[#7289DA] hover:bg-[#7289DA]`}
+      className={`w-full bg-[#849df9] hover:bg-[#849df9]`}
     >
       Sign in with Discord
     </Button>

@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authConfig } from "../../api/auth/[...nextauth]/route";
+import { authConfig } from "@/app/(internal)/api/auth/[...nextauth]/route";
 import { Plan } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
@@ -14,10 +14,10 @@ export async function POST(req: NextRequest) {
       id: nanoid(30),
       name: formData.name,
       description: "",
-      domain: `${formData.name.replaceAll([" "], "-")}`,
+      domain: `${formData.name.replaceAll([" "], "-").toLowerCase()}`,
       owner: session?.user?.id as string,
       plan: Plan.Starter,
-      stripeId: ''
+      stripeId: "",
     },
   });
 

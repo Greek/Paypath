@@ -9,9 +9,6 @@ export async function GET(req: NextRequest) {
     return acc?.provider == "discord";
   })?.access_token;
 
-
-  console.log(token)
-
   const res = await fetch("https://discord.com/api/v10/users/@me/guilds", {
     headers: {
       Authorization: `Bearer ${token}`,

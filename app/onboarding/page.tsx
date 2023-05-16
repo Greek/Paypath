@@ -11,7 +11,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 
 export interface OnboardingInput {
   name: string;
@@ -23,7 +23,7 @@ export default function Onboarding() {
   const { push } = useRouter();
 
   const handleOnboarding: SubmitHandler<OnboardingInput> = async (formData) => {
-    const data = await fetch("/ajax/store-onboarding", {
+    await fetch("/ajax/store/onboarding", {
       method: "POST",
       body: JSON.stringify(formData),
     }).then(async (res) => {
