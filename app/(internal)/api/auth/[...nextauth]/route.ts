@@ -11,6 +11,10 @@ export const authConfig: AuthOptions = {
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/",
+    error: "/"
+  },
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
@@ -40,6 +44,11 @@ export const authConfig: AuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ profile }) {
+      if (profile?.email != "apapuig+discord4@gmail.com") return false;
+
+      return true;
+    },
     async jwt({ token, user, account, profile }) {
       if (!account) return token;
 
@@ -79,6 +88,14 @@ export const authConfig: AuthOptions = {
           return acc.provider == "discord";
         }),
       };
+    },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (url.startsWith("/products")) return `${baseUrl}/products`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
     },
   },
 };

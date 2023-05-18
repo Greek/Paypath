@@ -10,7 +10,11 @@ import {
 } from "@/components/ui/card";
 import SignInButton from "@/components/sign-in";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { error: string };
+}) {
   const time = new Date().getHours();
   const session = await getServerSession(authConfig);
   if (session?.user) redirect("/overview");
@@ -32,6 +36,11 @@ export default async function Home() {
           </CardHeader>
           <CardContent>
             <SignInButton />
+            {searchParams.error == "AccessDenied" && (
+              <p className="text-red-700 text-sm pt-3">
+                You are not authorized to sign in.
+              </p>
+            )}
           </CardContent>
         </Card>
       </div>
