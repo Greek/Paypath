@@ -72,6 +72,15 @@ export default async function Page({ params }: { params: { id: string } }) {
             <span className="text-3xl">$10</span>
           </CardContent>
         </Card>
+        {!store?.stripeId && (
+          <>
+            <a href={`/ajax/stripe/auth/${store?.id}`}>Connect Stripe pls</a>
+            <a href={`/ajax/stripe/auth/${store?.id}/test`}>
+              [TEST]Connect Stripe pls
+            </a>
+          </>
+        )}
+        <p>{store?.stripeId}</p>
       </div>
     </>
   );
