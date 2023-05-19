@@ -1,7 +1,5 @@
-import { authConfig } from "@/app/(internal)/api/auth/[...nextauth]/route";
 import { discordBotRest } from "@/lib/discord";
 import { Routes } from "discord-api-types/v10";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -16,10 +14,8 @@ export async function GET(
   try {
     guild = await discordBotRest.get(Routes.guild(params.id));
   } catch (error) {
-    return new NextResponse();
+    return new NextResponse("Not found", { status: 404 });
   }
-
-  // console.log(params);
-
+  
   return NextResponse.json(guild);
 }

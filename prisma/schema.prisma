@@ -81,6 +81,13 @@ enum ProductType {
   Free
 }
 
+enum ProductInterval {
+  month
+  year
+  week
+  day
+}
+
 model VerificationToken {
   identifier String
   token      String   @unique
@@ -127,7 +134,7 @@ model Product {
   currency    String?
 
   // Per month, year, week, etc.. Only active if recurring.
-  recurrencyPeriod String?
+  recurrencyPeriod ProductInterval @default(month)
 
   // Stripe hosted equivelant of this product.
   stripeProductId String
