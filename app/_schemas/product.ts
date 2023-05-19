@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { ProductType } from "@prisma/client"
+import { ProductType, ProductInterval } from "@prisma/client"
 import { CompleteStore, RelatedStoreModel, CompleteLicense, RelatedLicenseModel } from "./index"
 
 export const ProductModel = z.object({
@@ -10,7 +10,7 @@ export const ProductModel = z.object({
   description: z.string().nullish(),
   price: z.string().nullish(),
   currency: z.string().nullish(),
-  recurrencyPeriod: z.string().nullish(),
+  recurrencyPeriod: z.nativeEnum(ProductInterval),
   stripeProductId: z.string(),
   customers: z.number().int(),
   storeId: z.string(),
