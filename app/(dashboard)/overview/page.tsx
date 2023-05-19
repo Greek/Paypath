@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import OnboardCheck from "./OnboardCheck";
 
 const wait = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -72,14 +73,8 @@ export default async function Page({ params }: { params: { id: string } }) {
             <span className="text-3xl">$10</span>
           </CardContent>
         </Card>
-        {!store?.stripeId && (
-          <>
-            <a href={`/ajax/stripe/auth/${store?.id}`}>Connect Stripe pls</a>
-            <a href={`/ajax/stripe/auth/${store?.id}/test`}>
-              [TEST]Connect Stripe pls
-            </a>
-          </>
-        )}
+        <OnboardCheck store={store} />
+        
         <p>{store?.stripeId}</p>
       </div>
     </>

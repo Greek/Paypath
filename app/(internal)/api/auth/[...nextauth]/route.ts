@@ -13,7 +13,7 @@ export const authConfig: AuthOptions = {
   },
   pages: {
     signIn: "/",
-    error: "/"
+    error: "/",
   },
   providers: [
     GithubProvider({
@@ -73,7 +73,13 @@ export const authConfig: AuthOptions = {
         where: { email: token.email as string },
         include: {
           stores: {
-            select: { id: true, name: true, description: true, domain: true },
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              domain: true,
+              stripeId: true,
+            },
           },
           accounts: true,
         },
