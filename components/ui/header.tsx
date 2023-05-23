@@ -71,7 +71,7 @@ export const Header: React.FC<Header> = ({ links, store }) => {
         <div className="flex items-center space-x-1">
           <Link
             className="rounded px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-700"
-            href="/overview"
+            href="/d/overview"
           >
             <div className="overflow-hidden max-w-xs text-black dark:text-white truncate text-sm font-medium !text-opacity-70">
               <HomeIcon size={16} />
@@ -98,14 +98,14 @@ export const Header: React.FC<Header> = ({ links, store }) => {
           </Link>
         </div>
         <div className="relative flex items-center text-sm space-x-1">
-          <a
+          <Link
             className="rounded p-1 hover:bg-gray-200 dark:hover:bg-gray-700"
-            href="/settings"
+            href="/d/settings"
           >
             <div className="text-black dark:text-white !text-opacity-70">
               <SettingsIcon width={20} />
             </div>
-          </a>
+          </Link>
           <div className="relative z-20">
             <button className="rounded p-1 hover:bg-gray-200 dark:hover:bg-gray-700 text-black dark:text-white !text-opacity-70">
               <HelpCircleIcon width={20} />

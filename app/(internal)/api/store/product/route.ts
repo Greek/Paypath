@@ -18,14 +18,14 @@ export async function POST(req: NextRequest) {
   const description = body.productDescription as string;
   const type = ProductType.Recurring;
   const interval = "month";
-  const price = (body.productPice + 0o0) as string;
-  const productId = nanoid(32);
+  const price = (body.productPrice + 0o0) as string;
+  const id = nanoid(32);
 
   const productStripe = await stripe.products.create(
     {
       name,
       description,
-      id: productId,
+      id,
     },
     { stripeAccount: store?.stripeId }
   );
@@ -42,14 +42,14 @@ export async function POST(req: NextRequest) {
 
   await prisma.product.create({
     data: {
-      id: productId,
+      id,
       name,
       description,
       type,
       recurrencyPeriod: interval,
       price: price as string,
       storeId: store?.id!,
-      stripeProductId: productId,
+      stripeProductId: id,
     },
   });
 }

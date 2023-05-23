@@ -27,7 +27,7 @@ export default function Onboarding() {
       method: "POST",
       body: JSON.stringify(formData),
     }).then(async (res) => {
-      push("/overview");
+      push("/d/overview");
     });
   };
 

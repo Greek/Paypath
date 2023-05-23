@@ -37,5 +37,5 @@ export const GET = async (req: NextRequest) => {
     data: { stripeId: connectedAccountId },
   });
 
-  return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/overview`);
+  return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/d/overview`);
 };

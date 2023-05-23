@@ -49,8 +49,8 @@ export const GET = async (
 
   const link = await stripe.accountLinks.create({
     account: connectedAccountId.id,
-    return_url: `${process.env.NEXTAUTH_URL}/overview`,
-    refresh_url: `${process.env.NEXTAUTH_URL}/overview`,
+    return_url: `${process.env.NEXTAUTH_URL}/d/overview`,
+    refresh_url: `${process.env.NEXTAUTH_URL}/d/overview`,
     type: "account_onboarding",
   });
 

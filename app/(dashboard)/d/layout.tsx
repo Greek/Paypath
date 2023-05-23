@@ -3,7 +3,7 @@ import Sidebar from "@/components/sidebar";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { CircleSlashIcon, HomeIcon, PackageIcon, UserIcon } from "lucide-react";
 import { getServerSession } from "next-auth";
-import { authConfig } from "../(internal)/api/auth/[...nextauth]/route";
+import { authConfig } from "@/app/(internal)/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 
 export type LinkItem = {
@@ -29,27 +29,27 @@ export default async function DashboardLayout({
   });
   
   const links: LinkItem = {
-    "/overview": {
+    "/d/overview": {
       name: "Home",
       icon: <HomeIcon size={16} />,
       breadcrumb: "Overview",
     },
-    "/products": {
+    "/d/products": {
       name: "Products",
       breadcrumb: "Products",
       icon: <PackageIcon size={16} />
     },
-    "/customers": {
+    "/d/customers": {
       name: "Customers",
       breadcrumb: "Customers",
       icon: <UserIcon size={16} />
     },
-    "/billing": {
+    "/d/billing": {
       name: "Billing",
       icon: <CircleSlashIcon size={16} />,
       breadcrumb: "Billing",
     },
-    "/settings": {
+    "/d/settings": {
       name: "Settings",
       hidden: true,
       breadcrumb: "Settings"
