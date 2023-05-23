@@ -60,5 +60,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-ENTRYPOINT ["HOSTNAME=localhost"]
 CMD ["node", "server.js"]

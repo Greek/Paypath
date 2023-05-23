@@ -1,53 +1,41 @@
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { authConfig } from "../../auth/[...nextauth]/route";
 
 async function getRawBody(
   readable: ReadableStream<Uint8Array> | null
 ): Promise<Buffer> {
   const chunks = [];
-  for await (const chunk of readable) {
+  for await (const chunk of readable as any) {
     chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
   }
   return Buffer.concat(chunks);
 }
 
-export const POST = async (req: NextRequest) => {
-  const sig = req.headers.get("stripe-signature");
-  const endpointSecret = process.env.STRIPE_SIGNING as string;
+export const GET = async (req: NextRequest) => {
+  const session = await getServerSession(authConfig);
+  const store = session?.user?.stores?.find((store) => {
+    return store;
+  });
 
-  let event: any;
+  const response = await stripe.oauth.token({
+    grant_type: "authorization_code",
+    code: req.nextUrl.searchParams.get("code") as string,
+  });
 
-  try {
-    console.log(req.body);
+  var connectedAccountId = response.stripe_user_id;
 
-    event = stripe.webhooks.constructEvent(
-      await getRawBody(req.body),
-      sig!,
-      endpointSecret
-    );
-  } catch (err: unknown) {
-    console.log(err.message);
-    return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
-  }
+  // await stripe.accounts.update(connectedAccountId as string, {
+  //   metadata: { gatekeepStoreId: store?.id as string },
+  // });
 
-  switch (event.type) {
-    case "account.updated": {
-      const accountUpdated: Stripe.Account = event.data.object;
+  await prisma.store.update({
+    where: { id: store?.id as string },
+    data: { stripeId: connectedAccountId },
+  });
 
-      console.log(accountUpdated.metadata?.gatekeepStoreId);
-      await prisma.store.update({
-        where: { id: accountUpdated.metadata?.gatekeepStoreId as string },
-        data: { stripeId: accountUpdated.id },
-      });
-
-      break;
-    }
-
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
-
-  return new NextResponse("OK");
+  return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/overview`);
 };
