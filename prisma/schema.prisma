@@ -118,8 +118,8 @@ model Store {
   /// @zod.optional()
   owner   String
   User    User      @relation(fields: [owner], references: [id])
-  Product Product[]
-  License License[]
+  products Product[]
+  licenses License[]
 
   @@index([owner])
 }
@@ -143,8 +143,8 @@ model Product {
   customers Int @default(0)
 
   storeId String
-  Store   Store     @relation(fields: [storeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  License License[]
+  store   Store     @relation(fields: [storeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  licenses License[]
 
   @@index(storeId)
 }
@@ -153,6 +153,7 @@ model License {
   id    String @id
   email String
   key   String
+  discordId String?
 
   store     Store   @relation(fields: [storeId], references: [id])
   storeId   String

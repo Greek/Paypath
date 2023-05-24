@@ -17,8 +17,8 @@ export const ProductModel = z.object({
 })
 
 export interface CompleteProduct extends z.infer<typeof ProductModel> {
-  Store: CompleteStore
-  License: CompleteLicense[]
+  store: CompleteStore
+  licenses: CompleteLicense[]
 }
 
 /**
@@ -27,6 +27,6 @@ export interface CompleteProduct extends z.infer<typeof ProductModel> {
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
 export const RelatedProductModel: z.ZodSchema<CompleteProduct> = z.lazy(() => ProductModel.extend({
-  Store: RelatedStoreModel,
-  License: RelatedLicenseModel.array(),
+  store: RelatedStoreModel,
+  licenses: RelatedLicenseModel.array(),
 }))

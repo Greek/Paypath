@@ -1,5 +1,3 @@
-"use client";
-
 import { getServerSession } from "next-auth";
 import { authConfig } from "./(internal)/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
@@ -11,8 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import SignInButton from "@/components/sign-in";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 
 export default async function Home({
   searchParams,

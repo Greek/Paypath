@@ -18,7 +18,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "./dropdown-menu";
-import { LinkItem } from "@/app/(dashboard)/layout";
+import { LinkItem } from "@/app/(dashboard)/d/layout";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Store } from "@prisma/client";

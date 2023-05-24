@@ -5,6 +5,7 @@ export const LicenseModel = z.object({
   id: z.string(),
   email: z.string(),
   key: z.string(),
+  discordId: z.string().nullish(),
   storeId: z.string(),
   productId: z.string(),
 })

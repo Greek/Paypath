@@ -1,5 +1,8 @@
 "use client"
 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+
 export default function loading() {
     return <Card>
     <CardHeader className={`pb-2`}>
@@ -8,18 +11,6 @@ export default function loading() {
     </CardHeader>
     <CardContent className={`pb-2`}>
       <Input className={"w-[50%]"}></Input>
-
-      <div className="mt-2">
-        <span className={`text-sm text-muted-foreground`}>
-          {errors?.name?.message as string}
-        </span>
-      </div>
     </CardContent>
-    <SettingsCardFooter>
-      <p>
-        Make sure your store&apos;s name is at <b>most</b> 32 characters.
-      </p>
-      <Button size={"sm"} disabled>This button does nothing.</Button>
-    </SettingsCardFooter>
   </Card>
 }

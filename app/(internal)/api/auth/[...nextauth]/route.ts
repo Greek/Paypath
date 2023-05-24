@@ -3,8 +3,9 @@ import { prisma } from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth, { AuthOptions, NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
-import DiscordProvider, { DiscordProfile } from "next-auth/providers/discord";
+import DiscordProvider from "next-auth/providers/discord";
 
+// @ts-ignore
 export const authConfig: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
@@ -56,7 +57,13 @@ export const authConfig: AuthOptions = {
         where: { email: user.email as string },
         include: {
           stores: {
-            select: { id: true, name: true, description: true, domain: true },
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              domain: true,
+              licenses: true,
+            },
           },
           accounts: true,
         },
@@ -79,6 +86,7 @@ export const authConfig: AuthOptions = {
               description: true,
               domain: true,
               stripeId: true,
+              licenses: true,
             },
           },
           accounts: true,
@@ -106,5 +114,5 @@ export const authConfig: AuthOptions = {
   },
 };
 export const handler: NextAuthOptions = NextAuth(authConfig);
-
+// @ts-ignore
 export { handler as GET, handler as POST };

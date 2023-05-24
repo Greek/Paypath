@@ -9,13 +9,10 @@ export default function OnboardCheck({ store }: { store: Store | undefined }) {
 
   return (
     <>
-      {!store?.stripeId  && (
+      {!store?.stripeId && (
         <>
           <Button onClick={() => push(`/ajax/stripe/auth/${store?.id}`)}>
             Connect Stripe pls
-          </Button>
-          <Button onClick={() => push(`/ajax/stripe/auth/${store?.id}/test`)}>
-            [TEST] Connect Stripe pls
           </Button>
         </>
       )}

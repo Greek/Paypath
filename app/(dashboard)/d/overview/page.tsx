@@ -9,6 +9,7 @@ import {
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import OnboardCheck from "./OnboardCheck";
+import { stripe } from "@/lib/stripe";
 
 const wait = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -26,6 +27,13 @@ export default async function Page({ params }: { params: { id: string } }) {
     return store;
   });
 
+  console.log(store);
+
+  const storeStripe = await stripe.accounts.retrieve(store?.stripeId as string);
+  const balanceStripe = await stripe.balance.retrieve({
+    stripeAccount: store?.stripeId as string,
+  });
+
   return (
     <>
       <div className={`border-b-[.1em] border-foreground-muted w-full`}>
@@ -41,40 +49,44 @@ export default async function Page({ params }: { params: { id: string } }) {
       </div>
       {/* } */}
       <div className="grid grid-cols-4 gap-x-6 gap-y-3 px-10 -mt-10">
-        <Card>
-          <CardHeader className={`pb-2`}>
-            <CardDescription>Total customers</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <span className="text-3xl">3</span>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className={`pb-2`}>
-            <CardDescription>Upcoming cancellations</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <span className="text-3xl">3</span>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className={`pb-2`}>
-            <CardDescription>Monthly revenue</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <span className="text-3xl">$3,000</span>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className={`pb-2`}>
-            <CardDescription>Available balance</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <span className="text-3xl">$10</span>
-          </CardContent>
-        </Card>
+        <>
+          <Card>
+            <CardHeader className={`pb-2`}>
+              <CardDescription>Total customers</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {/* @ts-ignore */}
+              <span className="text-3xl">{store?.licenses?.length}</span>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className={`pb-2`}>
+              <CardDescription>Upcoming cancellations</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <span className="text-3xl">Not implemented</span>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className={`pb-2`}>
+              <CardDescription>Monthly revenue</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <span className="text-3xl">Not implemented</span>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className={`pb-2`}>
+              <CardDescription>Available balance</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <span className="text-3xl">
+                ${balanceStripe?.available[0].amount}
+              </span>
+            </CardContent>
+          </Card>
+        </>
         <OnboardCheck store={store} />
-        
         <p>{store?.stripeId}</p>
       </div>
     </>

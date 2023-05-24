@@ -1,6 +1,6 @@
 "use client";
 
-import { LinkItem } from "@/app/(dashboard)/layout";
+import { LinkItem } from "@/app/(dashboard)/d/layout";
 import {
   DropdownMenu, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
