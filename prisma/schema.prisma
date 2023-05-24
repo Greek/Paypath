@@ -1,6 +1,6 @@
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -116,8 +116,8 @@ model Store {
   plan Plan
 
   /// @zod.optional()
-  owner   String
-  User    User      @relation(fields: [owner], references: [id])
+  owner    String
+  User     User      @relation(fields: [owner], references: [id])
   products Product[]
   licenses License[]
 
@@ -126,33 +126,46 @@ model Store {
 
 model Product {
   id          String      @id
+
+  /// @zod.min(1, {message: "Your product name cannot be empty."}).max(32, {message: "Your product can't be longer than 32 characters."})
   name        String
+
+  /// @zod.optional()
   type        ProductType @default(Recurring)
+
+  /// @zod.min(1, {message: "A product must have a server ID attached to it!"})
+  server      String
+
+  /// @zod.optional()
   archived    Boolean     @default(false)
   description String?
   price       String?
   currency    String?
 
   // Per month, year, week, etc.. Only active if recurring.
+  /// @zod.optional()
   recurrencyPeriod ProductInterval @default(month)
 
   // Stripe hosted equivelant of this product.
+  /// @zod.optional()
   stripeProductId String
 
   // Length of total customers
+  /// @zod.optional()
   customers Int @default(0)
 
-  storeId String
-  store   Store     @relation(fields: [storeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  /// @zod.optional()
+  storeId  String
+  store    Store     @relation(fields: [storeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   licenses License[]
 
   @@index(storeId)
 }
 
 model License {
-  id    String @id
-  email String
-  key   String
+  id        String  @id
+  email     String
+  key       String
   discordId String?
 
   store     Store   @relation(fields: [storeId], references: [id])

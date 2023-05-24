@@ -4,16 +4,17 @@ import { CompleteStore, RelatedStoreModel, CompleteLicense, RelatedLicenseModel 
 
 export const ProductModel = z.object({
   id: z.string(),
-  name: z.string(),
-  type: z.nativeEnum(ProductType),
-  archived: z.boolean(),
+  name: z.string().min(1, { message: "Your product name cannot be empty." }).max(32, { message: "Your product can't be longer than 32 characters." }),
+  type: z.nativeEnum(ProductType).optional(),
+  server: z.string().min(1, { message: "A product must have a server ID attached to it!" }),
+  archived: z.boolean().optional(),
   description: z.string().nullish(),
   price: z.string().nullish(),
   currency: z.string().nullish(),
-  recurrencyPeriod: z.nativeEnum(ProductInterval),
-  stripeProductId: z.string(),
-  customers: z.number().int(),
-  storeId: z.string(),
+  recurrencyPeriod: z.nativeEnum(ProductInterval).optional(),
+  stripeProductId: z.string().optional(),
+  customers: z.number().int().optional(),
+  storeId: z.string().optional(),
 })
 
 export interface CompleteProduct extends z.infer<typeof ProductModel> {

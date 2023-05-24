@@ -11,6 +11,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -23,7 +31,7 @@ export interface Guild {
   permissions: string;
 }
 
-export default function DemoPage() {
+export default function ProductsPage() {
   const REDIRECT_URI = `https://discord.com/api/oauth2/authorize?client_id=1107876953031180398&permissions=8&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fproducts&response_type=code&scope=bot`;
   const REDIRECT_URI2 =
     "https://discord.com/oauth2/authorize?permissions=8&guild_id=1108375792393662474&response_type=code&redirect_uri=https%3A%2F%2Fapi.hyper.co%2Fauth%2Flogin%2Fdiscord%2Fcallback&scope=bot&state=%7B%22redirect%22%3A%22%2Fproducts%2Fnew%3Frecipe%3Ddiscord%26integrations%5Bdiscord%5D%5Bguild%5D%3D1108375792393662474%22%7D&client_id=648234176805470248";
@@ -37,7 +45,6 @@ export default function DemoPage() {
   const { data: session } = useSession();
   const {
     data: guildsData,
-    isLoading: guildsDataLoading,
     isError,
   } = useQuery(["guilds"], {
     queryFn: async () => {
@@ -65,12 +72,18 @@ export default function DemoPage() {
     });
 
   const {
-    data: productCreationSubmission,
     isLoading: isProductCreationSubmitting,
+    mutate: createProductMutation,
   } = useMutation(["createProduct"], {
     mutationFn: async (data: any) => {
-
-    }
+      return await fetch("/api/store/product", {
+        method: "POST",
+        body: JSON.stringify(data),
+      }).then((res) => {
+        if (res.ok) return res.json();
+        else return null;
+      });
+    },
   });
 
   const router = useRouter();
@@ -82,12 +95,26 @@ export default function DemoPage() {
   } = useForm();
 
   const createProduct = (data: any) => {
-    console.log(data);
+    createProductMutation({
+      name: data.name,
+      description: data.description,
+      type: data.type,
+      price: data.price,
+      server: data.server,
+    });
+
+    return router.push('/d/products')
   };
+
+  const productTypeItems = [
+    { name: "Recurring" },
+    { name: "Lifetime" },
+    { name: "Free" },
+  ];
 
   return (
     <>
-      <div className={`border-b-[.1em] border-foreground-muted w-full`}>
+      <div className={`border-b-[.05em] border-foreground-muted w-full`}>
         <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
           <span className="font-semibold text-4xl lg:text-5xl">Products</span>
           <div className={"space-x-2 mt-2 lg:mt:0"}>
@@ -136,7 +163,6 @@ export default function DemoPage() {
                           </select>
                           {!selectedServerData ? (
                             <Button
-                              type="submit"
                               onClick={(e) => {
                                 e.preventDefault();
                                 router.push(`${REDIRECT_URI}`);
@@ -160,48 +186,72 @@ export default function DemoPage() {
                 )}
                 {formStep == 1 && (
                   <>
-                    <form className={`mt-2`}>
+                    <form>
                       <DialogHeader>
                         <DialogTitle>What will you sell?</DialogTitle>
                         <DialogDescription>
                           Choose a name and write a description of what you are
                           selling.
                         </DialogDescription>
-                        <label className="mb-5">Name</label>
+                        <Separator />
+                        <label>Name</label>
                         <Input
                           placeholder="Product name"
-                          {...register("productName")}
+                          {...register("name")}
                           className="mb-4"
                         ></Input>
+                        <TinyErrorMessage>
+                          {errors.name?.message as string}
+                        </TinyErrorMessage>
                         <label>Description</label>
                         <Input
                           placeholder="Your description"
-                          {...register("productDescription")}
+                          {...register("description")}
                           className="mb-4"
                         ></Input>
                         <label>Type</label>
-                        <Input
-                          placeholder="Product name"
-                          defaultValue={"Recurring"}
-                          disabled
-                          {...register("productType")}
-                          className="mb-4"
-                        ></Input>
-                        <label>Period</label>
-                        <Input
-                          placeholder="Product name"
-                          defaultValue={"month"}
-                          disabled
-                          {...register("productPeriod")}
-                          className="mb-4"
-                        ></Input>
+                        <Select>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Product type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {productTypeItems.map((item) => {
+                              return (
+                                <SelectItem
+                                  key={item.name}
+                                  value={item.name}
+                                  {...register("type")}
+                                >
+                                  {item.name}
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectContent>
+                        </Select>
+                        <TinyErrorMessage>
+                          {errors.type?.message as string}
+                        </TinyErrorMessage>
 
                         <label>Price</label>
-                        <Input
-                          placeholder="Product name"
-                          {...register("productPrice")}
-                          className="mb-4"
-                        ></Input>
+                        <div className="flex flex-row space-x-2">
+                          <Input
+                            placeholder="Product name"
+                            {...register("price")}
+                            className="mb-4"
+                          ></Input>
+                          <TinyErrorMessage>
+                            {errors.price?.message as string}
+                          </TinyErrorMessage>
+                          <Input
+                            placeholder="Recurring period"
+                            disabled
+                            {...register("interval")}
+                            className="mb-4"
+                          ></Input>
+                          <TinyErrorMessage>
+                            {errors.interval?.message as string}
+                          </TinyErrorMessage>
+                        </div>
                       </DialogHeader>
                       <DialogFooter>
                         <Button
@@ -209,6 +259,7 @@ export default function DemoPage() {
                           className={`mt-2`}
                           size="sm"
                           type="submit"
+                          disabled={!!isProductCreationSubmitting}
                         >
                           Create Product
                         </Button>
@@ -226,4 +277,12 @@ export default function DemoPage() {
       </div>
     </>
   );
+}
+
+function TinyErrorMessage({
+  children,
+}: {
+  children: string | JSX.Element;
+}) {
+  return children ? <p className="text-red-700 text-sm">{children}</p> : null;
 }

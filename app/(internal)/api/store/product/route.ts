@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { ProductType } from "@prisma/client";
 import { getServerSession } from "next-auth";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { authConfig } from "../../auth/[...nextauth]/route";
 import { nanoid } from "nanoid";
 import { stripe } from "@/lib/stripe";
@@ -14,28 +14,19 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
 
-  const name = body.productName as string;
-  const description = body.productDescription as string;
-  const type = ProductType.Recurring;
   const interval = "month";
-  const price = (body.productPrice + 0o0) as string;
+  const price = (body.price + 0o00) as string;
   const id = nanoid(32);
 
-  const productStripe = await stripe.products.create(
+  await stripe.products.create(
     {
-      name,
-      description,
+      name: body.name as string,
       id,
-    },
-    { stripeAccount: store?.stripeId }
-  );
-
-  await stripe.prices.create(
-    {
-      product: productStripe.id,
-      currency: "USD",
-      unit_amount: price as unknown as number,
-      recurring: { interval: interval },
+      default_price_data: {
+        currency: "USD",
+        unit_amount: price as unknown as number,
+        recurring: { interval: interval },
+      },
     },
     { stripeAccount: store?.stripeId }
   );
@@ -43,13 +34,16 @@ export async function POST(req: NextRequest) {
   await prisma.product.create({
     data: {
       id,
-      name,
-      description,
-      type,
+      name: body.name as string,
+      description: body.description as string,
+      type: ProductType.Recurring,
       recurrencyPeriod: interval,
       price: price as string,
-      storeId: store?.id!,
+      server: body.server as string,
+      store: { connect: { id: store?.id! } },
       stripeProductId: id,
     },
   });
+
+  return NextResponse.json({ status: "OK" });
 }
