@@ -27,12 +27,15 @@ export default async function Page({ params }: { params: { id: string } }) {
     return store;
   });
 
-  console.log(store);
+  let storeStripe;
+  let balanceStripe;
+  if (store?.stripeId) {
+    storeStripe = await stripe.accounts.retrieve(store?.stripeId as string);
 
-  const storeStripe = await stripe.accounts.retrieve(store?.stripeId as string);
-  const balanceStripe = await stripe.balance.retrieve({
-    stripeAccount: store?.stripeId as string,
-  });
+    balanceStripe = await stripe.balance.retrieve({
+      stripeAccount: store?.stripeId as string,
+    });
+  }
 
   return (
     <>
@@ -56,7 +59,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </CardHeader>
             <CardContent>
               {/* @ts-ignore */}
-              <span className="text-3xl">{store?.licenses?.length}</span>
+              <span className="text-3xl">{store?.licenses?.length == 0 ? "0 :(" : store?.licenses?.length}</span>
             </CardContent>
           </Card>
           <Card>
@@ -81,7 +84,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </CardHeader>
             <CardContent>
               <span className="text-3xl">
-                ${balanceStripe?.available[0].amount}
+                {balanceStripe?.available[0].amount ?? "Unknown."}
               </span>
             </CardContent>
           </Card>
