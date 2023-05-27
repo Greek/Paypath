@@ -14,6 +14,8 @@ export const ProductModel = z.object({
   recurrencyPeriod: z.nativeEnum(ProductInterval).optional(),
   stripeProductId: z.string().optional(),
   customers: z.number().int().optional(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
   storeId: z.string().optional(),
 })
 

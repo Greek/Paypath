@@ -21,9 +21,12 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { redirect, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
+import { Product } from "@prisma/client";
 
 export interface Guild {
   id: string;
@@ -36,17 +39,13 @@ export default function ProductsPage() {
   const REDIRECT_URI2 =
     "https://discord.com/oauth2/authorize?permissions=8&guild_id=1108375792393662474&response_type=code&redirect_uri=https%3A%2F%2Fapi.hyper.co%2Fauth%2Flogin%2Fdiscord%2Fcallback&scope=bot&state=%7B%22redirect%22%3A%22%2Fproducts%2Fnew%3Frecipe%3Ddiscord%26integrations%5Bdiscord%5D%5Bguild%5D%3D1108375792393662474%22%7D&client_id=648234176805470248";
 
-  const [selectedServer, setSelectedServer] = useState<string>(
-    "1108746054205190224"
-  );
+  const [selectedServer, setSelectedServer] = useState<string>();
   const [dialogActive, setDialogActive] = useState<boolean>(false);
   const [formStep, setFormStep] = useState<number>(0);
+  const [redirectId, setRedirectId] = useState<number>();
 
   const { data: session } = useSession();
-  const {
-    data: guildsData,
-    isError,
-  } = useQuery(["guilds"], {
+  const { data: guildsData, isError } = useQuery(["guilds"], {
     queryFn: async () => {
       return await fetch("/ajax/discord/guilds", {}).then(async (res) => {
         return (await res.json()) as Guild[];
@@ -57,31 +56,46 @@ export default function ProductsPage() {
   });
 
   // TODO(greek): god damn. please refactor.
-  const { data: selectedServerData, isLoading: selectedServerLoading } =
-    useQuery(["selectedServer"], {
-      queryFn: async () => {
-        return await fetch(
-          `/ajax/discord/guilds/${selectedServer as string}`,
-          {}
-        ).then(async (res) => {
-          if (res.status == 404) return null;
-          return (await res.json()) as Guild;
-        });
-      },
-      enabled: !!session && !!selectedServer && !!guildsData,
-    });
+  const {
+    data: selectedServerData,
+    isLoading: selectedServerLoading,
+    refetch,
+  } = useQuery(["selectedServer"], {
+    queryFn: async () => {
+      return await fetch(
+        `/ajax/discord/guilds/${selectedServer as string}`,
+        {}
+      ).then(async (res) => {
+        if (res.status == 404) return null;
+        return (await res.json()) as Guild;
+      });
+    },
+    enabled: !!session && !!selectedServer && !!guildsData,
+  });
 
   const {
     isLoading: isProductCreationSubmitting,
     mutate: createProductMutation,
+    isSuccess: mutationIsSuccess,
   } = useMutation(["createProduct"], {
     mutationFn: async (data: any) => {
       return await fetch("/api/store/product", {
         method: "POST",
         body: JSON.stringify(data),
       }).then((res) => {
-        if (res.ok) return res.json();
-        else return null;
+        return res.json();
+      });
+    },
+
+    onSuccess(data) {
+      setRedirectId(data.id);
+    },
+  });
+
+  const { data: products, isLoading: isProductsLoading } = useQuery({
+    queryFn: async () => {
+      return await fetch("/api/store/product").then(async (res) => {
+        return (await res.json()) as Product[];
       });
     },
   });
@@ -100,11 +114,15 @@ export default function ProductsPage() {
       description: data.description,
       type: data.type,
       price: data.price,
-      server: data.server,
+      server: selectedServer,
     });
 
-    return router.push('/d/products')
+    if (mutationIsSuccess) return redirect(`/d/products/${redirectId}`);
   };
+
+  useEffect(() => {
+    refetch();
+  }, [selectedServer, refetch]);
 
   const productTypeItems = [
     { name: "Recurring" },
@@ -134,22 +152,21 @@ export default function ProductsPage() {
                         select a role to give.
                       </DialogDescription>
                     </DialogHeader>
-                    <DialogFooter>
-                      {dialogActive && (
-                        <form>
-                          <select
-                            placeholder="Select a server.."
-                            onChange={handleSubmit((data) => {
-                              setSelectedServer("1108746054205190224");
-                            })}
-                          >
-                            <option disabled selected>
-                              Select a server..
-                            </option>
+                    {dialogActive && (
+                      <form>
+                        <Select
+                          onValueChange={(e) => {
+                            setSelectedServer(e);
+                          }}
+                        >
+                          <SelectTrigger className="w-max">
+                            <SelectValue placeholder="Select a Server" />
+                          </SelectTrigger>
+                          <SelectContent>
                             {dialogActive &&
                               guildsData?.map((guild) => {
                                 return (
-                                  <option
+                                  <SelectItem
                                     key={guild.id}
                                     value={guild.id}
                                     {...register("server", {
@@ -157,31 +174,38 @@ export default function ProductsPage() {
                                     })}
                                   >
                                     {guild.name} ({guild.id})
-                                  </option>
+                                  </SelectItem>
                                 );
                               })}
-                          </select>
+                          </SelectContent>
+                        </Select>
+
+                        <DialogFooter className={`mt-2`}>
                           {!selectedServerData ? (
                             <Button
                               onClick={(e) => {
                                 e.preventDefault();
                                 router.push(`${REDIRECT_URI}`);
                               }}
+                              size={"sm"}
+                              disabled={selectedServerLoading}
                             >
                               Invite Bot
                             </Button>
                           ) : (
                             <Button
                               size={"sm"}
-                              disabled={!selectedServer}
+                              disabled={
+                                !selectedServer || selectedServerLoading
+                              }
                               onClick={() => setFormStep(1)}
                             >
                               Next
                             </Button>
                           )}
-                        </form>
-                      )}
-                    </DialogFooter>
+                        </DialogFooter>
+                      </form>
+                    )}
                   </>
                 )}
                 {formStep == 1 && (
@@ -273,16 +297,13 @@ export default function ProductsPage() {
         </div>
       </div>
       <div className="grid gap-x-6 gap-y-3 px-10 mt-4">
-        {isError && <p>Could not load guilds :(</p>}
+        {isProductsLoading && <p>Give us a sec...</p>}
+        {products && <DataTable columns={columns} data={products} />}
       </div>
     </>
   );
 }
 
-function TinyErrorMessage({
-  children,
-}: {
-  children: string | JSX.Element;
-}) {
+function TinyErrorMessage({ children }: { children: string | JSX.Element }) {
   return children ? <p className="text-red-700 text-sm">{children}</p> : null;
 }

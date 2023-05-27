@@ -6,6 +6,20 @@ import { authConfig } from "../../auth/[...nextauth]/route";
 import { nanoid } from "nanoid";
 import { stripe } from "@/lib/stripe";
 
+export async function GET(req: NextRequest) {
+  const session = await getServerSession(authConfig);
+  const store = session?.user?.stores?.find((store) => {
+    return store;
+  });
+
+
+  const products = await prisma.product.findMany({
+    where: { storeId: store?.id },
+  });
+
+  return NextResponse.json(products);
+}
+
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authConfig);
   const store = session?.user?.stores?.find((store) => {
@@ -31,7 +45,7 @@ export async function POST(req: NextRequest) {
     { stripeAccount: store?.stripeId }
   );
 
-  await prisma.product.create({
+  const product = await prisma.product.create({
     data: {
       id,
       name: body.name as string,
@@ -45,5 +59,28 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ status: "OK" });
+  return NextResponse.json({ success: true, id: product.id });
+}
+
+export async function PATCH(req: NextRequest) {
+  const session = await getServerSession(authConfig);
+  const store = session?.user?.stores?.find((store) => {
+    return store;
+  });
+
+  const body = await req.json();
+
+  try {
+    await stripe.products.update(body.id, { active: false });
+    await stripe.prices.update(body.priceId, { active: false });
+
+    await prisma.product.update({
+      where: { id: body.id },
+      data: { archived: true },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  return NextResponse.json({ message: "Deleted", success: true });
 }
