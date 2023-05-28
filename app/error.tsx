@@ -11,7 +11,7 @@ import Error from "next/error";
 import { useEffect, useState } from "react";
 
 export default function RootErrorPage(error: Error) {
-  const [isOpen, setOpenState] = useState<Boolean>(false);
+  const [isOpen, setOpenState] = useState(false);
   useEffect(() => {
     console.log(error);
   }, [error]);
@@ -21,6 +21,7 @@ export default function RootErrorPage(error: Error) {
       <div className="container  flex flex-col h-screen items-center justify-center text-left  ">
         <div className={`text-center mx-2`}>
           <p className={`text-3xl font-semibold mb-2`}>Oops.</p>
+          {/* @ts-ignore */}
           <p className={`text-md  mb-2 `}> {error.error.message}</p>
         </div>
         <div
@@ -30,6 +31,7 @@ export default function RootErrorPage(error: Error) {
           more issues, please join our Discord.
           <br />
           <br />
+          {/* @ts-ignore */}
           ID: <code>{error.error.digest}</code>
           <Collapsible
             className={"mt-5 break-words"}
@@ -40,6 +42,7 @@ export default function RootErrorPage(error: Error) {
               Check out what caused it...
             </CollapsibleTrigger>
             <CollapsibleContent>
+              {/* @ts-ignore */}
               <kbd className={`text-xs`}>{error.error.stack}</kbd>
             </CollapsibleContent>
           </Collapsible>
