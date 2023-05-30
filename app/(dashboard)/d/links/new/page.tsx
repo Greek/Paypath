@@ -1,5 +1,7 @@
 "use client";
 
+import { LinkModel } from "@/app/_schemas";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -7,7 +9,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Product } from "@prisma/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Link, Product } from "@prisma/client";
+import { Label } from "@radix-ui/react-label";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -18,11 +22,9 @@ export default function NewLink() {
 
   const [selectedProduct, setSelectedProduct] = useState<string>();
 
-  const { data: products, refetch } = useQuery(["products"], {
-    queryFn: async (data) => {
-      return await fetch("/api/store/products", {
-        body: JSON.stringify({ archive: false }),
-      }).then(async (res) => {
+  const { data: products, refetch } = useQuery({
+    queryFn: async () => {
+      return await fetch("/api/store/products").then(async (res) => {
         return (await res.json()) as Product[];
       });
     },
@@ -32,18 +34,19 @@ export default function NewLink() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<Link>({ resolver: zodResolver(LinkModel)});
 
   return (
     <div className={`xl:flex xl:divide-x max-w-7xl mx-auto`}>
       <div className="flex-1 xl:max-w-lg px-5 sm:px-10 py-10">
-        <form>
+        <form className={"space-y-2"}>
+          <Label>Product</Label>
           <Select
             onValueChange={(e) => {
               setSelectedProduct(e);
             }}
           >
-            <SelectTrigger className="w-max">
+            <SelectTrigger>
               <SelectValue placeholder="Select a product..." />
             </SelectTrigger>
             <SelectContent>
@@ -52,7 +55,7 @@ export default function NewLink() {
                   <SelectItem
                     key={product.id}
                     value={product.id}
-                    {...register("server", {
+                    {...register("nickname", {
                       required: "select one option",
                     })}
                   >
@@ -62,13 +65,18 @@ export default function NewLink() {
               })}
             </SelectContent>
           </Select>
+          <Label>Nickname</Label>
+          <Input
+            placeholder="Link nickname..."
+            {...register("nickname")}
+          ></Input>
           <button
             onClick={(e) => {
               e.preventDefault();
               refetch();
             }}
           >
-            fetch lol
+            Create Link
           </button>
         </form>
       </div>

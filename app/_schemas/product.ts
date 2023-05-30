@@ -1,6 +1,6 @@
 import * as z from "zod"
 import { ProductType, ProductInterval } from "@prisma/client"
-import { CompleteStore, RelatedStoreModel, CompleteLicense, RelatedLicenseModel } from "./index"
+import { CompleteStore, RelatedStoreModel, CompleteLicense, RelatedLicenseModel, CompleteLink, RelatedLinkModel } from "./index"
 
 export const ProductModel = z.object({
   id: z.string(),
@@ -12,8 +12,6 @@ export const ProductModel = z.object({
   price: z.string().nullish(),
   currency: z.string().nullish(),
   recurrencyPeriod: z.nativeEnum(ProductInterval).optional(),
-  stripeProductId: z.string().optional(),
-  customers: z.number().int().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
   storeId: z.string().optional(),
@@ -22,6 +20,7 @@ export const ProductModel = z.object({
 export interface CompleteProduct extends z.infer<typeof ProductModel> {
   store: CompleteStore
   licenses: CompleteLicense[]
+  Link: CompleteLink[]
 }
 
 /**
@@ -32,4 +31,5 @@ export interface CompleteProduct extends z.infer<typeof ProductModel> {
 export const RelatedProductModel: z.ZodSchema<CompleteProduct> = z.lazy(() => ProductModel.extend({
   store: RelatedStoreModel,
   licenses: RelatedLicenseModel.array(),
+  Link: RelatedLinkModel.array(),
 }))

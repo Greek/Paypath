@@ -54,6 +54,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
@@ -120,6 +122,7 @@ model Store {
   User     User      @relation(fields: [owner], references: [id])
   products Product[]
   licenses License[]
+  Link     Link[]
 
   @@index([owner])
 }
@@ -156,6 +159,7 @@ model Product {
   storeId  String
   store    Store     @relation(fields: [storeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   licenses License[]
+  Link     Link[]
 
   @@index(storeId)
 }
@@ -171,7 +175,41 @@ model License {
   product   Product @relation(fields: [productId], references: [id])
   productId String
 
-  @@index([productId, storeId])
+  @@index([storeId])
+  @@index([productId])
+}
+
+model Link {
+  /// @zod.optional
+  id                String   @id
+  nickname          String?
+  password          String?
+  passwordProtected Boolean? @default(false)
+  stock             Int?     @default(-1)
+  hasStockLimit     Boolean? @default(false)
+  freeTrial         Boolean? @default(false)
+
+  // Later start date, expiration date, must be in specific Discord server
+  // Must have specific discord ID
+  // must have specific role ID(s)
+  // Must own another product
+
+  firstCheckoutDate DateTime?
+  lastCheckoutDate  DateTime?
+
+  /// @zod.optional()
+  createdAt DateTime @default(now())
+  /// @zod.optional()
+  updatedAt DateTime @updatedAt
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+
+  store   Store  @relation(fields: [storeId], references: [id])
+  storeId String
+
+  @@index([productId])
+  @@index([storeId])
 }
 
 // enum CancelAction {
