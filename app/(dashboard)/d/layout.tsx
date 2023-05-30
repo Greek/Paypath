@@ -1,7 +1,13 @@
 import Header from "@/components/ui/header";
 import Sidebar from "@/components/sidebar";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
-import { CircleSlashIcon, HomeIcon, PackageIcon, UserIcon } from "lucide-react";
+import {
+  CircleSlashIcon,
+  HomeIcon,
+  PackageIcon,
+  ShareIcon,
+  UserIcon,
+} from "lucide-react";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/app/(internal)/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
@@ -27,7 +33,7 @@ export default async function DashboardLayout({
   const store = session?.user.stores.find((store) => {
     return store;
   });
-  
+
   const links: LinkItem = {
     "/d/overview": {
       name: "Home",
@@ -37,12 +43,17 @@ export default async function DashboardLayout({
     "/d/products": {
       name: "Products",
       breadcrumb: "Products",
-      icon: <PackageIcon size={16} />
+      icon: <PackageIcon size={16} />,
+    },
+    "/d/links/new": {
+      name: "Links",
+      breadcrumb: "Links",
+      icon: <ShareIcon size={16} />,
     },
     "/d/customers": {
       name: "Customers",
       breadcrumb: "Customers",
-      icon: <UserIcon size={16} />
+      icon: <UserIcon size={16} />,
     },
     "/d/billing": {
       name: "Billing",
@@ -52,7 +63,7 @@ export default async function DashboardLayout({
     "/d/settings": {
       name: "Settings",
       hidden: true,
-      breadcrumb: "Settings"
+      breadcrumb: "Settings",
     },
   };
 

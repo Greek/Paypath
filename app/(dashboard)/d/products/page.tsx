@@ -27,19 +27,24 @@ import { useForm } from "react-hook-form";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
 import { Product } from "@prisma/client";
+import { APIRole } from "discord-api-types/v10";
 
 export interface Guild {
   id: string;
   name: string;
   permissions: string;
+  roles: APIRole[];
 }
 
 export default function ProductsPage() {
-  const REDIRECT_URI = `https://discord.com/api/oauth2/authorize?client_id=1107876953031180398&permissions=8&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fproducts&response_type=code&scope=bot`;
+  const REDIRECT_URI = `https://discord.com/api/oauth2/authorize?client_id=1107876953031180398&permissions=8&redirect_uri=${process.env.NEXTAUTH_URL}%2Fd%2Fproducts&response_type=code&scope=bot`;
   const REDIRECT_URI2 =
     "https://discord.com/oauth2/authorize?permissions=8&guild_id=1108375792393662474&response_type=code&redirect_uri=https%3A%2F%2Fapi.hyper.co%2Fauth%2Flogin%2Fdiscord%2Fcallback&scope=bot&state=%7B%22redirect%22%3A%22%2Fproducts%2Fnew%3Frecipe%3Ddiscord%26integrations%5Bdiscord%5D%5Bguild%5D%3D1108375792393662474%22%7D&client_id=648234176805470248";
 
   const [selectedServer, setSelectedServer] = useState<string>();
+  const [selectedRole, setSelectedRole] = useState<string>();
+  const [paypathRolePos, setPaypathRolePos] = useState<number>(8);
+
   const [dialogActive, setDialogActive] = useState<boolean>(false);
   const [formStep, setFormStep] = useState<number>(0);
   const [redirectId, setRedirectId] = useState<number>();
@@ -74,6 +79,23 @@ export default function ProductsPage() {
   });
 
   const {
+    data: selectedServerRoles,
+    isLoading: selectedServerRolesLoading,
+    refetch: refetchServerRoles,
+  } = useQuery(["selectedServer"], {
+    queryFn: async () => {
+      return await fetch(
+        `/ajax/discord/guilds/${selectedServer as string}/roles`,
+        {}
+      ).then(async (res) => {
+        if (res.status == 404) return null;
+        return (await res.json()) as APIRole[];
+      });
+    },
+    enabled: !!selectedServerData,
+  });
+
+  const {
     isLoading: isProductCreationSubmitting,
     mutate: createProductMutation,
     isSuccess: mutationIsSuccess,
@@ -95,6 +117,7 @@ export default function ProductsPage() {
   const { data: products, isLoading: isProductsLoading } = useQuery({
     queryFn: async () => {
       return await fetch("/api/store/product").then(async (res) => {
+        console.log(await res.json())
         return (await res.json()) as Product[];
       });
     },
@@ -117,12 +140,21 @@ export default function ProductsPage() {
       server: selectedServer,
     });
 
-    if (mutationIsSuccess) return redirect(`/d/products/${redirectId}`);
+    setRedirectId(redirectId);
+
+    redirect(`/d/products/${redirectId}`);
   };
 
+  // Fetch server data when server is selected.
   useEffect(() => {
     refetch();
   }, [selectedServer, refetch]);
+
+  useEffect(() => {
+    refetchServerRoles();
+  }, [selectedServerRoles, refetchServerRoles]);
+
+  // useEffect(() => {}, [selectedServerRoles]);
 
   const productTypeItems = [
     { name: "Recurring" },
@@ -153,7 +185,8 @@ export default function ProductsPage() {
                       </DialogDescription>
                     </DialogHeader>
                     {dialogActive && (
-                      <form>
+                      <form className="w-full">
+                        <p className={`text-sm mb-2`}>Server</p>
                         <Select
                           onValueChange={(e) => {
                             setSelectedServer(e);
@@ -180,6 +213,40 @@ export default function ProductsPage() {
                           </SelectContent>
                         </Select>
 
+                        {selectedServerRoles && (
+                          <Select
+                            onValueChange={(e) => {
+                              setSelectedRole(e);
+                            }}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Optional role" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {selectedServerRoles.length >= 1 &&
+                                paypathRolePos &&
+                                selectedServerRoles
+                                  ?.filter((role) => {
+                                    return role.name != "@everyone";
+                                  })
+                                  ?.filter((role) => {
+                                    return role.position < paypathRolePos!;
+                                  })
+                                  .map((role) => {
+                                    return (
+                                      <SelectItem
+                                        key={role.id}
+                                        value={role.id}
+                                        {...register("role")}
+                                      >
+                                        {role.name}
+                                      </SelectItem>
+                                    );
+                                  })}
+                            </SelectContent>
+                          </Select>
+                        )}
+
                         <DialogFooter className={`mt-2`}>
                           {!selectedServerData ? (
                             <Button
@@ -195,9 +262,7 @@ export default function ProductsPage() {
                           ) : (
                             <Button
                               size={"sm"}
-                              disabled={
-                                !selectedServer || selectedServerLoading
-                              }
+                              disabled={!selectedServer}
                               onClick={() => setFormStep(1)}
                             >
                               Next

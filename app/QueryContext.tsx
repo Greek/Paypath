@@ -1,5 +1,6 @@
 "use client";
 
+import { getAPI } from "@/lib/fetch";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export interface QueryContextProps {
@@ -7,7 +8,13 @@ export interface QueryContextProps {
 }
 
 export function QueryContext({ children }: QueryContextProps) {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        queryFn: getAPI,
+      },
+    },
+  });
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

@@ -125,19 +125,19 @@ model Store {
 }
 
 model Product {
-  id          String      @id
+  id String @id
 
   /// @zod.min(1, {message: "Your product name cannot be empty."}).max(32, {message: "Your product can't be longer than 32 characters."})
-  name        String
+  name String
 
   /// @zod.optional()
-  type        ProductType @default(Recurring)
+  type ProductType @default(Recurring)
 
   /// @zod.min(1, {message: "A product must have a server ID attached to it!"})
-  server      String
+  server String
 
   /// @zod.optional()
-  archived    Boolean     @default(false)
+  archived    Boolean @default(false)
   description String?
   price       String?
   currency    String?
@@ -153,6 +153,12 @@ model Product {
   // Length of total customers
   /// @zod.optional()
   customers Int @default(0)
+
+  /// @zod.optional()
+  createdAt DateTime @default(now())
+
+  /// @zod.optional()
+  updatedAt DateTime @updatedAt
 
   /// @zod.optional()
   storeId  String
