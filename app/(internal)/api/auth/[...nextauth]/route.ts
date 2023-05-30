@@ -16,11 +16,7 @@ export const authConfig: AuthOptions = {
     signIn: "/",
     error: "/",
   },
-  providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
-    }),
+  providers: [  
     DiscordProvider({
       clientId: process.env.DISCORD_ID as string,
       clientSecret: process.env.DISCORD_SECRET as string,

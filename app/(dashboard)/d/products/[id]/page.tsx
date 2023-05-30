@@ -34,17 +34,17 @@ export default async function ProductPage(context: { params: { id: string } }) {
           <div className="flex flex-col">
             <span className="font-semibold text-2xl lg:text-3xl items-center">
               {product.name}
-              <Badge>{product.archived ? "Active" : "Archived"}</Badge>
+              <Badge>{!product.archived ? "Active" : "Archived"}</Badge>
             </span>
             <span className="text-muted-foreground ">sold for ? USD</span>
             <div className={`space-x-2 mt-3`}>
-              <Button size={"sm"} disabled={!product.archived}>
+              <Button size={"sm"} disabled={!!product.archived}>
                 Create Link
               </Button>
               {/* @ts-ignore */}
               <ProductDropdown
-                productId={context.params.id}
-                priceId={productStripe.default_price}
+                product={context.params.id}
+                price={productStripe.default_price}
                 archived={product.archived}
               />
             </div>

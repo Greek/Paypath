@@ -7,17 +7,19 @@ import { nanoid } from "nanoid";
 import { stripe } from "@/lib/stripe";
 
 export async function GET(req: NextRequest) {
+  const body = await req.json();
   const session = await getServerSession(authConfig);
   const store = session?.user?.stores?.find((store) => {
     return store;
   });
 
-
   const products = await prisma.product.findMany({
     where: { storeId: store?.id },
   });
 
-  return NextResponse.json(products);
+  console.log(products);
+
+  return NextResponse.json(products ?? { error: "whell." });
 }
 
 export async function POST(req: NextRequest) {
@@ -71,16 +73,28 @@ export async function PATCH(req: NextRequest) {
   const body = await req.json();
 
   try {
-    await stripe.products.update(body.id, { active: false });
-    await stripe.prices.update(body.priceId, { active: false });
+    await stripe.products.update(
+      body.id.productId,
+      {
+        active: false,
+      },
+      { stripeAccount: store?.stripeId }
+    );
+    await stripe.prices.update(
+      body.id.priceId,
+      {
+        active: false,
+      },
+      { stripeAccount: store?.stripeId }
+    );
 
     await prisma.product.update({
-      where: { id: body.id },
-      data: { archived: true },
+      where: { id: body.id.productId },
+      data: { archived: body.archive },
     });
   } catch (err) {
     console.log(err);
   }
 
-  return NextResponse.json({ message: "Deleted", success: true });
+  return NextResponse.json({ message: "Archived", success: true });
 }
