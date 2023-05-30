@@ -20,7 +20,7 @@ export default function NewLink() {
 
   const { data: products, refetch } = useQuery(["products"], {
     queryFn: async (data) => {
-      return await fetch("/api/store/product", {
+      return await fetch("/api/store/products", {
         body: JSON.stringify({ archive: false }),
       }).then(async (res) => {
         return (await res.json()) as Product[];

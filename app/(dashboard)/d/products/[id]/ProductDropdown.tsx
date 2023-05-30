@@ -24,7 +24,7 @@ export default function ProductDropdown(
   
   const { mutate: archiveProduct, isLoading } = useMutation(["archiveProduct"], {
     mutationFn: async (data: any) => {
-      return await fetch("/api/store/product", {
+      return await fetch("/api/store/products", {
         method: "PATCH",
         body: JSON.stringify(data),
       }).then(async (res) => {

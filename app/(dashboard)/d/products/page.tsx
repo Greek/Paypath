@@ -42,7 +42,7 @@ export default function ProductsPage() {
     "https://discord.com/oauth2/authorize?permissions=8&guild_id=1108375792393662474&response_type=code&redirect_uri=https%3A%2F%2Fapi.hyper.co%2Fauth%2Flogin%2Fdiscord%2Fcallback&scope=bot&state=%7B%22redirect%22%3A%22%2Fproducts%2Fnew%3Frecipe%3Ddiscord%26integrations%5Bdiscord%5D%5Bguild%5D%3D1108375792393662474%22%7D&client_id=648234176805470248";
 
   const [selectedServer, setSelectedServer] = useState<string>();
-  
+
   const [selectedRole, setSelectedRole] = useState<string>();
   const [paypathRolePos, setPaypathRolePos] = useState<number>(8);
 
@@ -102,7 +102,7 @@ export default function ProductsPage() {
     isSuccess: mutationIsSuccess,
   } = useMutation(["createProduct"], {
     mutationFn: async (data: any) => {
-      return await fetch("/api/store/product", {
+      return await fetch("/api/store/products", {
         method: "POST",
         body: JSON.stringify(data),
       }).then((res) => {
@@ -117,7 +117,7 @@ export default function ProductsPage() {
 
   const { data: products, isLoading: isProductsLoading } = useQuery({
     queryFn: async () => {
-      return await fetch("/api/store/product").then(async (res) => {
+      return await fetch("/api/store/products").then(async (res) => {
         console.log(await res.json())
         return (await res.json()) as Product[];
       });
