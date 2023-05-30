@@ -7,7 +7,6 @@ import { nanoid } from "nanoid";
 import { stripe } from "@/lib/stripe";
 
 export async function GET(req: NextRequest) {
-  const body = await req.json();
   const session = await getServerSession(authConfig);
   const store = session?.user?.stores?.find((store) => {
     return store;
@@ -17,9 +16,7 @@ export async function GET(req: NextRequest) {
     where: { storeId: store?.id },
   });
 
-  console.log(products);
-
-  return NextResponse.json(products ?? { error: "whell." });
+  return NextResponse.json(products);
 }
 
 export async function POST(req: NextRequest) {
