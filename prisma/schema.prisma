@@ -146,14 +146,6 @@ model Product {
   /// @zod.optional()
   recurrencyPeriod ProductInterval @default(month)
 
-  // Stripe hosted equivelant of this product.
-  /// @zod.optional()
-  stripeProductId String
-
-  // Length of total customers
-  /// @zod.optional()
-  customers Int @default(0)
-
   /// @zod.optional()
   createdAt DateTime @default(now())
 
