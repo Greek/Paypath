@@ -1,4 +1,4 @@
-import { authConfig } from "@/app/(internal)/api/auth/[...nextauth]/route";
+import { authConfig } from "@/app/api/auth/[...nextauth]/route";
 import { discordBotRest } from "@/lib/discord";
 import { Routes } from "discord-api-types/v10";
 import { getServerSession } from "next-auth";

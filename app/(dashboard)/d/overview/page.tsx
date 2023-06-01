@@ -1,4 +1,4 @@
-import { authConfig } from "@/app/(internal)/api/auth/[...nextauth]/route";
+import { authConfig } from "@/app/api/auth/[...nextauth]/route";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,6 +10,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import OnboardCheck from "./OnboardCheck";
 import { stripe } from "@/lib/stripe";
+import ButtonSet from "./ButtonSet";
 
 const wait = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -45,8 +46,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             {store?.name}
           </span>
           <div className={"space-x-2 mt-2 lg:mt:0"}>
-            <Button variant={"outline"}>Visit Portal</Button>
-            <Button>Create Link</Button>
+            <ButtonSet />
           </div>
         </div>
       </div>
@@ -58,8 +58,13 @@ export default async function Page({ params }: { params: { id: string } }) {
               <CardDescription>Total customers</CardDescription>
             </CardHeader>
             <CardContent>
-              {/* @ts-ignore */}
-              <span className="text-3xl">{store?.licenses?.length == 0 ? "0 :(" : store?.licenses?.length}</span>
+              <span className="text-3xl">
+                {/* @ts-ignore */}
+                {store?.licenses?.length == 0
+                  ? "0 :("
+                  : /* @ts-ignore */
+                    store?.licenses?.length}
+              </span>
             </CardContent>
           </Card>
           <Card>

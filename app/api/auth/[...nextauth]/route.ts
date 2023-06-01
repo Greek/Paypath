@@ -89,6 +89,7 @@ export const authConfig: AuthOptions = {
         },
       });
 
+      
       return {
         ...session,
         user: dbUser,
@@ -100,9 +101,11 @@ export const authConfig: AuthOptions = {
       };
     },
     async redirect({ url, baseUrl }) {
+      console.log(url)
+      console.log(baseUrl)
       // Allows relative callback URLs
       if (url.startsWith("/")) return `${baseUrl}${url}`;
-      if (url.startsWith("/products")) return `${baseUrl}/products`;
+      if (url.startsWith("/d/products")) return `${baseUrl}/d/products`;
       // Allows callback URLs on the same origin
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;

@@ -69,6 +69,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   stores        Store[]
+  Link          Link[]
 }
 
 enum Plan {
@@ -180,7 +181,7 @@ model License {
 }
 
 model Link {
-  /// @zod.optional
+  /// @zod.optional()
   id                String   @id
   nickname          String?
   password          String?
@@ -206,10 +207,16 @@ model Link {
   productId String
 
   store   Store  @relation(fields: [storeId], references: [id])
+  /// @zod.optional()
   storeId String
+
+  user   User?   @relation(fields: [userId], references: [id])
+  /// @zod.optional()
+  userId String?
 
   @@index([productId])
   @@index([storeId])
+  @@index([userId])
 }
 
 // enum CancelAction {

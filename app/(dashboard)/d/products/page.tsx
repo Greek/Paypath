@@ -118,7 +118,6 @@ export default function ProductsPage() {
   const { data: products, isLoading: isProductsLoading } = useQuery({
     queryFn: async () => {
       return await fetch("/api/store/products").then(async (res) => {
-        console.log(await res.json())
         return (await res.json()) as Product[];
       });
     },
@@ -154,8 +153,6 @@ export default function ProductsPage() {
   useEffect(() => {
     refetchServerRoles();
   }, [selectedServerRoles, refetchServerRoles]);
-
-  // useEffect(() => {}, [selectedServerRoles]);
 
   const productTypeItems = [
     { name: "Recurring" },
@@ -370,6 +367,6 @@ export default function ProductsPage() {
   );
 }
 
-function TinyErrorMessage({ children }: { children: string | JSX.Element }) {
+export function TinyErrorMessage({ children }: { children: string | JSX.Element }) {
   return children ? <p className="text-red-700 text-sm">{children}</p> : null;
 }
