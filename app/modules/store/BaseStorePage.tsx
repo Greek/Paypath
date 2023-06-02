@@ -1,8 +1,9 @@
 import { authConfig } from "@/app/api/auth/[...nextauth]/route";
 import { AlternativeSignInButton } from "@/components/sign-in";
 import { prisma } from "@/lib/prisma";
-import { DoorOpen, Search, StoreIcon } from "lucide-react";
+import { ArrowRight, DoorOpen, Search, StoreIcon } from "lucide-react";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
 
 export default async function BaseStorePage({
   params,
@@ -10,7 +11,10 @@ export default async function BaseStorePage({
   params: { name: string };
 }) {
   const session = getServerSession(authConfig);
-  const store = await prisma.store.findFirst({ where: { name: params.name } });
+  const store = await prisma.store.findFirst({
+    where: { name: params.name },
+    include: { Link: { include: { product: true } } },
+  });
 
   return (
     <>
@@ -42,13 +46,32 @@ export default async function BaseStorePage({
           </div>
         </div>
         <div className="bg-white dark:bg-gray-800">
-          <div className="hidden sm:flex min-h-[8rem] h-full flex-col items-center justify-center">
-            <div className="text-black dark:text-white text-xs !text-opacity-50 text-center">
-              <div className="justify-center items-center flex pb-2">
-                <Search size={64} />
-              </div>
-              Nothing to buy here yet.
-            </div>
+          <div className="h-full p-8 flex flex-col justify-center space-y-3">
+            {store?.Link.map((link) => {
+              return (
+                <Link
+                  className="block"
+                  href={`/${store.name}/${link.id}`}
+                  key={link.id}
+                >
+                  <div className="relative bg-white dark:bg-gray-800 border shadow-sm transition hover:shadow rounded-md">
+                    <div className="flex justify-between items-center pl-3 pr-5 py-2">
+                      <div>
+                        <div className="text-black dark:text-white text-lg">
+                          {link.nickname ?? link.product.name}
+                        </div>
+                        <div className="text-black dark:text-white text-xs !text-opacity-50">
+                          {link.product.price} / month
+                        </div>
+                      </div>
+                      <div className="text-black dark:text-white !text-opacity-70">
+                        <ArrowRight />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>

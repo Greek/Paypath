@@ -23,7 +23,7 @@ export async function GET(
   try {
     link = await prisma.link.findUnique({
       where: { id: context.params.id },
-      include: { user: true, product: true },
+      include: { user: true, product: true, store: true },
     });
   } catch (e: unknown) {
     if (e instanceof PrismaClientKnownRequestError) {

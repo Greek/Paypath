@@ -40,6 +40,12 @@ dependencies:
   '@radix-ui/react-toast':
     specifier: ^1.1.4
     version: 1.1.4(@types/react-dom@18.2.1)(@types/react@18.2.0)(react-dom@18.2.0)(react@18.2.0)
+  '@stripe/react-stripe-js':
+    specifier: ^2.1.0
+    version: 2.1.0(@stripe/stripe-js@1.54.0)(react-dom@18.2.0)(react@18.2.0)
+  '@stripe/stripe-js':
+    specifier: ^1.54.0
+    version: 1.54.0
   '@t3-oss/env-nextjs':
     specifier: ^0.2.2
     version: 0.2.2(zod@3.21.4)
@@ -1362,6 +1368,23 @@ packages:
   /@sapphire/snowflake@3.5.1:
     resolution: {integrity: sha512-BxcYGzgEsdlG0dKAyOm0ehLGm2CafIrfQTZGWgkfKYbj+pNNsorZ7EotuZukc2MT70E0UbppVbtpBrqpzVzjNA==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
+    dev: false
+
+  /@stripe/react-stripe-js@2.1.0(@stripe/stripe-js@1.54.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Zb6Ycrj5QuhYkvtlvvLzo+cysUyA6wkx3zWHQ7uVnHRYRM/n1jtQD6VGBrdmptC8e8PJN6L091gBCyB5P0FqmA==}
+    peerDependencies:
+      '@stripe/stripe-js': ^1.44.1
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@stripe/stripe-js': 1.54.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@stripe/stripe-js@1.54.0:
+    resolution: {integrity: sha512-nElTXkS+nMfDNMkWfLmyeqHQfMGJ1JjrjAVMibV61Oc/rYdUv0cKRYCi1l4ivZ5SySB3vQLcLolxbKBkbNznZA==}
     dev: false
 
   /@swc/helpers@0.5.1:
