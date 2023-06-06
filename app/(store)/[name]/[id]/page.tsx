@@ -1,11 +1,35 @@
-import { prisma } from "@/lib/prisma";
-import CheckoutForm from "./CheckoutForm";
+"use client";
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const link = await prisma.link.findUnique({
-    where: { id: params.id },
-    include: { user: true, product: true, store: true },
+import CheckoutForm from "./CheckoutForm";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { Elements } from "@stripe/react-stripe-js";
+import { PaymentIntent, loadStripe } from "@stripe/stripe-js";
+import { useEffect, useState } from "react";
+
+export default function Page({ params }: { params: { id: string } }) {
+  const { data: link, isLoading } = useQuery(["link"], {
+    queryFn: async () => {
+      return (await axios.get(`/api/store/links/${params.id}`)).data;
+    },
   });
+
+  const [clientSecret, setClientSecret] = useState<string>();
+
+  const { mutate: mutatePaymentIntent, isLoading: isLoadingMutation } =
+    useMutation(["mutatePaymentIntent"], {
+      mutationFn: async () => {
+        return (await axios.post("/ajax/stripe/pi", { productId: params.id }))
+          .data;
+      },
+      onSuccess(res: { data: PaymentIntent }) {
+        setClientSecret(res.data.client_secret!);
+      },
+    });
+
+  useEffect(() => {
+    mutatePaymentIntent();
+  }, [mutatePaymentIntent, link]);
 
   return (
     <>
@@ -30,12 +54,22 @@ export default async function Page({ params }: { params: { id: string } }) {
             <div className="bg-white dark:bg-gray-800">
               <div className="hidden sm:flex min-h-[8rem] h-full flex-col items-center justify-center">
                 <div className="text-black dark:text-white text-xs !text-opacity-50 text-center">
-                  <CheckoutForm link={params.id} />
+                  {!clientSecret ||
+                    (!isLoadingMutation && (
+                      <Elements
+                        stripe={loadStripe(
+                          process.env.NEXT_PUBLIC_STRIPE_PUB_KEY as string
+                        )}
+                        options={{ clientSecret: clientSecret }}
+                      >
+                        <CheckoutForm link={params.id} />
+                      </Elements>
+                    ))}
                 </div>
               </div>
             </div>
           </>
-        ) : null}
+        ) : <h1>That link doesn&apos;t exist.</h1>}
       </div>
     </>
   );

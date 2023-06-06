@@ -1,7 +1,7 @@
 import { authConfig } from "@/app/api/auth/[...nextauth]/route";
 import { AlternativeSignInButton } from "@/components/sign-in";
 import { prisma } from "@/lib/prisma";
-import { ArrowRight, DoorOpen, Search, StoreIcon } from "lucide-react";
+import { ArrowRight, StoreIcon } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 
@@ -54,7 +54,7 @@ export default async function BaseStorePage({
                   href={`/${store.name}/${link.id}`}
                   key={link.id}
                 >
-                  <div className="relative bg-white dark:bg-gray-800 border shadow-sm transition hover:shadow rounded-md">
+                  <div className="relative bg-white dark:bg-gray-800 border-1 border-neutral-600 shadow-sm transition hover:shadow rounded-md">
                     <div className="flex justify-between items-center pl-3 pr-5 py-2">
                       <div>
                         <div className="text-black dark:text-white text-lg">
