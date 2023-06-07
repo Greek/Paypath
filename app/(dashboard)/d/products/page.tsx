@@ -367,6 +367,6 @@ export default function ProductsPage() {
   );
 }
 
-export function TinyErrorMessage({ children }: { children: string | JSX.Element }) {
+export function TinyErrorMessage({ children }: { children: string | JSX.Element | JSX.Element[] }) {
   return children ? <p className="text-red-700 text-sm">{children}</p> : null;
 }
