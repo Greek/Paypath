@@ -35,29 +35,51 @@ export default function LinkPurchasePage({
     stripeAccount: link?.store?.stripeId,
   });
 
+  const formatPrice = (price: string) => {
+    return (
+      price.substring(-2, price.length - 2) +
+      "." +
+      price.substring(price.length - 2, price.length)
+    );
+  };
   return (
     <>
       <div className="md:grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x w-[40rem]">
         {link ? (
           <>
             <div className="bg-gray-100 dark:bg-gray-900">
-              <div className="h-full flex flex-col justify-between px-4 pb-8 pt-2">
+              <div className="h-full flex flex-col justify-between px-5 p-6">
                 <div className="flex-1 flex flex-row pt-2 pb-[8rem]">
-                  <div className="inline-block shrink-0 w-[35%] h-[90%] leading-none overflow-hidden rounded-full border ">
+                  <div className="inline-block shrink-0 w-[80px] h-[80px] leading-none overflow-hidden rounded-full border">
                     <div className="w-full h-full flex items-center justify-center text-black text-[30px] dark:text-white !text-opacity-30">
                       <StoreIcon size={30} />
                     </div>
                   </div>
                   <div className="flex-col flex pl-4">
-                    <div className="w-full flex pt-1 text-lg font-semibold dark:text-white">
+                    <div className="w-full flex text-lg font-semibold dark:text-white">
                       {link?.store?.name}
                     </div>
                     <div className="w-full flex dark:text-white text-neutral-400 text-2xl">
-                      {link?.product?.price}
+                      {formatPrice(link.product.price as string)}
                     </div>
                     <div className="w-full flex text-neutral-400">
                       per {link.product.recurrencyPeriod}
                     </div>
+                  </div>
+                </div>
+                <div></div>
+                <div className="flex flex-col rounded-lg border border-neutral-200">
+                  <div className="py-3 px-3 flex items-center justify-between text-sm">
+                    <p className="font-semibold">Subtotal</p>
+                    <p>${formatPrice(link.product.price as string)}</p>
+                  </div>
+                  <div className="flex w-full items-center">
+                    <div className="grow border-t" aria-hidden="true"></div>
+                    <div className="grow border-t" aria-hidden="true"></div>
+                  </div>
+                  <div className="py-3 px-3 flex items-center justify-between text-sm">
+                    <p className="font-semibold">Total</p>
+                    <p>${formatPrice(link.product.price as string)}</p>
                   </div>
                 </div>
               </div>

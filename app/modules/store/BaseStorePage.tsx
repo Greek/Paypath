@@ -23,8 +23,8 @@ export default async function BaseStorePage({
           <div className="h-full flex flex-col justify-between px-8 pb-8">
             <div className="flex-1 flex flex-col items-center pt-20 pb-[8rem] space-y-1 ">
               <div className="inline-block shrink-0 w-[35%] h-[90%] leading-none overflow-hidden rounded-full border ">
-                <div className="w-full h-full flex items-center justify-center text-black text-[30px] dark:text-white !text-opacity-30">
-                  <StoreIcon size={30} />
+                <div className="w-full h-30 flex items-center justify-center text-black text-[30px] dark:text-white !text-opacity-30">
+                  <StoreIcon size={30} className={"h-2"} />
                 </div>
               </div>
               <div className="mt-5 flex items-center">

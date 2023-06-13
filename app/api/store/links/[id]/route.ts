@@ -1,10 +1,6 @@
-import { LinkModel } from "@/app/_schemas";
 import { authConfig } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
-import { sessionCheck } from "@/lib/sessionCheck";
-import { Link, PrismaClient } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { nanoid } from "nanoid";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
