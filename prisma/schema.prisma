@@ -70,7 +70,7 @@ model User {
   sessions      Session[]
   stores        Store[]
   Link          Link[]
-  licenses       License[]
+  licenses      License[]
 }
 
 enum Plan {
@@ -167,8 +167,8 @@ model Product {
 }
 
 model License {
-  id        String  @id
-  key       String  @unique
+  id  String @id
+  key String @unique
 
   store      Store   @relation(fields: [storeId], references: [id])
   storeId    String
@@ -176,6 +176,8 @@ model License {
   productId  String
   customer   User    @relation(fields: [customerId], references: [id])
   customerId String
+
+  purchasedAt DateTime @default(now())
 
   @@index([storeId])
   @@index([productId])

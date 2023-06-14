@@ -8,8 +8,14 @@ export async function GET() {
 
   return NextResponse.json(
     await prisma.user.findUnique({
-      where: { email: session.user?.email as string},
-      include: { licenses: true },
+      where: { email: session.user?.email as string },
+      include: {
+        licenses: {
+          include: {
+            product: true,
+          },
+        },
+      },
     })
   );
 }

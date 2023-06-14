@@ -7,6 +7,7 @@ export const LicenseModel = z.object({
   storeId: z.string(),
   productId: z.string(),
   customerId: z.string(),
+  purchasedAt: z.date(),
 })
 
 export interface CompleteLicense extends z.infer<typeof LicenseModel> {
