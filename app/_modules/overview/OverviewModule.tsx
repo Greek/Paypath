@@ -9,7 +9,10 @@ import {
 } from "@/components/ui/card";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import OnboardCheck from "./components/OnboardCheck";
+import OnboardCheck, {
+  LinkToLinksPage,
+  LinkToProductsPage,
+} from "./components/OnboardCheck";
 import { stripe } from "@/lib/stripe";
 import ButtonSet from "./components/ButtonSet";
 import {
@@ -19,6 +22,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { prisma } from "@/lib/prisma";
+import { Store } from "@prisma/client";
 
 const wait = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -28,7 +32,11 @@ export const metadata = {
   title: "Overview",
 };
 
-export default async function OverviewModule({ params }: { params: { id: string } }) {
+export default async function OverviewModule({
+  params,
+}: {
+  params: { id: string };
+}) {
   const session = await getServerSession(authConfig);
   if (!session) return redirect("/");
 
@@ -137,7 +145,7 @@ export default async function OverviewModule({ params }: { params: { id: string 
                     that we can process payments to your account.
                     <br />
                     <br />
-                    <OnboardCheck store={store} />
+                    <OnboardCheck store={store as Store} />
                   </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="create-product">
@@ -145,21 +153,27 @@ export default async function OverviewModule({ params }: { params: { id: string 
                     Create a product
                   </AccordionTrigger>
                   <AccordionContent className={`px-6`}>
-                    Products represent access to your Discord server and what they provide.
-                    You can make one so that people are able to access your server as well as any
-                    optional roles you&apos;d like to make available. You can customize which roles
-                    to give out, and more to come soon!
-
-                    <a></a>
+                    Products represent access to your Discord server and what
+                    they provide. You can make one so that people are able to
+                    access your server as well as any optional roles you&apos;d
+                    like to make available. You can customize which roles to
+                    give out, and more to come soon!
+                    <br />
+                    <br />
+                    <LinkToProductsPage />
                   </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="item-3">
+                <AccordionItem value="create-link">
                   <AccordionTrigger className={`px-6`}>
-                    Is it animated?
+                    Create a link
                   </AccordionTrigger>
                   <AccordionContent className={`px-6`}>
-                    Yes. It's animated by default, but you can disable it if you
-                    prefer.
+                    Links are the front pages where people will purchase your
+                    product and get access. Go ahead and create one and share it
+                    to the world.
+                    <br />
+                    <br />
+                    <LinkToLinksPage />
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>

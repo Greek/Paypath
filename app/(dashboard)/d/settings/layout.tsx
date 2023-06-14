@@ -10,11 +10,6 @@ export default function SettingsLayout({
 }) {
   return (
     <>
-      <Head>
-        <title>This page has a title 🤔</title>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
       <div className={`border-b-[.1em] border-foreground-muted w-full`}>
         <div className="flex flex-col lg:flex-row lg:justify-between px-10 pt-24 pb-20">
           <span className="font-semibold text-4xl lg:text-5xl">Settings</span>

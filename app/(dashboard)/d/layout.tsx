@@ -45,7 +45,7 @@ export default async function DashboardLayout({
       breadcrumb: "Products",
       icon: <PackageIcon size={16} />,
     },
-    "/d/links/new": {
+    "/d/links": {
       name: "Links",
       breadcrumb: "Links",
       icon: <ShareIcon size={16} />,

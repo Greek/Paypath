@@ -2,9 +2,11 @@
 
 import { formatPrice } from "@/app/_modules/store/PurchaseLinkModule";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { Link, Product, User } from "@prisma/client";
-import { Separator } from "@radix-ui/react-select";
+
 import { useQuery } from "@tanstack/react-query";
+import Moment from "react-moment";
 
 export default function LinkModule({ params }: { params: { id: string } }) {
   const { data: link, isLoading: isLinkLoading } = useQuery({
@@ -67,9 +69,39 @@ export default function LinkModule({ params }: { params: { id: string } }) {
                 )}
               </div>
               <div className={`grid grid-cols-3`}>
+                <p className={`text-muted-foreground`}>Created on</p>
+                <p>
+                  <Moment format={"MMMM Do YYYY"}>{link?.createdAt}</Moment>
+                </p>
+              </div>{" "}
+              <div className={`grid grid-cols-3`}>
                 <p className={`text-muted-foreground`}>Created by</p>
                 <p>{link?.user?.name}</p>
-              </div>{" "}
+              </div>
+              <div className={`grid grid-cols-3`}>
+                <p className={`text-muted-foreground`}>Expires on</p>
+                <p className={`text-muted-foreground`}>Coming soon.</p>
+              </div>
+              <div className={`grid grid-cols-3`}>
+                <p className={`text-muted-foreground`}>Password</p>
+                <p className={`text-muted-foreground`}>Coming soon.</p>
+              </div>
+              <div className={`grid grid-cols-3`}>
+                <p className={`text-muted-foreground`}>Initial fee</p>
+                <p className={`text-muted-foreground`}>Coming soon.</p>
+              </div>
+              <div className={`grid grid-cols-3`}>
+                <p className={`text-muted-foreground`}>Free trial</p>
+                <p className={`text-muted-foreground`}>Coming soon.</p>
+              </div>
+              <div className={`grid grid-cols-3`}>
+                <p className={`text-muted-foreground`}>Restrictions</p>
+                <p className={`text-muted-foreground`}>None applied.</p>
+              </div>
+              <div className={`grid grid-cols-3`}>
+                <p className={`text-muted-foreground`}>Requires product</p>
+                <p className={`text-muted-foreground`}>Coming soon.</p>
+              </div>
               {/* <div className={`grid grid-cols-2`}>
               <p className={`text-muted-foreground`}>ID</p>
               <a
