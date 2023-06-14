@@ -7,8 +7,8 @@ export async function GET() {
   if (!session) return new NextResponse("Not authenticated", { status: 401 });
 
   return NextResponse.json(
-    await prisma.user.findFirst({
-      where: { id: session.user?.id },
+    await prisma.user.findUnique({
+      where: { email: session.user?.email as string},
       include: { licenses: true },
     })
   );

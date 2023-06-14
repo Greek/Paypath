@@ -37,8 +37,8 @@ export async function POST(req: NextRequest) {
     include: { product: true, store: true },
   });
 
-  const localCust = await prisma.user.findFirst({
-    where: { id: session?.user?.id },
+  const localCust = await prisma.user.findUnique({
+    where: { email: session.user?.email as string },
   });
 
   const license = await prisma.license.create({
