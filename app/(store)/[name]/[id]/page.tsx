@@ -1,3 +1,3 @@
-import LinkPurchasePage from "@/app/modules/store/LinkPurchasePage";
+import PurchaseLinkModule from "@/app/_modules/store/PurchaseLinkModule";
 
-export default LinkPurchasePage;
+export default PurchaseLinkModule;

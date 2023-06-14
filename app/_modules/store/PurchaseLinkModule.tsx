@@ -1,6 +1,6 @@
 "use client";
 
-import CheckoutForm from "@/app/modules/store/forms/CheckoutForm";
+import CheckoutForm from "@/app/_modules/store/forms/CheckoutForm";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Elements } from "@stripe/react-stripe-js";
@@ -22,7 +22,7 @@ export const formatPrice = (price: any) => {
   );
 };
 
-export default function LinkPurchasePage({
+export default function PurchaseLinkModule({
   params,
 }: {
   params: { id: string };

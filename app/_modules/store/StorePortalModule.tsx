@@ -8,11 +8,11 @@ import Moment from "react-moment";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { LargeCard } from "@/components/largecard";
-import { formatPrice } from "./LinkPurchasePage";
+import { formatPrice } from "./PurchaseLinkModule";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-export default function StorePortal({ params }: { params: { name: string } }) {
+export default function StorePortalModule({ params }: { params: { name: string } }) {
   const [selectedLicense, setLicense] = useState<
     License & { product: Product }
   >();

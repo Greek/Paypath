@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { License, Product } from "@prisma/client";
-import { formatPrice } from "@/app/modules/store/LinkPurchasePage";
+import { formatPrice } from "@/app/_modules/store/PurchaseLinkModule";
 import ProductDropdown from "./dropdowns/ProductDropdown";
 import { LinkIcon } from "lucide-react";
 import { ExternalLinkTo } from "@/components/externallink";

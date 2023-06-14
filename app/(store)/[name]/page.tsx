@@ -1,4 +1,4 @@
-import BaseStorePage from "@/app/modules/store/BaseStorePage";
+import StoreModule from "@/app/_modules/store/StoreModule";
 import { prisma } from "@/lib/prisma";
 
 export async function generateMetadata({
@@ -15,4 +15,4 @@ export async function generateMetadata({
   };
 }
 
-export default BaseStorePage;
+export default StoreModule;

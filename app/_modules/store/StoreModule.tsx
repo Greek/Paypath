@@ -5,7 +5,7 @@ import { ArrowRight, StoreIcon } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 
-export default async function BaseStorePage({
+export default async function StoreModule({
   params,
 }: {
   params: { name: string };
