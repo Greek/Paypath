@@ -65,6 +65,7 @@
   },
   "devDependencies": {
     "@hookform/resolvers": "^3.1.0",
+    "@tailwindcss/typography": "^0.5.9",
     "prisma": "^4.13.0",
     "zod-prisma": "^0.5.4"
   }

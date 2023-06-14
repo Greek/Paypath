@@ -4,6 +4,7 @@ import { stripe } from "@/lib/stripe";
 import { nanoid } from "nanoid";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import Stripe from "stripe";
 
 const dashify = (s: string) => {
   return (
@@ -50,6 +51,7 @@ export async function POST(req: NextRequest) {
     },
   });
 
+  try {
   const cust = await stripe.customers.create(
     {
       email: localCust?.email as string,
@@ -65,16 +67,25 @@ export async function POST(req: NextRequest) {
     { stripeAccount: item?.store.stripeId }
   );
 
-  await stripe.subscriptions.create(
-    {
-      customer: cust.id,
-      default_payment_method: body.paymentMethod,
-      currency: "USD",
-      items: [{ price: stripeProduct.default_price as string }],
-      expand: ["latest_invoice.payment_intent"],
-    },
-    { stripeAccount: item?.store.stripeId }
-  );
+    await stripe.subscriptions.create(
+      {
+        customer: cust.id,
+        default_payment_method: body.paymentMethod,
+        currency: "USD",
+        items: [{ price: stripeProduct.default_price as string }],
+        expand: ["latest_invoice.payment_intent"],
+        application_fee_percent: 2
+      },
+      { stripeAccount: item?.store.stripeId }
+    );
+  } catch (error) {
+    if (error instanceof Stripe.errors.StripeError) {
+      return NextResponse.json(
+        { success: false, message: error.message, error: error },
+        { status: 400 }
+      );
+    }
+  }
 
   return NextResponse.json({
     success: true,

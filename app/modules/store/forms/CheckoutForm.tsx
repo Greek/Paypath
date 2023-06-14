@@ -9,19 +9,26 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { CompletionContext } from "../providers/CompletionProvider";
+import { Store } from "@prisma/client";
 
 export default function CheckoutForm({
   link,
+  store,
 }: {
   link: string;
-  productId: string;
+  store?: Store;
 }) {
   const session = useSession();
+
+  const { setCompletion } = useContext(CompletionContext);
+
   const [stripeErrorMessage, setStripeErrorMessage] = useState<string>();
   const [formSubmitting, setFormSubmitting] = useState<boolean>(false);
+
   const {
     mutate: createSubscription,
     error,
@@ -29,6 +36,12 @@ export default function CheckoutForm({
   } = useMutation(["createSubscription"], {
     mutationFn: async (data: any) => {
       return (await axios.post("/ajax/stripe/sub", data)).data;
+    },
+    onError() {
+      setFormSubmitting(false);
+    },
+    onSuccess() {
+      setCompletion(true);
     },
   });
 
@@ -76,6 +89,7 @@ export default function CheckoutForm({
       setStripeErrorMessage("Oops. Something bad happened.");
       return;
     }
+
     createSubscription({
       customer: { name: e.name },
       paymentMethod: paymentMethod.id,
@@ -86,7 +100,7 @@ export default function CheckoutForm({
   return (
     // @ts-ignore
     <form onSubmit={handleSubmit(formSubmit)}>
-      <div className={''}>
+      <div className={""}>
         <div className={"space-y-4 flex justify-between flex-col"}>
           <div className="pt-3 px-4">
             <label>Email</label>
@@ -108,8 +122,18 @@ export default function CheckoutForm({
               className={`w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}
             />
             <TinyErrorMessage>
-              {stripeErrorMessage as string} {/* @ts-ignore */}
-              {isError && error ? error.response.data.message! : null}
+              {stripeErrorMessage as string}
+              {isError &&
+              /* @ts-ignore */
+              error.response.data.error.decline_code != "testmode_decline"
+                ? /* @ts-ignore */
+                  error.response.data.message!
+                : null}
+              {isError &&
+              /* @ts-ignore */
+              error.response.data.error.decline_code == "testmode_decline"
+                ? "nice try."
+                : null}
             </TinyErrorMessage>
           </div>
           <div className="px-4">

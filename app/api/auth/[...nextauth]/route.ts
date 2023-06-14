@@ -16,7 +16,7 @@ export const authConfig: AuthOptions = {
     signIn: "/",
     error: "/",
   },
-  providers: [  
+  providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_ID as string,
       clientSecret: process.env.DISCORD_SECRET as string,
@@ -42,7 +42,7 @@ export const authConfig: AuthOptions = {
   ],
   callbacks: {
     async signIn({ profile }) {
-      if (profile?.email != "apapuig+discord4@gmail.com") return false;
+      if (profile?.email != "apapuig+discord@gmail.com") return false;
 
       return true;
     },
@@ -62,6 +62,7 @@ export const authConfig: AuthOptions = {
             },
           },
           accounts: true,
+          licenses: true,
         },
       });
 
@@ -86,10 +87,11 @@ export const authConfig: AuthOptions = {
             },
           },
           accounts: true,
+          // User owned licenses.
+          licenses: true,
         },
       });
 
-      
       return {
         ...session,
         user: dbUser,
@@ -101,8 +103,8 @@ export const authConfig: AuthOptions = {
       };
     },
     async redirect({ url, baseUrl }) {
-      console.log(url)
-      console.log(baseUrl)
+      console.log(url);
+      console.log(baseUrl);
       // Allows relative callback URLs
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       if (url.startsWith("/d/products")) return `${baseUrl}/d/products`;

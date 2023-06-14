@@ -1,5 +1,3 @@
-import { DoorOpen, Search, StoreIcon } from "lucide-react";
-
 export default function StoreLayout({
   children,
 }: {
