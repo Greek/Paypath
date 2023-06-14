@@ -98,6 +98,7 @@ export default function ProductsPage() {
     enabled: !!selectedServerData,
   });
 
+  const router = useRouter();
   const {
     isLoading: isProductCreationSubmitting,
     mutate: createProductMutation,
@@ -113,7 +114,7 @@ export default function ProductsPage() {
     },
 
     onSuccess(data) {
-      setRedirectId(data.id);
+      router.push(`/d/products/${data.id}`);
     },
   });
 
@@ -124,8 +125,6 @@ export default function ProductsPage() {
       });
     },
   });
-
-  const router = useRouter();
 
   const {
     register,
@@ -141,10 +140,6 @@ export default function ProductsPage() {
       price: data.price,
       server: selectedServer,
     });
-
-    setRedirectId(redirectId);
-
-    redirect(`/d/products/${redirectId}`);
   };
 
   // Fetch server data when server is selected.
@@ -374,9 +369,5 @@ export function TinyErrorMessage({
 }: {
   children: string | JSX.Element | JSX.Element[];
 }) {
-  return children ? (
-    <p className={`text-red-700 text-sm`}>
-      {children}
-    </p>
-  ) : null;
+  return children ? <p className={`text-red-700 text-sm`}>{children}</p> : null;
 }

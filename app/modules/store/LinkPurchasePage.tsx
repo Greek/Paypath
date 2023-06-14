@@ -14,7 +14,7 @@ import {
 } from "./providers/CompletionProvider";
 import LinkTag from "next/link";
 
-export const formatPrice = (price: string) => {
+export const formatPrice = (price: any) => {
   return (
     price.substring(-2, price.length - 2) +
     "." +

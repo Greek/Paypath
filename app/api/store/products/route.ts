@@ -59,38 +59,3 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ success: true, id: product.id });
 }
-
-export async function PATCH(req: NextRequest) {
-  const session = await getServerSession(authConfig);
-  const store = session?.user?.stores?.find((store) => {
-    return store;
-  });
-
-  const body = await req.json();
-
-  try {
-    await stripe.products.update(
-      body.id.productId,
-      {
-        active: false,
-      },
-      { stripeAccount: store?.stripeId }
-    );
-    await stripe.prices.update(
-      body.id.priceId,
-      {
-        active: false,
-      },
-      { stripeAccount: store?.stripeId }
-    );
-
-    await prisma.product.update({
-      where: { id: body.id.productId },
-      data: { archived: body.archive },
-    });
-  } catch (err) {
-    console.log(err);
-  }
-
-  return NextResponse.json({ message: "Archived", success: true });
-}
