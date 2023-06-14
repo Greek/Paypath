@@ -54,7 +54,6 @@ export async function POST(req: NextRequest) {
       price: price as string,
       server: body.server as string,
       store: { connect: { id: store?.id! } },
-      stripeProductId: id,
     },
   });
 

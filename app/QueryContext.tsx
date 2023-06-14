@@ -8,13 +8,7 @@ export interface QueryContextProps {
 }
 
 export function QueryContext({ children }: QueryContextProps) {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        queryFn: getAPI,
-      },
-    },
-  });
+  const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

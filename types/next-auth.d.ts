@@ -1,10 +1,10 @@
 import { DefaultSession, DefaultUser } from "next-auth";
-import { Account, Store, User } from "@prisma/client";
+import { Account, License, Store, User } from "@prisma/client";
 
 declare module "next-auth" {
   interface Session {
     user:
-      | (User & { accounts: Account[]; stores: Store[] })
+      | (User & { accounts: Account[]; stores: Store[]; licenses: License[] })
       | null;
   }
 }

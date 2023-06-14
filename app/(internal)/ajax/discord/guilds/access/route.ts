@@ -1,4 +1,4 @@
-import { authConfig } from "@/app/(internal)/api/auth/[...nextauth]/route";
+import { authConfig } from "@/app/api/auth/[...nextauth]/route";
 import { discordBotRest } from "@/lib/discord";
 import { Routes } from "discord-api-types/v10";
 import { getServerSession } from "next-auth";
@@ -13,10 +13,19 @@ export async function PUT(
     return account.provider == "discord";
   })?.access_token;
 
+  if (!session) return new NextResponse("Not allowed", { status: 401 });
+
+  const body = await req.json();
+
   let guild;
   try {
     guild = await discordBotRest.put(
-      Routes.guildMember("493093028890673163", "756906016012107836"),
+      Routes.guildMember(
+        body.id,
+        session?.user?.accounts?.find((account) => {
+          return account!.provider == "discord";
+        })?.providerAccountId
+      ),
       {
         body: {
           access_token: token,
@@ -24,8 +33,9 @@ export async function PUT(
       }
     );
   } catch (e) {
-    return NextResponse.json({ message: "Could not join guild =("});
+    console.log(e);
+    return NextResponse.json({ message: "Could not join guild =(" });
   }
 
-  return new NextRequest("Ok");
+  return new NextResponse("Ok");
 }

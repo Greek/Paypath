@@ -54,6 +54,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
@@ -67,6 +69,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   stores        Store[]
+  Link          Link[]
+  licenses      License[]
 }
 
 enum Plan {
@@ -120,6 +124,7 @@ model Store {
   User     User      @relation(fields: [owner], references: [id])
   products Product[]
   licenses License[]
+  Link     Link[]
 
   @@index([owner])
 }
@@ -156,22 +161,66 @@ model Product {
   storeId  String
   store    Store     @relation(fields: [storeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   licenses License[]
+  Link     Link[]
 
   @@index(storeId)
 }
 
 model License {
-  id        String  @id
-  email     String
-  key       String
-  discordId String?
+  id  String @id
+  key String @unique
 
-  store     Store   @relation(fields: [storeId], references: [id])
-  storeId   String
+  store      Store   @relation(fields: [storeId], references: [id])
+  storeId    String
+  product    Product @relation(fields: [productId], references: [id])
+  productId  String
+  customer   User    @relation(fields: [customerId], references: [id])
+  customerId String
+
+  purchasedAt DateTime @default(now())
+
+  @@index([storeId])
+  @@index([productId])
+  @@index([customerId])
+}
+
+model Link {
+  /// @zod.optional()
+  id                String   @id
+  nickname          String?
+  password          String?
+  passwordProtected Boolean? @default(false)
+  stock             Int?     @default(-1)
+  hasStockLimit     Boolean? @default(false)
+  freeTrial         Boolean? @default(false)
+
+  // Later start date, expiration date, must be in specific Discord server
+  // Must have specific discord ID
+  // must have specific role ID(s)
+  // Must own another product
+
+  firstCheckoutDate DateTime?
+  lastCheckoutDate  DateTime?
+
+  /// @zod.optional()
+  createdAt DateTime @default(now())
+  /// @zod.optional()
+  updatedAt DateTime @updatedAt
+
   product   Product @relation(fields: [productId], references: [id])
   productId String
 
-  @@index([productId, storeId])
+  store   Store  @relation(fields: [storeId], references: [id])
+  /// @zod.optional()
+  storeId String
+
+  user   User?   @relation(fields: [userId], references: [id])
+  /// @zod.optional()
+  userId String?
+
+  @@index([productId])
+  @@index([storeId])
+  @@index([userId])
 }
 
 // enum CancelAction {
