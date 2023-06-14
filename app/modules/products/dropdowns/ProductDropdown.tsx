@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Product } from "@prisma/client";
 import { UseMutateFunction } from "@tanstack/react-query";
-import { LucideArrowRight, Trash } from "lucide-react";
+import { Link, LucideArrowRight, MoreHorizontal, Plus, Trash } from "lucide-react";
 
 export default function ProductPage({
   product,
@@ -24,7 +24,9 @@ export default function ProductPage({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Button size={`sm`}>...</Button>
+          <Button size={`sm`}>
+            <MoreHorizontal size={16}/>
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuGroup>

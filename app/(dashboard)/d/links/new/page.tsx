@@ -101,7 +101,7 @@ export default function NewLink() {
             <TinyErrorMessage>
               {errors.nickname?.message as string}
             </TinyErrorMessage>
-            <Button type="submit">Create Link</Button>
+            <Button type="submit" disabled={!!isCreatingLink}>Create Link</Button>
           </form>
         </div>
       </div>

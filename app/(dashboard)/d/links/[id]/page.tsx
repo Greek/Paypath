@@ -48,9 +48,9 @@ export default function LinkPage({ params }: { params: { id: string } }) {
             <CardHeader>
               <CardTitle>Details</CardTitle>
             </CardHeader>
-            {/* <Separator /> */}
-            <CardContent className={`py-3 space-y-2 text-left`}>
-              <div className={`grid grid-cols-2`}>
+            <Separator />
+            <CardContent className={`py-3 space-y-2 text-left text-sm`}>
+              <div className={`grid grid-cols-3`}>
                 <p className={`text-muted-foreground`}>Nickname</p>
                 {link?.nickname?.length != 0 ? (
                   <p>{link?.nickname}</p>
@@ -58,7 +58,7 @@ export default function LinkPage({ params }: { params: { id: string } }) {
                   <p className={`text-muted-foreground`}>No nickname</p>
                 )}
               </div>
-              <div className={`grid grid-cols-2`}>
+              <div className={`grid grid-cols-3`}>
                 <p className={`text-muted-foreground`}>Stock</p>
                 {link?.stock == -1 ? (
                   <p className={`text-muted-foreground`}>Unlimited stock</p>
@@ -66,7 +66,7 @@ export default function LinkPage({ params }: { params: { id: string } }) {
                   link?.stock
                 )}
               </div>
-              <div className={`grid grid-cols-2`}>
+              <div className={`grid grid-cols-3`}>
                 <p className={`text-muted-foreground`}>Created by</p>
                 <p>{link?.user?.name}</p>
               </div>{" "}

@@ -20,7 +20,7 @@ export const ProductModel = z.object({
 export interface CompleteProduct extends z.infer<typeof ProductModel> {
   store: CompleteStore
   licenses: CompleteLicense[]
-  Link: CompleteLink[]
+  links: CompleteLink[]
 }
 
 /**
@@ -31,5 +31,5 @@ export interface CompleteProduct extends z.infer<typeof ProductModel> {
 export const RelatedProductModel: z.ZodSchema<CompleteProduct> = z.lazy(() => ProductModel.extend({
   store: RelatedStoreModel,
   licenses: RelatedLicenseModel.array(),
-  Link: RelatedLinkModel.array(),
+  links: RelatedLinkModel.array(),
 }))
