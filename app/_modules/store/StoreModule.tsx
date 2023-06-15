@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { ArrowRight, StoreIcon } from "lucide-react";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function StoreModule({
   params,
@@ -15,6 +16,8 @@ export default async function StoreModule({
     where: { name: params.name },
     include: { Link: { include: { product: true } } },
   });
+
+  if (!store) return notFound();
 
   return (
     <>
@@ -48,7 +51,7 @@ export default async function StoreModule({
         <div className="bg-white dark:bg-gray-800">
           <div className="h-full p-8 flex flex-col justify-center space-y-3">
             {store?.Link.filter((link) => {
-              return link.active;
+              return link.active && link.product.active;
             }).map((link) => {
               return (
                 <Link

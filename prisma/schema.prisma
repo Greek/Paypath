@@ -141,8 +141,7 @@ model Product {
   /// @zod.min(1, {message: "A product must have a server ID attached to it!"})
   server String
 
-  /// @zod.optional()
-  archived    Boolean @default(false)
+  active      Boolean @default(true)
   description String?
   price       String?
   currency    String?

@@ -38,7 +38,7 @@ export default function ProductPage({
         <DropdownMenuContent>
           <DropdownMenuGroup>
             <DropdownMenuItem
-              disabled={!!product.archived}
+              disabled={!product.active}
               onClick={(e) => {
                 e.preventDefault();
 
@@ -46,7 +46,7 @@ export default function ProductPage({
               }}
             >
               <Trash size={16} className="mr-2 h-4 w-4" />
-              {!product.archived ? "Archive" : "Unarchive"} product
+              {product.active ? "Archive" : "Unarchive"} product
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem

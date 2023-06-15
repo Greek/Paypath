@@ -60,7 +60,7 @@ export async function PATCH(
 
     await prisma.product.update({
       where: { id: context.params.id },
-      data: { archived: true },
+      data: { active: false },
     });
   } catch (err) {
     console.log(err);

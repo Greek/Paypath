@@ -46,9 +46,9 @@ export default function PurchaseLinkModule({
     stripeAccount: link?.store?.stripeId,
   });
 
-  useEffect(() => {
-    if (!link?.active) return router.push(`/${link?.store.name}`);
-  }, [link?.active, link, router]);
+  // useEffect(() => {
+  //   if (!link?.active) return router.push(`/${link?.store.name}`);
+  // }, [link?.active, link, router]);
 
   const [completed, setCompletion] = useState(false);
 
@@ -115,10 +115,10 @@ export default function PurchaseLinkModule({
           </div>
         </div>
       )}{" "}
-      {!link && (
-        <div className="flex items-center justify-center text-center p-8 prose ">
-          <h3>Loading...</h3>
-        </div>
+      {!link && !isLoading &&  (
+        <div className="flex items-center justify-center text-center p-8 dark:text-white">
+        <h3>That link does not exist.</h3>
+      </div>
       )}
       {completed ? (
         <div className="p-6">

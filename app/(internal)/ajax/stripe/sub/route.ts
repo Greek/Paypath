@@ -37,6 +37,15 @@ export async function POST(req: NextRequest) {
     include: { product: true, store: true },
   });
 
+  if (!item?.active || item?.product.active)
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Archived products cannot be purchased.",
+      },
+      { status: 400 }
+    );
+
   const localCust = await prisma.user.findUnique({
     where: { email: session.user?.email as string },
   });
@@ -52,20 +61,20 @@ export async function POST(req: NextRequest) {
   });
 
   try {
-  const cust = await stripe.customers.create(
-    {
-      email: localCust?.email as string,
-      name: body.customer?.name,
-      payment_method: body.paymentMethod,
-      metadata: { license: license.key ?? "HELLO" },
-    },
-    { stripeAccount: item?.store.stripeId }
-  );
+    const cust = await stripe.customers.create(
+      {
+        email: localCust?.email as string,
+        name: body.customer?.name,
+        payment_method: body.paymentMethod,
+        metadata: { license: license.key ?? "HELLO" },
+      },
+      { stripeAccount: item?.store.stripeId }
+    );
 
-  const stripeProduct = await stripe.products.retrieve(
-    item?.product.id as string,
-    { stripeAccount: item?.store.stripeId }
-  );
+    const stripeProduct = await stripe.products.retrieve(
+      item?.product.id as string,
+      { stripeAccount: item?.store.stripeId }
+    );
 
     await stripe.subscriptions.create(
       {
@@ -74,7 +83,7 @@ export async function POST(req: NextRequest) {
         currency: "USD",
         items: [{ price: stripeProduct.default_price as string }],
         expand: ["latest_invoice.payment_intent"],
-        application_fee_percent: 2
+        application_fee_percent: 2,
       },
       { stripeAccount: item?.store.stripeId }
     );

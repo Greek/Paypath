@@ -7,7 +7,7 @@ export const ProductModel = z.object({
   name: z.string().min(1, { message: "Your product name cannot be empty." }).max(32, { message: "Your product can't be longer than 32 characters." }),
   type: z.nativeEnum(ProductType).optional(),
   server: z.string().min(1, { message: "A product must have a server ID attached to it!" }),
-  archived: z.boolean().optional(),
+  active: z.boolean(),
   description: z.string().nullish(),
   price: z.string().nullish(),
   currency: z.string().nullish(),

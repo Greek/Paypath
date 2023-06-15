@@ -41,7 +41,7 @@ export default function ProductModule(context: { params: { id: string } }) {
               <>
                 <span className="font-semibold text-2xl lg:text-3xl items-center">
                   {product.name}
-                  <Badge>{!product.archived ? "Active" : "Archived"}</Badge>
+                  <Badge>{product.active ? "Active" : "Archived"}</Badge>
                 </span>
                 <span className="text-muted-foreground ">
                   sold for {formatPrice(product.price)}
@@ -49,7 +49,7 @@ export default function ProductModule(context: { params: { id: string } }) {
                 <div
                   className={`space-x-2 mt-3 align-middle items-center justify-center`}
                 >
-                  <Button size={"sm"} disabled={!!product.archived}>
+                  <Button size={"sm"} disabled={!product.active}>
                     <LinkIcon size={16} className={`mr-2`} /> Create Link
                   </Button>
                   <ProductDropdown product={product} archive={archiveProduct} />
