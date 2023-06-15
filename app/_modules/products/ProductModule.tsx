@@ -68,7 +68,13 @@ export default function ProductModule(context: { params: { id: string } }) {
                 <div
                   className={`space-x-2 mt-3 align-middle items-center justify-center`}
                 >
-                  <Button size={"sm"} disabled={!product.active} onClick={() => {push(`/d/links/new?product=${product.id}`)}}>
+                  <Button
+                    size={"sm"}
+                    disabled={!product.active}
+                    onClick={() => {
+                      push(`/d/links/new?product=${product.id}`);
+                    }}
+                  >
                     <LinkIcon size={16} className={`mr-2`} /> Create Link
                   </Button>
                   <DropdownMenu>
@@ -143,7 +149,7 @@ export default function ProductModule(context: { params: { id: string } }) {
                     {product.licenses.length > 1 ? (
                       <>
                         <ExternalLinkTo
-                          href="/"
+                          href={`/d/customers/?product=${product.id}`}
                           className={`${
                             product.licenses.length < 1
                               ? "text-muted-foreground"
@@ -151,7 +157,7 @@ export default function ProductModule(context: { params: { id: string } }) {
                           }`}
                         >
                           {product.licenses.length} customer
-                          {product.licenses.length <= 1 ? "s" : null}
+                          {product.licenses.length > 1 ? "s" : null}
                         </ExternalLinkTo>
                       </>
                     ) : (

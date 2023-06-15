@@ -13,6 +13,14 @@ export async function GET(
           { name: context.params.id.toLowerCase() },
         ],
       },
+      include: {
+        licenses: {
+          include: {
+            customer: true,
+            product: true,
+          },
+        },
+      },
     })
   );
 }
