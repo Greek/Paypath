@@ -24,10 +24,6 @@ import {
 import { prisma } from "@/lib/prisma";
 import { Store } from "@prisma/client";
 
-const wait = (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
 export const metadata = {
   title: "Overview",
 };

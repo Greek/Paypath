@@ -31,6 +31,8 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Moment from "react-moment";
+import { useState } from "react";
+import { useKeyPress, wait } from "@/lib/utils";
 
 export default function LinkModule({ params }: { params: { id: string } }) {
   const { push } = useRouter();
@@ -39,7 +41,7 @@ export default function LinkModule({ params }: { params: { id: string } }) {
     data: link,
     isLoading: isLinkLoading,
     refetch: refetchProduct,
-  } = useQuery({
+  } = useQuery(["link"], {
     queryFn: async () => {
       return await fetch(`/api/store/links/${params.id}`).then(async (res) => {
         return (await res.json()) as Link & {
@@ -70,6 +72,21 @@ export default function LinkModule({ params }: { params: { id: string } }) {
       },
     }
   );
+
+  const manageLinkPin = (e) => {
+    modifyLink({ pinned: !link?.pinned });
+  };
+
+  const copyLinkLink = async () => {
+    navigator.clipboard.writeText(combinedURI);
+    setCopiedState(true);
+    await wait(2500);
+    setCopiedState(false);
+  };
+
+  useKeyPress(["p"], manageLinkPin);
+  useKeyPress(["s"], copyLinkLink);
+  const [copied, setCopiedState] = useState(false);
 
   const combinedURI = `${process.env.NEXTAUTH_URL ?? "http://localhost:3000"}/${
     link?.store.name
@@ -107,17 +124,20 @@ export default function LinkModule({ params }: { params: { id: string } }) {
                   <Input defaultValue={combinedURI} readOnly />
                 </div>
                 <div className={`flex w-42 pt-2 gap-1`}>
-                  <Button size={"sm"} disabled={!link.active}>
+                  <Button
+                    size={"sm"}
+                    disabled={!link.active}
+                    onClick={copyLinkLink}
+                  >
                     <LinkIcon size={16} className={`mr-2`} />
-                    Copy link<DropdownMenuShortcut>S</DropdownMenuShortcut>
+                    {!copied ? "Copy link" : "Copied!"}
+                    <DropdownMenuShortcut>S</DropdownMenuShortcut>
                   </Button>
                   <Button
                     size={"sm"}
                     variant={"outline"}
                     disabled={!link.active || isModifying}
-                    onClick={() => {
-                      modifyLink({ pinned: !link.pinned });
-                    }}
+                    onClick={manageLinkPin}
                   >
                     <PinIcon size={16} className={`mr-2`} />
                     {!link.pinned ? "Pin link" : "Remove pin"}
