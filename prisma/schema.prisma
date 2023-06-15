@@ -186,7 +186,9 @@ model License {
 model Link {
   /// @zod.optional()
   id                String   @id
+  /// @zod.optional()
   active            Boolean  @default(true)
+  /// @zod.optional()
   pinned            Boolean  @default(false)
   nickname          String?
   password          String?

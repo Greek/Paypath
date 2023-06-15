@@ -13,16 +13,25 @@ import { Link, Product } from "@prisma/client";
 import { Label } from "@radix-ui/react-label";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { TinyErrorMessage } from "@/app/_modules/products/ProductsModule";
 
-export default function NewLink() {
+export default function NewLink({
+  searchParams,
+}: {
+  searchParams: { product: string };
+}) {
   const { push } = useRouter();
 
   const [selectedProduct, setSelectedProduct] = useState<string>();
   const [storeId, setStoreId] = useState<string>();
+
+  useEffect(() => {
+    if (searchParams.product)
+      setSelectedProduct(searchParams.product)
+  }, [searchParams])
 
   const { data: products } = useQuery({
     queryFn: async () => {
@@ -75,6 +84,7 @@ export default function NewLink() {
                 setSelectedProduct(e);
               }}
               required
+              defaultValue={searchParams.product ?? undefined}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select a product..." />

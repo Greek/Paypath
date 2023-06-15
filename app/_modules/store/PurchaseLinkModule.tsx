@@ -54,7 +54,7 @@ export default function PurchaseLinkModule({
 
   return (
     <CompletionContext.Provider value={{ completed, setCompletion }}>
-      {!completed && link && (
+      {!completed && link && link.product.active && (
         <div className="md:grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x md:w-[40rem]">
           <div className="bg-gray-100 dark:bg-gray-900">
             <div className="h-full flex flex-col justify-between px-5 p-6">
@@ -115,7 +115,7 @@ export default function PurchaseLinkModule({
           </div>
         </div>
       )}{" "}
-      {!link && !isLoading &&  (
+      {!link || !link.product.active && !isLoading &&  (
         <div className="flex items-center justify-center text-center p-8 dark:text-white">
         <h3>That link does not exist.</h3>
       </div>

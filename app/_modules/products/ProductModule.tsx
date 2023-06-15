@@ -8,11 +8,26 @@ import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { License, Product } from "@prisma/client";
 import { formatPrice } from "@/app/_modules/store/PurchaseLinkModule";
-import ProductDropdown from "./dropdowns/ProductDropdown";
-import { LinkIcon } from "lucide-react";
+import {
+  LinkIcon,
+  LucideArrowRight,
+  MoreHorizontal,
+  Trash,
+} from "lucide-react";
 import { ExternalLinkTo } from "@/components/externallink";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { useKeyPress } from "@/lib/utils";
 
 export default function ProductModule(context: { params: { id: string } }) {
+  const { push } = useRouter();
   const { data: product, refetch } = useQuery(["product"], {
     queryFn: async () => {
       return (await axios.get(`/api/store/products/${context.params.id}`)).data
@@ -20,17 +35,21 @@ export default function ProductModule(context: { params: { id: string } }) {
     },
   });
 
-  const { mutate: archiveProduct, isLoading } = useMutation(
-    ["archiveProduct"],
-    {
-      mutationFn: async (input: any) => {
-        return await axios.patch(`/api/store/products/${context.params.id}`);
-      },
-      onSuccess() {
-        refetch();
-      },
-    }
-  );
+  const { mutate: modifyProduct, isLoading } = useMutation(["archiveProduct"], {
+    mutationFn: async (input: any) => {
+      return await axios.patch(
+        `/api/store/products/${context.params.id}`,
+        input
+      );
+    },
+    onSuccess() {
+      refetch();
+    },
+  });
+
+  const manageArchiveState = () => {
+    modifyProduct({ active: !product?.active });
+  };
 
   return (
     <>
@@ -39,7 +58,7 @@ export default function ProductModule(context: { params: { id: string } }) {
           <div className="flex flex-col">
             {product && (
               <>
-                <span className="font-semibold text-2xl lg:text-3xl items-center">
+                <span className="flex font-semibold text-2xl lg:text-3xl items-center align-middle gap-3">
                   {product.name}
                   <Badge>{product.active ? "Active" : "Archived"}</Badge>
                 </span>
@@ -49,10 +68,39 @@ export default function ProductModule(context: { params: { id: string } }) {
                 <div
                   className={`space-x-2 mt-3 align-middle items-center justify-center`}
                 >
-                  <Button size={"sm"} disabled={!product.active}>
+                  <Button size={"sm"} disabled={!product.active} onClick={() => {push(`/d/links/new?product=${product.id}`)}}>
                     <LinkIcon size={16} className={`mr-2`} /> Create Link
                   </Button>
-                  <ProductDropdown product={product} archive={archiveProduct} />
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <Button size={`sm`} variant={"outline"}>
+                        <MoreHorizontal size={16} />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem
+                          disabled={isLoading}
+                          onClick={manageArchiveState}
+                        >
+                          <Trash size={16} className="mr-2 h-4 w-4" />
+                          {product.active ? "Archive" : "Unarchive"} product
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => {
+                            push(`/d/links/?product=${product.id}`);
+                          }}
+                        >
+                          <LucideArrowRight
+                            size={16}
+                            className="mr-2 h-4 w-4"
+                          />
+                          See links
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </>
             )}
@@ -176,7 +224,9 @@ export default function ProductModule(context: { params: { id: string } }) {
                 <CardTitle>Waitlist</CardTitle>
               </CardHeader>
               <Separator />
-              <CardContent className={`flex items-center pt-5 text-muted-foreground`}>
+              <CardContent
+                className={`flex items-center pt-5 text-muted-foreground`}
+              >
                 <h2 className="text-xl">Coming soon.</h2>
               </CardContent>
             </Card>

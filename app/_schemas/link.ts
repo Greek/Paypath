@@ -3,8 +3,8 @@ import { CompleteProduct, RelatedProductModel, CompleteStore, RelatedStoreModel,
 
 export const LinkModel = z.object({
   id: z.string().optional(),
-  active: z.boolean(),
-  pinned: z.boolean(),
+  active: z.boolean().optional(),
+  pinned: z.boolean().optional(),
   nickname: z.string().nullish(),
   password: z.string().nullish(),
   passwordProtected: z.boolean().nullish(),

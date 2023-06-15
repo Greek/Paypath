@@ -37,6 +37,8 @@ export async function PATCH(
     return store;
   });
 
+  const body = await req.json();
+
   try {
     const productPrice = (
       await stripe.products.retrieve(context.params.id, {
@@ -46,22 +48,29 @@ export async function PATCH(
     await stripe.products.update(
       context.params.id,
       {
-        active: false,
+        active: body.active,
       },
       { stripeAccount: store?.stripeId }
     );
     await stripe.prices.update(
       productPrice as string,
       {
-        active: false,
+        active: body.active,
       },
       { stripeAccount: store?.stripeId }
     );
 
     await prisma.product.update({
       where: { id: context.params.id },
-      data: { active: false },
+      data: { active: body.active },
     });
+
+    if (body.active == false) {
+      await prisma.link.updateMany({
+        where: { productId: context.params.id },
+        data: { active: false },
+      });
+    }
   } catch (err) {
     console.log(err);
   }
