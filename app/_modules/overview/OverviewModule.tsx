@@ -62,8 +62,6 @@ export default async function OverviewModule({
     });
   }
 
-  console.log(balanceStripe);
-
   return (
     <>
       <div className={`border-b-[.1em] border-foreground-muted w-full`}>
@@ -78,7 +76,7 @@ export default async function OverviewModule({
       </div>
       {store?.stripeId?.length > 0 &&
       store?.products?.length > 0 &&
-      store?.links?.length > 0 ? (
+      store?.Link?.length > 0 ? (
         <div className="grid grid-cols-4 gap-x-6 gap-y-3 px-10 -mt-10">
           <>
             <Card>
@@ -177,6 +175,14 @@ export default async function OverviewModule({
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Okay, what now?</CardTitle>
+            </CardHeader>
+            <CardContent>
+              
             </CardContent>
           </Card>
         </div>

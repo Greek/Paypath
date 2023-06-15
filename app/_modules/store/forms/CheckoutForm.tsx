@@ -1,6 +1,5 @@
 "use client";
 
-import { TinyErrorMessage } from "@/app/(dashboard)/d/products/page";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { CompletionContext } from "../providers/CompletionProvider";
 import { Store } from "@prisma/client";
+import { TinyErrorMessage } from "@/app/_modules/products/ProductsModule";
 
 export default function CheckoutForm({
   link,
@@ -119,7 +119,7 @@ export default function CheckoutForm({
           <div className="px-4">
             <label>Card</label>
             <CardElement
-              className={`w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}
+              className={`w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:text-white`}
             />
             <TinyErrorMessage>
               {stripeErrorMessage as string}

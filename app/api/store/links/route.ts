@@ -5,6 +5,19 @@ import { nanoid } from "nanoid";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
+export async function GET(req: NextRequest) {
+  const session = await getServerSession();
+  const store = session?.user?.stores?.find((store) => {
+    return store;
+  });
+
+  const links = await prisma.link.findMany({
+    where: { storeId: store?.id },
+  });
+
+  return NextResponse.json(links);
+}
+
 export async function POST(req: NextRequest) {
   const session = await getServerSession();
   const store = session?.user?.stores?.find((store) => {

@@ -5,9 +5,9 @@ export default function StoreLayout({
 }) {
   return (
     <div
-      className={`min-h-screen relative overflow-x-hidden flex flex-col justify-center`}
+      className={`md:min-h-screen relative overflow-x-hidden flex flex-col justify-center`}
     >
-      <div className="relative mx-auto max-w-3xl sm:rounded-lg overflow-hidden sm:border shadow-xl">
+      <div className="relative md:mx-auto md:max-w-3xl sm:rounded-lg overflow-hidden sm:border shadow-xl">
         {children}
       </div>
     </div>

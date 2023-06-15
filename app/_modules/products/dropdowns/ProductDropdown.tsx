@@ -11,7 +11,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Product } from "@prisma/client";
 import { UseMutateFunction } from "@tanstack/react-query";
-import { Link, LucideArrowRight, MoreHorizontal, Plus, Trash } from "lucide-react";
+import {
+  LucideArrowRight,
+  MoreHorizontal,
+  Trash,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function ProductPage({
   product,
@@ -20,12 +25,14 @@ export default function ProductPage({
   product: Product;
   archive: UseMutateFunction;
 }) {
+  const { push } = useRouter();
+
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Button size={`sm`}>
-            <MoreHorizontal size={16}/>
+            <MoreHorizontal size={16} />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
@@ -42,7 +49,11 @@ export default function ProductPage({
               {!product.archived ? "Archive" : "Unarchive"} product
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                push(`/d/links/?product=${product.id}`);
+              }}
+            >
               <LucideArrowRight size={16} className="mr-2 h-4 w-4" />
               See links
             </DropdownMenuItem>
