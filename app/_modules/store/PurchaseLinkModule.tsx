@@ -5,11 +5,12 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Product, Store } from "@prisma/client";
 import { StoreIcon } from "lucide-react";
 import { CompletionContext } from "./providers/CompletionProvider";
 import LinkTag from "next/link";
+import { useRouter } from "next/navigation";
 
 export const formatPrice = (price: any) => {
   return (
@@ -24,6 +25,8 @@ export default function PurchaseLinkModule({
 }: {
   params: { id: string };
 }) {
+  const router = useRouter();
+
   const { data: link, isLoading } = useQuery(["link"], {
     queryFn: async () => {
       return (await axios.get(`/api/store/links/${params.id}`)).data as Link & {
@@ -42,6 +45,10 @@ export default function PurchaseLinkModule({
   const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUB_KEY as string, {
     stripeAccount: link?.store?.stripeId,
   });
+
+  useEffect(() => {
+    if (!link?.active) return router.push(`/${link?.store.name}`);
+  }, [link?.active, link, router]);
 
   const [completed, setCompletion] = useState(false);
 

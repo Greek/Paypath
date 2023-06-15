@@ -47,7 +47,9 @@ export default async function StoreModule({
         </div>
         <div className="bg-white dark:bg-gray-800">
           <div className="h-full p-8 flex flex-col justify-center space-y-3">
-            {store?.Link.map((link) => {
+            {store?.Link.filter((link) => {
+              return link.active;
+            }).map((link) => {
               return (
                 <Link
                   className="block"
@@ -58,7 +60,9 @@ export default async function StoreModule({
                     <div className="flex justify-between items-center pl-3 pr-5 py-2">
                       <div>
                         <div className="text-black dark:text-white text-lg">
-                          {link.nickname ?? link.product.name}
+                          {link.nickname!.length > 0
+                            ? link.nickname
+                            : link.product.name}
                         </div>
                         <div className="text-black dark:text-white text-xs !text-opacity-50">
                           {link.product.price} / month
