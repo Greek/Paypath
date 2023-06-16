@@ -93,7 +93,16 @@ export async function POST(
     return NextResponse.json(
       {
         success: false,
-        message: "Archived products can't be pinned",
+        message: "Archived links can't be pinned",
+      },
+      { status: 400 }
+    );
+
+  if (!link.product.active && body.active == true)
+    return NextResponse.json(
+      {
+        success: false,
+        message: "This link can't be activated because its product is archived.",
       },
       { status: 400 }
     );

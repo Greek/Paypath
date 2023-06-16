@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     include: { product: true, store: true },
   });
 
-  if (!item?.active || item?.product.active)
+  if (!item?.active || !item?.product.active)
     return NextResponse.json(
       {
         success: false,
