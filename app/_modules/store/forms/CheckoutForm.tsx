@@ -123,17 +123,8 @@ export default function CheckoutForm({
             />
             <TinyErrorMessage>
               {stripeErrorMessage as string}
-              {isError &&
-              /* @ts-ignore */
-              error.response.data.error.decline_code != "testmode_decline"
-                ? /* @ts-ignore */
-                  error.response.data.message!
-                : null}
-              {isError &&
-              /* @ts-ignore */
-              error.response.data.error.decline_code == "testmode_decline"
-                ? "nice try."
-                : null}
+              {/* @ts-ignore */}
+              {isError && error!.response.data.message!}
             </TinyErrorMessage>
           </div>
           <div className="px-4">
