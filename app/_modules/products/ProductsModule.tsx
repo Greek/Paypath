@@ -54,8 +54,14 @@ export interface Guild {
 }
 
 export default function ProductsModule() {
-  const REDIRECT_URI = `https://discord.com/api/oauth2/authorize?client_id=1107876953031180398&permissions=8&redirect_uri=${
-    process.env.NEXTAUTH_URL ?? "http://localhost:3000"
+  const REDIRECT_URI = `https://discord.com/api/oauth2/authorize?client_id=${
+    process.env.NODE_ENV == "development"
+      ? "1107876953031180398"
+      : "1103664570922451068"
+  }&permissions=8&redirect_uri=${
+    process.env.NODE_ENV == "development"
+      ? "http://localhost:3000"
+      : "https://paypath.app"
   }%2Fd%2Fproducts&response_type=code&scope=bot`;
   const REDIRECT_URI2 =
     "https://discord.com/oauth2/authorize?permissions=8&guild_id=1108375792393662474&response_type=code&redirect_uri=https%3A%2F%2Fapi.hyper.co%2Fauth%2Flogin%2Fdiscord%2Fcallback&scope=bot&state=%7B%22redirect%22%3A%22%2Fproducts%2Fnew%3Frecipe%3Ddiscord%26integrations%5Bdiscord%5D%5Bguild%5D%3D1108375792393662474%22%7D&client_id=648234176805470248";
