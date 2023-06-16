@@ -94,24 +94,21 @@ export default function LinkModule({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <Toaster />
       <div className={`border-b-[.05em] border-foreground-muted w-full`}>
         <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
           <div className="flex flex-col">
             <span className="flex font-semibold text-2xl lg:text-3xl items-center align-middle gap-3">
-              {isLinkLoading ? (
-                "Loading..."
-              ) : (
+              {link && !isLinkLoading ? (
                 <>
                   {link?.nickname?.length != 0
                     ? link?.nickname
-                    : link.product.name}{" "}
+                    : null}{" "}
                   <Badge>{link?.active ? "Active" : "Archived"}</Badge>
                 </>
-              )}
+              ) : null}
             </span>
             <span className="text-muted-foreground ">
-              {isLinkLoading ? null : (
+              {!link ? null : (
                 <>
                   sold for ${formatPrice(link?.product?.price as string) ?? "?"}{" "}
                   USD
@@ -208,7 +205,7 @@ export default function LinkModule({ params }: { params: { id: string } }) {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 px-10 -mt-10">
-        {!isLinkLoading && (
+        {!isLinkLoading && link ? (
           <Card>
             <CardHeader>
               <CardTitle>Details</CardTitle>
@@ -278,7 +275,7 @@ export default function LinkModule({ params }: { params: { id: string } }) {
             </div> */}
             </CardContent>
           </Card>
-        )}
+        ) : null}
       </div>
     </>
   );
