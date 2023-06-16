@@ -11,6 +11,7 @@ import {
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/app/(backend)/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import ToasterLoader from "@/app/ToasterLoader";
 
 export type LinkItem = {
   [key: string]: {
@@ -74,6 +75,7 @@ export default async function DashboardLayout({
         <Header links={links} store={store} />
         <div className="w-auto pt-4 h-screen">
           {children}
+          <ToasterLoader />
           <TailwindIndicator />
         </div>
       </div>
