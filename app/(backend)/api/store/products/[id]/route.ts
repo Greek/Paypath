@@ -45,6 +45,7 @@ export async function PATCH(
         stripeAccount: store?.stripeId,
       })
     ).default_price;
+
     await stripe.products.update(
       context.params.id,
       {
@@ -52,6 +53,7 @@ export async function PATCH(
       },
       { stripeAccount: store?.stripeId }
     );
+    
     await stripe.prices.update(
       productPrice as string,
       {

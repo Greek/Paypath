@@ -36,6 +36,15 @@ import {
   SectionIntroductionHeading,
   SectionIntroductionIcon,
 } from "@/components/sectionintroduction";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import Moment from "react-moment";
 
 export interface Guild {
   id: string;
@@ -366,39 +375,69 @@ export default function ProductsModule() {
           </div>
         </div>
 
-        {products && products.length > 2 ? (
+        {products ? (
           <div className="grid gap-x-6 gap-y-3 px-10 mt-4">
-            <DataTable columns={columns} data={products} />
-            {products.map((product) => {
-              return (
-                <ExternalLinkTo
-                  href={`/d/products/${product.id}`}
-                  key={product.id}
-                >
-                  {product.name}
-                </ExternalLinkTo>
-              );
-            })}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Name</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Customers</TableHead>
+                  <TableHead>Created on</TableHead>
+                </TableRow>
+              </TableHeader>
+
+              <TableBody>
+                {products.map((product: Product & { licenses: License[] }) => {
+                  return (
+                    <>
+                      <a
+                        href={`/d/products/${product.id}`}
+                        className="w-full contents"
+                      >
+                        <TableRow>
+                          <TableCell className="font-medium w-[20rem]">
+                            {product.name}
+                          </TableCell>
+                          <TableCell>{product.price}</TableCell>
+                          <TableCell>
+                            <kbd>{product.licenses.length}</kbd>
+                          </TableCell>
+                          <TableCell>
+                            <Moment format="MMMM Do YYYY">
+                              {product.createdAt}
+                            </Moment>
+                          </TableCell>
+                        </TableRow>
+                      </a>
+                    </>
+                  );
+                })}
+              </TableBody>
+            </Table>
           </div>
         ) : (
-          <SectionIntroduction>
-            <SectionIntroductionIcon>
-              <Upload size={24} />
-            </SectionIntroductionIcon>
-            <SectionIntroductionHeading>
-              Create your first product
-            </SectionIntroductionHeading>
-            <SectionIntroductionDescription>
-              Products are the access gates to your Discord server. You can
-              provide roles along with this access.
-            </SectionIntroductionDescription>
+          !products &&
+          !isProductsLoading && (
+            <SectionIntroduction>
+              <SectionIntroductionIcon>
+                <Upload size={24} />
+              </SectionIntroductionIcon>
+              <SectionIntroductionHeading>
+                Create your first product
+              </SectionIntroductionHeading>
+              <SectionIntroductionDescription>
+                Products are the access gates to your Discord server. You can
+                provide roles along with this access.
+              </SectionIntroductionDescription>
               <DialogTrigger>
                 <Button onClick={() => setDialogActive(true)}>
                   <Plus scale={16} className="mr-2" />
                   Create Product
                 </Button>
               </DialogTrigger>
-          </SectionIntroduction>
+            </SectionIntroduction>
+          )
         )}
       </Dialog>
     </>
