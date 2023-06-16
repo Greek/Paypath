@@ -1,4 +1,4 @@
-import { authConfig } from "@/app/_backend/api/auth/[...nextauth]/route";
+import { authConfig } from "@/app/(backend)/api/auth/[...nextauth]/route";
 import { stripe } from "@/lib/stripe";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";

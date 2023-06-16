@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import { Url } from "next/dist/shared/lib/router/router";

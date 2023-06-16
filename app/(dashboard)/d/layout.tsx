@@ -9,7 +9,7 @@ import {
   UserIcon,
 } from "lucide-react";
 import { getServerSession } from "next-auth";
-import { authConfig } from "@/app/_backend/api/auth/[...nextauth]/route";
+import { authConfig } from "@/app/(backend)/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 
 export type LinkItem = {
