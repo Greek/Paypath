@@ -1,5 +1,5 @@
-import { Guild } from "@/app/(dashboard)/d/products/page";
 import { authConfig } from "@/app/_backend/api/auth/[...nextauth]/route";
+import { APIGuild } from "discord-api-types/v10";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     });
   }
   let guildsEligible;
-  guildsEligible = (await res.json()).filter((guild: Guild) => {
+  guildsEligible = (await res.json()).filter((guild: APIGuild) => {
     return guild.permissions == "140737488355327";
   });
 

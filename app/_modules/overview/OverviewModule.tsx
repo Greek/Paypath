@@ -70,9 +70,9 @@ export default async function OverviewModule({
           </div>
         </div>
       </div>
-      {store?.stripeId?.length > 0 &&
-      store?.products?.length > 0 &&
-      store?.Link?.length > 0 ? (
+      {store?.stripeId?.length! > 0 &&
+      store?.products?.length! > 0 &&
+      store?.Link?.length! > 0 ? (
         <div className="grid grid-cols-4 gap-x-6 gap-y-3 px-10 -mt-10">
           <>
             <Card>

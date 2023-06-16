@@ -73,7 +73,7 @@ export default function LinkModule({ params }: { params: { id: string } }) {
     }
   );
 
-  const manageLinkPin = (e) => {
+  const manageLinkPin = () => {
     modifyLink({ pinned: !link?.pinned });
   };
 
