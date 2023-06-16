@@ -1,4 +1,4 @@
-import { authConfig } from "@/app/api/auth/[...nextauth]/route";
+import { authConfig } from "@/app/_backend/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { getServerSession } from "next-auth";

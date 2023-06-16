@@ -1,4 +1,4 @@
-import { authConfig } from "@/app/api/auth/[...nextauth]/route";
+import { authConfig } from "@/app/_backend/api/auth/[...nextauth]/route";
 import { AlternativeSignInButton } from "@/components/sign-in";
 import { prisma } from "@/lib/prisma";
 import { ArrowRight, StoreIcon } from "lucide-react";

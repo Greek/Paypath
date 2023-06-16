@@ -1,4 +1,4 @@
-import { authConfig } from "@/app/api/auth/[...nextauth]/route";
+import { authConfig } from "@/app/_backend/api/auth/[...nextauth]/route";
 import { Button } from "@/components/ui/button";
 import {
   Card,
