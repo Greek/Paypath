@@ -36,7 +36,7 @@ export function SectionIntroduction({
   children: React.ReactElement[] | JSX.Element;
 }) {
   return (
-    <div className="grid gap-x-6 gap-y-3 px-10 mx-10 md:px-12 md:mx-12 lg:mx-32 lg:px-32 xl:mx-52 xl:px-52 pt-20 mt-4">
+    <div className="grid gap-x-6 gap-y-3 px-10 mx-10 md:px-12 md:mx-12 lg:mx-32 lg:px-32 2xl:mx-64 2xl:px-64 pt-20 mt-4">
       <div className="flex flex-col justify-center md:max-w-sm px-3">
         <div className="prose">{children}</div>
       </div>

@@ -45,6 +45,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Moment from "react-moment";
+import LoadingIndicator from "@/components/loadingindicator";
 
 export interface Guild {
   id: string;
@@ -381,6 +382,7 @@ export default function ProductsModule() {
           </div>
         </div>
 
+        {isProductsLoading && <LoadingIndicator />}
         {products && products.length > 0 ? (
           <div className="grid gap-x-6 gap-y-3 px-10 mt-4">
             <Table>
@@ -424,7 +426,7 @@ export default function ProductsModule() {
             </Table>
           </div>
         ) : (
-          !isProductsLoading && (
+          products?.length == 0 && !isProductsLoading && (
             <SectionIntroduction>
               <SectionIntroductionIcon>
                 <Upload size={24} />

@@ -1,6 +1,5 @@
 "use client";
 
-import { ExternalLinkTo } from "@/components/externallink";
 import {
   SectionIntroduction,
   SectionIntroductionDescription,
@@ -22,10 +21,11 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { PersonStanding, Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Moment from "react-moment";
+import LoadingIndicator from "@/components/loadingindicator";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function CustomersModule({
   searchParams,
@@ -35,7 +35,7 @@ export default function CustomersModule({
   const router = useRouter();
   const session = useSession();
 
-  const { data: store } = useQuery(["links"], {
+  const { data: store, isLoading: isStoreLoading } = useQuery(["links"], {
     queryFn: async () => {
       return (await axios.get(`/api/store/${session.data?.user?.stores[0].id}`))
         .data as Store & { licenses: License[] };
@@ -51,7 +51,8 @@ export default function CustomersModule({
           <div className={"space-x-2 mt-2 lg:mt:0"}></div>
         </div>
       </div>
-      {store && store.licenses.length > 0 ? (
+      {isStoreLoading && <LoadingIndicator />}
+      {store && store.licenses?.length > 0 ? (
         <div className="grid gap-x-6 gap-y-3 px-10 pt-5">
           <Table>
             <TableHeader>
@@ -62,7 +63,7 @@ export default function CustomersModule({
                 <TableHead>Purchased</TableHead>
               </TableRow>
             </TableHeader>
-            
+
             <TableBody>
               {store.licenses
                 .filter((license) => {
@@ -102,28 +103,30 @@ export default function CustomersModule({
           </Table>
         </div>
       ) : (
-        <SectionIntroduction>
-          <SectionIntroductionIcon>
-            <PersonStanding size={24} />
-          </SectionIntroductionIcon>
-          <SectionIntroductionDescription>
-            <SectionIntroductionHeading>
-              An insight into your sales
-            </SectionIntroductionHeading>
-            <p className="text-sm dark:text-slate-300">
-              When somebody purchases one of your products, their information
-              will show up here.
-            </p>
-          </SectionIntroductionDescription>
-          <Button
-            onClick={() => {
-              router.push("/d/links/new");
-            }}
-          >
-            <Plus scale={16} className="mr-2" />
-            Create a new Link
-          </Button>
-        </SectionIntroduction>
+        !isStoreLoading && (
+          <SectionIntroduction>
+            <SectionIntroductionIcon>
+              <PersonStanding size={24} />
+            </SectionIntroductionIcon>
+            <SectionIntroductionDescription>
+              <SectionIntroductionHeading>
+                An insight into your sales
+              </SectionIntroductionHeading>
+              <p className="text-sm dark:text-slate-300">
+                When somebody purchases one of your products, their information
+                will show up here.
+              </p>
+            </SectionIntroductionDescription>
+            <Button
+              onClick={() => {
+                router.push("/d/links/new");
+              }}
+            >
+              <Plus scale={16} className="mr-2" />
+              Create a new Link
+            </Button>
+          </SectionIntroduction>
+        )
       )}
     </>
   );
