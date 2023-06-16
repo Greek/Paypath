@@ -51,7 +51,7 @@ export default function CustomersModule({
           <div className={"space-x-2 mt-2 lg:mt:0"}></div>
         </div>
       </div>
-      {store ? (
+      {store && store.licenses.length > 0 ? (
         <div className="grid gap-x-6 gap-y-3 px-10 pt-5">
           <Table>
             <TableHeader>

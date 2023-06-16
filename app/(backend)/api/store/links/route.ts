@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
 
   const links = await prisma.link.findMany({
     where: { storeId: store?.id },
+    include: { product: true, licenses: true },
   });
 
   return NextResponse.json(links);

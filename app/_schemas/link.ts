@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { CompleteProduct, RelatedProductModel, CompleteStore, RelatedStoreModel, CompleteUser, RelatedUserModel } from "./index"
+import { CompleteProduct, RelatedProductModel, CompleteStore, RelatedStoreModel, CompleteUser, RelatedUserModel, CompleteLicense, RelatedLicenseModel } from "./index"
 
 export const LinkModel = z.object({
   id: z.string().optional(),
@@ -24,6 +24,7 @@ export interface CompleteLink extends z.infer<typeof LinkModel> {
   product: CompleteProduct
   store: CompleteStore
   user?: CompleteUser | null
+  licenses: CompleteLicense[]
 }
 
 /**
@@ -35,4 +36,5 @@ export const RelatedLinkModel: z.ZodSchema<CompleteLink> = z.lazy(() => LinkMode
   product: RelatedProductModel,
   store: RelatedStoreModel,
   user: RelatedUserModel.nullish(),
+  licenses: RelatedLicenseModel.array(),
 }))

@@ -182,7 +182,7 @@ export default function ProductsModule() {
             <span className="font-semibold text-4xl lg:text-5xl">Products</span>
             <div className={"space-x-2 mt-2 lg:mt:0"}>
               <DialogTrigger>
-                {products?.length! > 1 && (
+                {products?.length! > 0 && (
                   <Button onClick={() => setDialogActive(true)}>
                     <Plus scale={12} className="mr-2" /> Create New Product
                   </Button>
@@ -375,7 +375,7 @@ export default function ProductsModule() {
           </div>
         </div>
 
-        {products ? (
+        {products && products.length > 0 ? (
           <div className="grid gap-x-6 gap-y-3 px-10 mt-4">
             <Table>
               <TableHeader>
@@ -388,6 +388,7 @@ export default function ProductsModule() {
               </TableHeader>
 
               <TableBody>
+                {/*@ts-ignore */}
                 {products.map((product: Product & { licenses: License[] }) => {
                   return (
                     <>
@@ -417,7 +418,6 @@ export default function ProductsModule() {
             </Table>
           </div>
         ) : (
-          !products &&
           !isProductsLoading && (
             <SectionIntroduction>
               <SectionIntroductionIcon>

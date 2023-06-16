@@ -166,8 +166,9 @@ model Product {
 }
 
 model License {
-  id  String @id
-  key String @unique
+  id     String  @id
+  active Boolean @default(true)
+  key    String  @unique
 
   store      Store   @relation(fields: [storeId], references: [id])
   storeId    String
@@ -175,12 +176,16 @@ model License {
   productId  String
   customer   User    @relation(fields: [customerId], references: [id])
   customerId String
+  link       Link    @relation(fields: [linkId], references: [id])
+  linkId     String  @default("")
 
   purchasedAt DateTime @default(now())
+  cancelledAt DateTime?
 
   @@index([storeId])
   @@index([productId])
   @@index([customerId])
+  @@index([linkId])
 }
 
 model Link {
@@ -217,9 +222,10 @@ model Link {
   /// @zod.optional()
   storeId String
 
-  user   User?   @relation(fields: [userId], references: [id])
+  user    User?     @relation(fields: [userId], references: [id])
   /// @zod.optional()
-  userId String?
+  userId  String?
+  licenses License[]
 
   @@index([productId])
   @@index([storeId])

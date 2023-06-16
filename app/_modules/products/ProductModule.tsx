@@ -146,7 +146,7 @@ export default function ProductModule(context: { params: { id: string } }) {
                 <div className={`grid grid-cols-3`}>
                   <p className={`text-muted-foreground`}>Customers</p>
                   <div className="flex flex-row align-middle">
-                    {product.licenses.length > 1 ? (
+                    {product.licenses.length > 0 ? (
                       <>
                         <ExternalLinkTo
                           href={`/d/customers/?product=${product.id}`}

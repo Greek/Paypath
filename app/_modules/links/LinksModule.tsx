@@ -8,7 +8,7 @@ import {
   SectionIntroductionIcon,
 } from "@/components/sectionintroduction";
 import { Button } from "@/components/ui/button";
-import { Link } from "@prisma/client";
+import { Link, Product } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Book, Plus } from "lucide-react";
@@ -45,18 +45,22 @@ export default function LinksModule({
           <div className={"space-x-2 mt-2 lg:mt:0"}></div>
         </div>
       </div>
-      {links ? (
+      {links && links.length > 0 ? (
         <div className="grid gap-x-6 gap-y-3 px-10 mt-4">
           {links
             ?.filter((link) => {
+              console.log(link);
               if (searchParams.product)
                 return link.productId == searchParams.product;
-              else return link;
+              else return link.active;
             })
-            ?.map((link) => {
+            // @ts-ignore
+            ?.map((link: Link & { product: Product }) => {
               return (
                 <ExternalLinkTo href={`/d/links/${link.id}`} key={link.id}>
-                  {link.nickname ?? <p>{link.productId}</p>}
+                  {link.nickname?.length! > 0
+                    ? link.nickname
+                    : link.product.name}
                 </ExternalLinkTo>
               );
             })}

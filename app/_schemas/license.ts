@@ -1,19 +1,23 @@
 import * as z from "zod"
-import { CompleteStore, RelatedStoreModel, CompleteProduct, RelatedProductModel, CompleteUser, RelatedUserModel } from "./index"
+import { CompleteStore, RelatedStoreModel, CompleteProduct, RelatedProductModel, CompleteUser, RelatedUserModel, CompleteLink, RelatedLinkModel } from "./index"
 
 export const LicenseModel = z.object({
   id: z.string(),
+  active: z.boolean(),
   key: z.string(),
   storeId: z.string(),
   productId: z.string(),
   customerId: z.string(),
+  linkId: z.string(),
   purchasedAt: z.date(),
+  cancelledAt: z.date().nullish(),
 })
 
 export interface CompleteLicense extends z.infer<typeof LicenseModel> {
   store: CompleteStore
   product: CompleteProduct
   customer: CompleteUser
+  link: CompleteLink
 }
 
 /**
@@ -25,4 +29,5 @@ export const RelatedLicenseModel: z.ZodSchema<CompleteLicense> = z.lazy(() => Li
   store: RelatedStoreModel,
   product: RelatedProductModel,
   customer: RelatedUserModel,
+  link: RelatedLinkModel,
 }))

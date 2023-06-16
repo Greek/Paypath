@@ -57,6 +57,7 @@ export async function POST(req: NextRequest) {
       product: { connect: { id: item?.productId } },
       store: { connect: { id: item?.store.id } },
       customer: { connect: { id: localCust?.id } },
+      link: { connect: { id: item.id } },
     },
   });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { License, Product, Store, User } from "@prisma/client";
+import { License, Link, Product, Store, User } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Clipboard, User as UserIcon } from "lucide-react";
@@ -12,9 +12,13 @@ import { formatPrice } from "./PurchaseLinkModule";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-export default function StorePortalModule({ params }: { params: { name: string } }) {
+export default function StorePortalModule({
+  params,
+}: {
+  params: { name: string };
+}) {
   const [selectedLicense, setLicense] = useState<
-    License & { product: Product }
+    License & { product: Product; link: Link }
   >();
 
   const router = useRouter();
@@ -32,7 +36,7 @@ export default function StorePortalModule({ params }: { params: { name: string }
   });
 
   useEffect(() => {
-    //@ts-ignore
+    // @ts-ignore
     setLicense(session?.licenses[0]);
   }, [session?.licenses]);
 
@@ -97,6 +101,10 @@ export default function StorePortalModule({ params }: { params: { name: string }
                     .filter((license) => {
                       return license.storeId == store.id;
                     })
+                    //@ts-ignore
+                    .sort((lNew, lOld) => {
+                      return lOld.purchasedAt > lNew.purchasedAt;
+                    })
                     .map((license) => {
                       return (
                         <>
@@ -108,7 +116,10 @@ export default function StorePortalModule({ params }: { params: { name: string }
                             }`}
                             onClick={() => {
                               setLicense(
-                                license as License & { product: Product }
+                                license as License & {
+                                  product: Product;
+                                  link: Link;
+                                }
                               );
                             }}
                             key={license.id}
@@ -127,7 +138,7 @@ export default function StorePortalModule({ params }: { params: { name: string }
                                   {license.key}
                                 </div>
                                 <div className="text-black dark:text-white text-sm !text-opacity-50">
-                                  <Moment format="MMMM Do YYYY">
+                                  <Moment format="MMMM Do YYYY HH:MM">
                                     {license.purchasedAt
                                       ? license.purchasedAt
                                       : "Date unavailable"}
@@ -146,8 +157,8 @@ export default function StorePortalModule({ params }: { params: { name: string }
         <div className="space-y-5">
           <div>
             <div className="relative bg-white dark:bg-gray-800">
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-t-md border-b px-5 py-9 flex items-center justify-between">
-                <div className="text-black dark:text-white text-lg font-medium">
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-t-md border-b px-5 py-12 pb-[2.15rem] flex items-center justify-between">
+                <div className="text-black dark:text-white text-lg justify-center items-center font-medium">
                   Membership
                 </div>
               </div>
@@ -179,7 +190,9 @@ export default function StorePortalModule({ params }: { params: { name: string }
                   </div>
                   <div className="flex items-center">
                     <div className="text-black dark:text-white truncate text-sm !text-opacity-50">
-                      {selectedLicense?.product?.name}
+                      {selectedLicense?.link?.nickname?.length! > 0
+                        ? selectedLicense?.link?.nickname
+                        : selectedLicense?.product.name}
                     </div>
                   </div>
                 </div>

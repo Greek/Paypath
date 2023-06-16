@@ -100,9 +100,9 @@ export default function LinkModule({ params }: { params: { id: string } }) {
             <span className="flex font-semibold text-2xl lg:text-3xl items-center align-middle gap-3">
               {link && !isLinkLoading ? (
                 <>
-                  {link?.nickname?.length != 0
+                  {link?.nickname?.length! > 0
                     ? link?.nickname
-                    : null}{" "}
+                    : link.product.name}{" "}
                   <Badge>{link?.active ? "Active" : "Archived"}</Badge>
                 </>
               ) : null}
