@@ -76,6 +76,7 @@ export async function POST(req: NextRequest) {
       description: body.description as string,
       type: mapProductTypeEnum(body.type),
       recurrencyPeriod: interval,
+      // @ts-ignore
       price: price as unknown as string,
       server: body.server as string,
       store: { connect: { id: store?.id! } },

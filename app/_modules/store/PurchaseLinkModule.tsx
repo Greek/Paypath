@@ -69,7 +69,7 @@ export default function PurchaseLinkModule({
                     {link?.store?.name}
                   </div>
                   <div className="flex dark:text-white text-neutral-600 text-2xl font-semibold">
-                    {formatPrice(link.product.price as string)}
+                    {formatPrice(link.product.price as unknown as string)}
                   </div>
                   <div className="w-full flex text-neutral-400">
                     per {link.product.recurrencyPeriod}
@@ -80,7 +80,7 @@ export default function PurchaseLinkModule({
               <div className="flex flex-col rounded-lg border border-neutral-200 dark:border-slate-800">
                 <div className="py-3 px-3 flex items-center justify-between text-sm">
                   <p className="font-semibold">Subtotal</p>
-                  <p>${formatPrice(link.product.price as string)}</p>
+                  <p>${formatPrice(link.product.price as unknown as string)}</p>
                 </div>
                 <div className="flex w-full items-center">
                   <div className="grow border-t" aria-hidden="true"></div>
@@ -88,7 +88,7 @@ export default function PurchaseLinkModule({
                 </div>
                 <div className="py-3 px-3 flex items-center justify-between text-sm">
                   <p className="font-semibold">Total</p>
-                  <p>${formatPrice(link.product.price as string)}</p>
+                  <p>${formatPrice(link.product.price as unknown as string)}</p>
                 </div>
               </div>
             </div>
@@ -115,11 +115,12 @@ export default function PurchaseLinkModule({
           </div>
         </div>
       )}{" "}
-      {!link || !link.product.active && !isLoading &&  (
-        <div className="flex items-center justify-center text-center p-8 dark:text-white">
-        <h3>That link does not exist.</h3>
-      </div>
-      )}
+      {!link ||
+        (!link.product.active && !isLoading && (
+          <div className="flex items-center justify-center text-center p-8 dark:text-white">
+            <h3>That link does not exist.</h3>
+          </div>
+        ))}
       {completed ? (
         <div className="p-6">
           <h1 className="font-semibold text-3xl mb-2">Almost there! 🎉</h1>

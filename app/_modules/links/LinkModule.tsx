@@ -112,7 +112,9 @@ export default function LinkModule({ params }: { params: { id: string } }) {
             <span className="text-muted-foreground ">
               {!link ? null : (
                 <>
-                  sold for ${formatPrice(link?.product?.price as string) ?? "?"}{" "}
+                  sold for $
+                  {formatPrice(link?.product?.price as unknown as string) ??
+                    "?"}{" "}
                   USD
                 </>
               )}
