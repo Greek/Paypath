@@ -139,7 +139,7 @@ model Product {
   /// @zod.optional()
   type ProductType @default(Recurring)
 
-  /// @zod.min(1, {message: "A product must have a server ID attached to it!"})
+  /// @zod.optional()
   server String
 
   /// @zod.optional()
@@ -147,7 +147,7 @@ model Product {
 
   description String?
   /// @zod.min(1, { message: "Your product's price cannot be empty." })
-  price       String?    @default("0")
+  price       Int?    @default(0)
   currency    String?
 
   // Per month, year, week, etc.. Only active if recurring.

@@ -45,8 +45,8 @@ export async function POST(req: NextRequest) {
   const interval = "month";
 
   let price;
-  if (body.type == "Free") price = (body.price + 0o00) as string;
-  else price = null;
+  if (body.type == "Free") price = null;
+  else price = body.price;
 
   const id = nanoid(32);
 

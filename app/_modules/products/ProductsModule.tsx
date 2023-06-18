@@ -167,6 +167,8 @@ export default function ProductsModule() {
   } = useForm({ resolver: zodResolver(ProductModel) });
 
   const createProduct = (data: any) => {
+    console.log(data)
+
     createProductMutation({
       name: data.name,
       description: data.description,
@@ -222,6 +224,7 @@ export default function ProductsModule() {
                           onValueChange={(e) => {
                             setSelectedServer(e);
                           }}
+                          required
                         >
                           <SelectTrigger className="w-max">
                             <SelectValue placeholder="Select a Server" />
@@ -339,7 +342,6 @@ export default function ProductsModule() {
                         <Select
                           onValueChange={(s) => {
                             setProductType(s);
-                            console.log(s);
                           }}
                         >
                           <SelectTrigger>
@@ -383,20 +385,13 @@ export default function ProductsModule() {
                                   setFormattedPrice(
                                     e.currentTarget.value as unknown as number
                                   );
-                                  console.log(formattedPrice);
                                 }}
                               ></Input>
                               <p>{formatPrice(formattedPrice ?? "0")}</p>
                               <Input
-                                placeholder="Recurring period"
+                                placeholder="Monthly"
                                 disabled
-                                {...register("interval", {
-                                  required:
-                                    productType === "Free" ||
-                                    productType === "Lifetime"
-                                      ? false
-                                      : true,
-                                })}
+                                {...register("interval")}
                                 className="mb-4"
                               ></Input>
                               <TinyErrorMessage>
