@@ -130,6 +130,7 @@ model Store {
 }
 
 model Product {
+  /// @zod.optional()
   id String @id
 
   /// @zod.min(1, {message: "Your product name cannot be empty."}).max(32, {message: "Your product can't be longer than 32 characters."})
@@ -141,9 +142,12 @@ model Product {
   /// @zod.min(1, {message: "A product must have a server ID attached to it!"})
   server String
 
-  active      Boolean @default(true)
+  /// @zod.optional()
+  active Boolean @default(true)
+
   description String?
-  price       String?
+  /// @zod.min(1, { message: "Your product's price cannot be empty." })
+  price       String?    @default("0")
   currency    String?
 
   // Per month, year, week, etc.. Only active if recurring.
@@ -179,7 +183,7 @@ model License {
   link       Link    @relation(fields: [linkId], references: [id])
   linkId     String  @default("")
 
-  purchasedAt DateTime @default(now())
+  purchasedAt DateTime  @default(now())
   cancelledAt DateTime?
 
   @@index([storeId])
@@ -222,9 +226,9 @@ model Link {
   /// @zod.optional()
   storeId String
 
-  user    User?     @relation(fields: [userId], references: [id])
+  user     User?     @relation(fields: [userId], references: [id])
   /// @zod.optional()
-  userId  String?
+  userId   String?
   licenses License[]
 
   @@index([productId])

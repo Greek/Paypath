@@ -25,10 +25,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { useKeyPress } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductModule(context: { params: { id: string } }) {
   const { push } = useRouter();
-  const { data: product, refetch } = useQuery(["product"], {
+  const {
+    data: product,
+    isLoading: isProductLoading,
+    refetch,
+  } = useQuery(["product"], {
     queryFn: async () => {
       return (await axios.get(`/api/store/products/${context.params.id}`)).data
         .product as Product & { licenses: License[] };
@@ -56,6 +61,16 @@ export default function ProductModule(context: { params: { id: string } }) {
       <div className={`border-b-[.05em] border-foreground-muted w-full`}>
         <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
           <div className="flex flex-col">
+            {isProductLoading && (
+              <>
+                <span className="">
+                  <Skeleton className="w-[23rem] h-[20px]" />
+                </span>
+                <span className="pt-3">
+                  <Skeleton className="w-[18rem] h-[20px]" />
+                </span>
+              </>
+            )}
             {product && (
               <>
                 <span className="flex font-semibold text-2xl lg:text-3xl items-center align-middle gap-3">
@@ -115,6 +130,34 @@ export default function ProductModule(context: { params: { id: string } }) {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 px-10 -mt-10">
+        {isProductLoading && (
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                <Skeleton className="w-[15rem] h-[20px]" />
+              </CardTitle>
+              <Separator />
+              <CardContent className={`py-3 space-y-2 text-left text-sm`}>
+                <div className={`grid grid-cols-3`}>
+                  <Skeleton className="float-left w-[4rem] h-[20px]" />
+                  <Skeleton className="w-[4rem] h-[20px]" />
+                </div>
+                <div className={`grid grid-cols-3`}>
+                  <Skeleton className="w-[4rem] h-[20px]" />
+                  <Skeleton className="w-[4rem] h-[20px]" />
+                </div>
+                <div className={`grid grid-cols-3`}>
+                  <Skeleton className="w-[4rem] h-[20px]" />
+                  <Skeleton className="w-[4rem] h-[20px]" />
+                </div>
+                <div className={`grid grid-cols-3`}>
+                  <Skeleton className="w-[4rem] h-[20px]" />
+                  <Skeleton className="w-[4rem] h-[20px]" />
+                </div>
+              </CardContent>
+            </CardHeader>
+          </Card>
+        )}
         {product && (
           <>
             <Card>

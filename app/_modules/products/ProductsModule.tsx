@@ -46,6 +46,9 @@ import {
 } from "@/components/ui/table";
 import Moment from "react-moment";
 import LoadingIndicator from "@/components/loadingindicator";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ProductModel } from "@/app/_schemas";
+import { formatPrice } from "../store/PurchaseLinkModule";
 
 export interface Guild {
   id: string;
@@ -55,19 +58,16 @@ export interface Guild {
 }
 
 export default function ProductsModule() {
+  const [selectedServer, setSelectedServer] = useState<string>();
   const REDIRECT_URI = `https://discord.com/api/oauth2/authorize?client_id=${
-    process.env.NODE_ENV == "development"
-      ? "1107876953031180398"
-      : "1103664570922451068"
+    process.env.NEXT_PUBLIC_DISCORD_ID
   }&permissions=8&redirect_uri=${
-    process.env.NODE_ENV == "development"
+    process.env.NEXT_PUBLIC_NODE_ENV == "development"
       ? "http://localhost:3000"
       : "https://paypath.app"
-  }%2Fd%2Fproducts&response_type=code&scope=bot`;
+  }%2Fd%2Fproducts&guild_id=${selectedServer}&response_type=code&scope=bot`;
   const REDIRECT_URI2 =
     "https://discord.com/oauth2/authorize?permissions=8&guild_id=1108375792393662474&response_type=code&redirect_uri=https%3A%2F%2Fapi.hyper.co%2Fauth%2Flogin%2Fdiscord%2Fcallback&scope=bot&state=%7B%22redirect%22%3A%22%2Fproducts%2Fnew%3Frecipe%3Ddiscord%26integrations%5Bdiscord%5D%5Bguild%5D%3D1108375792393662474%22%7D&client_id=648234176805470248";
-
-  const [selectedServer, setSelectedServer] = useState<string>();
 
   const [selectedRole, setSelectedRole] = useState<string>();
   const [paypathRolePos, setPaypathRolePos] = useState<number>(8);
@@ -75,9 +75,15 @@ export default function ProductsModule() {
   const [dialogActive, setDialogActive] = useState<boolean>(false);
   const [formStep, setFormStep] = useState<number>(0);
   const [redirectId, setRedirectId] = useState<number>();
+  const [productType, setProductType] = useState<string>();
+  const [formattedPrice, setFormattedPrice] = useState<number>();
 
   const { data: session } = useSession();
-  const { data: guildsData, isError } = useQuery(["guilds"], {
+  const {
+    data: guildsData,
+    isError,
+    isLoading,
+  } = useQuery(["guilds"], {
     queryFn: async () => {
       return await fetch("/ajax/discord/guilds", {}).then(async (res) => {
         return (await res.json()) as Guild[];
@@ -91,6 +97,7 @@ export default function ProductsModule() {
   const {
     data: selectedServerData,
     isLoading: selectedServerLoading,
+    isError: selectedServerError,
     refetch,
   } = useQuery(["selectedServer"], {
     queryFn: async () => {
@@ -136,9 +143,12 @@ export default function ProductsModule() {
         return res.json();
       });
     },
-
     onSuccess(data) {
+      if (data.id == undefined) return;
       router.push(`/d/products/${data.id}`);
+    },
+    onError() {
+      return;
     },
   });
 
@@ -154,7 +164,7 @@ export default function ProductsModule() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: zodResolver(ProductModel) });
 
   const createProduct = (data: any) => {
     createProductMutation({
@@ -276,14 +286,20 @@ export default function ProductsModule() {
                                 router.push(`${REDIRECT_URI}`);
                               }}
                               size={"sm"}
-                              disabled={selectedServerLoading}
+                              disabled={
+                                (!selectedServer && !selectedServerData) ||
+                                (!!selectedServerLoading &&
+                                  !!selectedServerRolesLoading)
+                              }
                             >
                               Invite Bot
                             </Button>
                           ) : (
                             <Button
                               size={"sm"}
-                              disabled={!selectedServer}
+                              disabled={
+                                !selectedServer || selectedServerLoading
+                              }
                               onClick={() => setFormStep(1)}
                             >
                               Next
@@ -315,12 +331,17 @@ export default function ProductsModule() {
                         </TinyErrorMessage>
                         <label>Description</label>
                         <Input
-                          placeholder="Your description"
+                          placeholder="Product description"
                           {...register("description")}
                           className="mb-4"
                         ></Input>
                         <label>Type</label>
-                        <Select>
+                        <Select
+                          onValueChange={(s) => {
+                            setProductType(s);
+                            console.log(s);
+                          }}
+                        >
                           <SelectTrigger>
                             <SelectValue placeholder="Product type" />
                           </SelectTrigger>
@@ -342,27 +363,54 @@ export default function ProductsModule() {
                           {errors.type?.message as string}
                         </TinyErrorMessage>
 
-                        <label>Price</label>
-                        <div className="flex flex-row space-x-2">
-                          <Input
-                            placeholder="Product name"
-                            {...register("price")}
-                            className="mb-4"
-                          ></Input>
-                          <TinyErrorMessage>
-                            {errors.price?.message as string}
-                          </TinyErrorMessage>
-                          <Input
-                            placeholder="Recurring period"
-                            disabled
-                            {...register("interval")}
-                            className="mb-4"
-                          ></Input>
-                          <TinyErrorMessage>
-                            {errors.interval?.message as string}
-                          </TinyErrorMessage>
-                        </div>
+                        {productType == "Free" ? null : (
+                          <>
+                            <label>Price</label>
+                            <div className="flex flex-row space-x-2">
+                              <Input
+                                placeholder="Product name"
+                                defaultValue={formatPrice("000")}
+                                {...register("price", {
+                                  required:
+                                    productType == "Free" ||
+                                    productType == "Lifetime"
+                                      ? false
+                                      : true,
+                                })}
+                                className="mb-4"
+                                onInput={(e) => {
+                                  e.preventDefault();
+                                  setFormattedPrice(
+                                    e.currentTarget.value as unknown as number
+                                  );
+                                  console.log(formattedPrice);
+                                }}
+                              ></Input>
+                              <p>{formatPrice(formattedPrice ?? "0")}</p>
+                              <Input
+                                placeholder="Recurring period"
+                                disabled
+                                {...register("interval", {
+                                  required:
+                                    productType === "Free" ||
+                                    productType === "Lifetime"
+                                      ? false
+                                      : true,
+                                })}
+                                className="mb-4"
+                              ></Input>
+                              <TinyErrorMessage>
+                                {errors.interval?.message as string}
+                              </TinyErrorMessage>
+                            </div>
+
+                            <TinyErrorMessage>
+                              {errors.price?.message as string}
+                            </TinyErrorMessage>
+                          </>
+                        )}
                       </DialogHeader>
+
                       <DialogFooter>
                         <Button
                           onClick={handleSubmit(createProduct)}
@@ -426,7 +474,8 @@ export default function ProductsModule() {
             </Table>
           </div>
         ) : (
-          products?.length == 0 && !isProductsLoading && (
+          products?.length == 0 &&
+          !isProductsLoading && (
             <SectionIntroduction>
               <SectionIntroductionIcon>
                 <Upload size={24} />

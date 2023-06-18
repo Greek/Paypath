@@ -65,9 +65,7 @@ export default function CustomerModule(context: { params: { id: string } }) {
                     </span>
                     <span className="flex text-lg items-center align-middle">
                       on&nbsp;
-                      <LinkTo
-                        href={`/d/products/${license.product.id}`}
-                      >
+                      <LinkTo href={`/d/products/${license.product.id}`}>
                         {license.product.name}
                       </LinkTo>
                       &nbsp;
