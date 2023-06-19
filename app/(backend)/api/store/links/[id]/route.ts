@@ -102,7 +102,8 @@ export async function POST(
     return NextResponse.json(
       {
         success: false,
-        message: "This link can't be activated because its product is archived.",
+        message:
+          "This link can't be activated because its product is archived.",
       },
       { status: 400 }
     );

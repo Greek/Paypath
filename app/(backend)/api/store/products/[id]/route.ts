@@ -53,7 +53,7 @@ export async function PATCH(
       },
       { stripeAccount: store?.stripeId }
     );
-    
+
     await stripe.prices.update(
       productPrice as string,
       {

@@ -29,9 +29,8 @@ export default function NewLink({
   const [storeId, setStoreId] = useState<string>();
 
   useEffect(() => {
-    if (searchParams.product)
-      setSelectedProduct(searchParams.product)
-  }, [searchParams])
+    if (searchParams.product) setSelectedProduct(searchParams.product);
+  }, [searchParams]);
 
   const { data: products } = useQuery({
     queryFn: async () => {

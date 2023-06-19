@@ -177,9 +177,7 @@ export default async function OverviewModule({
             <CardHeader>
               <CardTitle>Okay, what now?</CardTitle>
             </CardHeader>
-            <CardContent>
-              
-            </CardContent>
+            <CardContent></CardContent>
           </Card>
         </div>
       )}

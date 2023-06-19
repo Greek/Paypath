@@ -3,7 +3,6 @@
 import { Product } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 
-
 export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "name",
@@ -15,10 +14,10 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: "customers",
-    header: "Customers"
+    header: "Customers",
   },
   {
     accessorKey: "createdAt",
-    header: "Created At"
-  }
+    header: "Created At",
+  },
 ];

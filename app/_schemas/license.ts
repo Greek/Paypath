@@ -1,5 +1,14 @@
-import * as z from "zod"
-import { CompleteStore, RelatedStoreModel, CompleteProduct, RelatedProductModel, CompleteUser, RelatedUserModel, CompleteLink, RelatedLinkModel } from "./index"
+import * as z from "zod";
+import {
+  CompleteStore,
+  RelatedStoreModel,
+  CompleteProduct,
+  RelatedProductModel,
+  CompleteUser,
+  RelatedUserModel,
+  CompleteLink,
+  RelatedLinkModel,
+} from "./index";
 
 export const LicenseModel = z.object({
   id: z.string(),
@@ -11,13 +20,13 @@ export const LicenseModel = z.object({
   linkId: z.string(),
   purchasedAt: z.date(),
   cancelledAt: z.date().nullish(),
-})
+});
 
 export interface CompleteLicense extends z.infer<typeof LicenseModel> {
-  store: CompleteStore
-  product: CompleteProduct
-  customer: CompleteUser
-  link: CompleteLink
+  store: CompleteStore;
+  product: CompleteProduct;
+  customer: CompleteUser;
+  link: CompleteLink;
 }
 
 /**
@@ -25,9 +34,11 @@ export interface CompleteLicense extends z.infer<typeof LicenseModel> {
  *
  * NOTE: Lazy required in case of potential circular dependencies within schema
  */
-export const RelatedLicenseModel: z.ZodSchema<CompleteLicense> = z.lazy(() => LicenseModel.extend({
-  store: RelatedStoreModel,
-  product: RelatedProductModel,
-  customer: RelatedUserModel,
-  link: RelatedLinkModel,
-}))
+export const RelatedLicenseModel: z.ZodSchema<CompleteLicense> = z.lazy(() =>
+  LicenseModel.extend({
+    store: RelatedStoreModel,
+    product: RelatedProductModel,
+    customer: RelatedUserModel,
+    link: RelatedLinkModel,
+  })
+);

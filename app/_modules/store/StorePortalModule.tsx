@@ -83,7 +83,7 @@ export default function StorePortalModule({
                 </div>
                 <span
                   onClick={() => signOut()}
-                  className="text-blue-500 dark:text-blue-400 cursor-pointer text-black dark:text-white text-sm"
+                  className="text-blue-500 dark:text-blue-400 cursor-pointer text-sm"
                 >
                   Sign out
                 </span>

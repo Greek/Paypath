@@ -37,12 +37,11 @@ export const GET = async (
       },
       ssn_last_4: "0000",
       phone: "4242424242",
-      
     },
     business_profile: {
       name: "Test Business",
       mcc: "5734",
-      url: "https://paypath.app"
+      url: "https://paypath.app",
     },
     business_type: "individual",
   });

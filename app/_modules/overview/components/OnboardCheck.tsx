@@ -24,11 +24,7 @@ export function LinkToProductsPage() {
 
   return (
     <>
-      <Button
-        onClick={() => push(`/d/products`)}
-      >
-        Create a new product
-      </Button>
+      <Button onClick={() => push(`/d/products`)}>Create a new product</Button>
     </>
   );
 }
@@ -38,11 +34,7 @@ export function LinkToLinksPage() {
 
   return (
     <>
-      <Button
-        onClick={() => push(`/d/links`)}
-      >
-        Create a new link
-      </Button>
+      <Button onClick={() => push(`/d/links`)}>Create a new link</Button>
     </>
   );
 }

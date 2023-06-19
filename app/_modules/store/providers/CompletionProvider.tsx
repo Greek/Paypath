@@ -6,6 +6,6 @@ export const CompletionContext = createContext({
 });
 
 export const PriceTotalContext = createContext({
-    total: 0,
-    setTotal: (total: any) => {}
-})
+  total: 0,
+  setTotal: (total: any) => {},
+});

@@ -16,6 +16,6 @@ export async function GET(
   } catch (error) {
     return new NextResponse("Not found", { status: 404 });
   }
-  
+
   return NextResponse.json(guild);
 }
