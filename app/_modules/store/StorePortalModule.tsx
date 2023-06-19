@@ -203,9 +203,7 @@ export default function StorePortalModule({
                   <div className="text-black dark:text-white truncate text-sm !text-opacity-50">
                     $
                     {selectedLicense
-                      ? formatPrice(
-                          selectedLicense?.product?.price as unknown as string
-                        )
+                      ? formatPrice(selectedLicense?.product?.price)
                       : NaN}
                   </div>
                 </div>

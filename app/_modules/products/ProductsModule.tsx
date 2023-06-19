@@ -167,7 +167,7 @@ export default function ProductsModule() {
   } = useForm({ resolver: zodResolver(ProductModel) });
 
   const createProduct = (data: any) => {
-    console.log(data)
+    console.log(data);
 
     createProductMutation({
       name: data.name,
@@ -371,7 +371,7 @@ export default function ProductsModule() {
                             <div className="flex flex-row space-x-2">
                               <Input
                                 placeholder="Product name"
-                                defaultValue={formatPrice("000")}
+                                defaultValue={formatPrice(0o000)}
                                 {...register("price", {
                                   required:
                                     productType == "Free" ||
@@ -387,7 +387,7 @@ export default function ProductsModule() {
                                   );
                                 }}
                               ></Input>
-                              <p>{formatPrice(formattedPrice ?? "0")}</p>
+                              <p>{formatPrice(formattedPrice as number)}</p>
                               <Input
                                 placeholder="Monthly"
                                 disabled

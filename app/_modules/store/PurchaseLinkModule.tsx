@@ -5,18 +5,21 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, Product, Store } from "@prisma/client";
 import { StoreIcon } from "lucide-react";
 import { CompletionContext } from "./providers/CompletionProvider";
 import LinkTag from "next/link";
-import { useRouter } from "next/navigation";
 
-export const formatPrice = (price: any) => {
+export const formatPrice = (price: number | null) => {
+  if (!price) return "?";
+
+  const newPrice = price.toString();
+
   return (
-    price.substring(-2, price.length - 2) +
+    newPrice.substring(-2, newPrice.length - 2) +
     "." +
-    price.substring(price.length - 2, price.length)
+    newPrice.substring(newPrice.length - 2, newPrice.length)
   );
 };
 
@@ -25,8 +28,6 @@ export default function PurchaseLinkModule({
 }: {
   params: { id: string };
 }) {
-  const router = useRouter();
-
   const { data: link, isLoading } = useQuery(["link"], {
     queryFn: async () => {
       return (await axios.get(`/api/store/links/${params.id}`)).data as Link & {
@@ -45,10 +46,6 @@ export default function PurchaseLinkModule({
   const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUB_KEY as string, {
     stripeAccount: link?.store?.stripeId,
   });
-
-  // useEffect(() => {
-  //   if (!link?.active) return router.push(`/${link?.store.name}`);
-  // }, [link?.active, link, router]);
 
   const [completed, setCompletion] = useState(false);
 
@@ -69,7 +66,7 @@ export default function PurchaseLinkModule({
                     {link?.store?.name}
                   </div>
                   <div className="flex dark:text-white text-neutral-600 text-2xl font-semibold">
-                    {formatPrice(link.product.price as unknown as string)}
+                    {formatPrice(link.product.price)}
                   </div>
                   <div className="w-full flex text-neutral-400">
                     per {link.product.recurrencyPeriod}
@@ -80,7 +77,7 @@ export default function PurchaseLinkModule({
               <div className="flex flex-col rounded-lg border border-neutral-200 dark:border-slate-800">
                 <div className="py-3 px-3 flex items-center justify-between text-sm">
                   <p className="font-semibold">Subtotal</p>
-                  <p>${formatPrice(link.product.price as unknown as string)}</p>
+                  <p>${formatPrice(link.product.price)}</p>
                 </div>
                 <div className="flex w-full items-center">
                   <div className="grow border-t" aria-hidden="true"></div>
@@ -88,7 +85,7 @@ export default function PurchaseLinkModule({
                 </div>
                 <div className="py-3 px-3 flex items-center justify-between text-sm">
                   <p className="font-semibold">Total</p>
-                  <p>${formatPrice(link.product.price as unknown as string)}</p>
+                  <p>${formatPrice(link.product.price)}</p>
                 </div>
               </div>
             </div>
