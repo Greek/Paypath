@@ -33,6 +33,11 @@ import { useRouter } from "next/navigation";
 import Moment from "react-moment";
 import { useState } from "react";
 import { useKeyPress, wait } from "@/lib/utils";
+import Masthead, {
+  MastheadButtonSet,
+  MastheadHeading,
+  MastheadHeadingWrapper,
+} from "@/components/masthead-layout";
 
 export default function LinkModule({ params }: { params: { id: string } }) {
   const { push } = useRouter();
@@ -96,10 +101,10 @@ export default function LinkModule({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className={`border-b-[.05em] border-foreground-muted w-full`}>
-        <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
-          <div className="flex flex-col">
-            <span className="flex font-semibold text-2xl lg:text-3xl items-center align-middle gap-3">
+      <Masthead>
+        <div className="flex flex-col">
+          <MastheadHeadingWrapper>
+            <MastheadHeading className="items-center align-middle gap-3">
               {link && !isLinkLoading ? (
                 <>
                   {link?.nickname?.length! > 0
@@ -108,101 +113,98 @@ export default function LinkModule({ params }: { params: { id: string } }) {
                   <Badge>{link?.active ? "Active" : "Archived"}</Badge>
                 </>
               ) : null}
-            </span>
+            </MastheadHeading>
             <span className="text-muted-foreground ">
               {!link ? null : (
                 <>sold for ${formatPrice(link?.product?.price)} USD</>
               )}
             </span>
-            {link && (
-              <>
-                <div className="w-[32rem]">
-                  <Input defaultValue={combinedURI} readOnly />
-                </div>
-                <div className={`flex w-42 pt-2 gap-1`}>
-                  <Button
-                    size={"sm"}
-                    disabled={!link.active}
-                    onClick={copyLinkLink}
-                  >
-                    <LinkIcon size={16} className={`mr-2`} />
-                    {!copied ? "Copy link" : "Copied!"}
-                    <DropdownMenuShortcut>S</DropdownMenuShortcut>
-                  </Button>
-                  <Button
-                    size={"sm"}
-                    variant={"outline"}
-                    disabled={!link.active || isModifying}
-                    onClick={manageLinkPin}
-                  >
-                    <PinIcon size={16} className={`mr-2`} />
-                    {!link.pinned ? "Pin link" : "Remove pin"}
-                    <DropdownMenuShortcut variant={"secondary"}>
-                      P
-                    </DropdownMenuShortcut>
-                  </Button>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <Button size={"sm"} variant={"outline"}>
-                        <MoreHorizontalIcon size={16} />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          modifyLink({ active: !link.active, pinned: false });
-                        }}
-                      >
-                        {link.active ? (
-                          <>
-                            <TrashIcon size={16} className="mr-2" />
-                            Archive
-                          </>
-                        ) : (
-                          <>
-                            <PlusSquare size={16} className="mr-2" />
-                            Activate
-                          </>
-                        )}{" "}
-                        link
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        onClick={() => {
-                          push(`/d/products/${link.productId}`);
-                        }}
-                      >
-                        <ArrowRight size={16} className="mr-2" /> View product
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          push(`/d/customers/?product=${link.productId}`);
-                        }}
-                      >
-                        <ArrowRight size={16} className="mr-2" /> View licenses
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        onClick={() => {
-                          navigator.clipboard.writeText(link.id);
-                        }}
-                      >
-                        <ArrowUpRightFromCircleIcon
-                          size={16}
-                          className="mr-2"
-                        />{" "}
-                        Copy ID
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </>
-            )}
-            <div className={`space-x-2 mt-3`}></div>
-          </div>
-          <div className={"space-x-2 mt-2 lg:mt:0"}></div>
+          </MastheadHeadingWrapper>
+
+          {link && (
+            <>
+              <div className="w-[32rem]">
+                <Input defaultValue={combinedURI} readOnly />
+              </div>
+              <MastheadButtonSet className={`pt-2`}>
+                <Button
+                  size={"sm"}
+                  disabled={!link.active}
+                  onClick={copyLinkLink}
+                >
+                  <LinkIcon size={16} className={`mr-2`} />
+                  {!copied ? "Copy link" : "Copied!"}
+                  <DropdownMenuShortcut>S</DropdownMenuShortcut>
+                </Button>
+                <Button
+                  size={"sm"}
+                  variant={"outline"}
+                  disabled={!link.active || isModifying}
+                  onClick={manageLinkPin}
+                >
+                  <PinIcon size={16} className={`mr-2`} />
+                  {!link.pinned ? "Pin link" : "Remove pin"}
+                  <DropdownMenuShortcut variant={"secondary"}>
+                    P
+                  </DropdownMenuShortcut>
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button size={"sm"} variant={"outline"}>
+                      <MoreHorizontalIcon size={16} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        modifyLink({ active: !link.active, pinned: false });
+                      }}
+                    >
+                      {link.active ? (
+                        <>
+                          <TrashIcon size={16} className="mr-2" />
+                          Archive
+                        </>
+                      ) : (
+                        <>
+                          <PlusSquare size={16} className="mr-2" />
+                          Activate
+                        </>
+                      )}{" "}
+                      link
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={() => {
+                        push(`/d/products/${link.productId}`);
+                      }}
+                    >
+                      <ArrowRight size={16} className="mr-2" /> View product
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        push(`/d/customers/?product=${link.productId}`);
+                      }}
+                    >
+                      <ArrowRight size={16} className="mr-2" /> View licenses
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={() => {
+                        navigator.clipboard.writeText(link.id);
+                      }}
+                    >
+                      <ArrowUpRightFromCircleIcon size={16} className="mr-2" />{" "}
+                      Copy ID
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </MastheadButtonSet>
+            </>
+          )}
         </div>
-      </div>
+      </Masthead>
+
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 px-10 -mt-10">
         {!isLinkLoading && link ? (
           <Card>

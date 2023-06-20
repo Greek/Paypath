@@ -26,6 +26,11 @@ import {
 import { useRouter } from "next/navigation";
 import { useKeyPress } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import Masthead, {
+  MastheadButtonSet,
+  MastheadHeading,
+  MastheadHeadingWrapper,
+} from "@/components/masthead-layout";
 
 export default function ProductModule(context: { params: { id: string } }) {
   const { push } = useRouter();
@@ -58,77 +63,73 @@ export default function ProductModule(context: { params: { id: string } }) {
 
   return (
     <>
-      <div className={`border-b-[.05em] border-foreground-muted w-full`}>
-        <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
-          <div className="flex flex-col">
-            {isProductLoading && (
-              <>
-                <span className="">
-                  <Skeleton className="w-[23rem] h-[20px]" />
-                </span>
-                <span className="pt-3">
-                  <Skeleton className="w-[18rem] h-[20px]" />
-                </span>
-              </>
-            )}
-            {product && (
-              <>
-                <span className="flex font-semibold text-2xl lg:text-3xl items-center align-middle gap-3">
+      <Masthead>
+        <div className="flex flex-col">
+          {isProductLoading && (
+            <>
+              <span>
+                <Skeleton className="w-[23rem] h-[20px]" />
+              </span>
+              <span className="pt-3">
+                <Skeleton className="w-[18rem] h-[20px]" />
+              </span>
+            </>
+          )}
+          {product && (
+            <>
+              <MastheadHeadingWrapper>
+                <MastheadHeading
+                  className={`flex items-center align-middle gap-3`}
+                >
                   {product.name}
                   <Badge>{product.active ? "Active" : "Archived"}</Badge>
-                </span>
-                <span className="text-muted-foreground ">
+                </MastheadHeading>
+                <span className="text-muted-foreground">
                   sold for {formatPrice(product.price)}
                 </span>
-                <div
-                  className={`space-x-2 mt-3 align-middle items-center justify-center`}
+              </MastheadHeadingWrapper>
+              <MastheadButtonSet>
+                <Button
+                  size={"sm"}
+                  disabled={!product.active}
+                  onClick={() => {
+                    push(`/d/links/new?product=${product.id}`);
+                  }}
                 >
-                  <Button
-                    size={"sm"}
-                    disabled={!product.active}
-                    onClick={() => {
-                      push(`/d/links/new?product=${product.id}`);
-                    }}
-                  >
-                    <LinkIcon size={16} className={`mr-2`} /> Create Link
-                  </Button>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <Button size={`sm`} variant={"outline"}>
-                        <MoreHorizontal size={16} />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuGroup>
-                        <DropdownMenuItem
-                          disabled={isLoading}
-                          onClick={manageArchiveState}
-                        >
-                          <Trash size={16} className="mr-2 h-4 w-4" />
-                          {product.active ? "Archive" : "Unarchive"} product
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => {
-                            push(`/d/links/?product=${product.id}`);
-                          }}
-                        >
-                          <LucideArrowRight
-                            size={16}
-                            className="mr-2 h-4 w-4"
-                          />
-                          See links
-                        </DropdownMenuItem>
-                      </DropdownMenuGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </>
-            )}
-          </div>
-          <div className={"space-x-2 mt-2 lg:mt:0"}></div>
+                  <LinkIcon size={16} className={`mr-2`} /> Create Link
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button size={`sm`} variant={"outline"}>
+                      <MoreHorizontal size={16} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem
+                        disabled={isLoading}
+                        onClick={manageArchiveState}
+                      >
+                        <Trash size={16} className="mr-2 h-4 w-4" />
+                        {product.active ? "Archive" : "Unarchive"} product
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={() => {
+                          push(`/d/links/?product=${product.id}`);
+                        }}
+                      >
+                        <LucideArrowRight size={16} className="mr-2 h-4 w-4" />
+                        See links
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </MastheadButtonSet>
+            </>
+          )}
         </div>
-      </div>
+      </Masthead>
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 px-10 -mt-10">
         {isProductLoading && (
           <Card>

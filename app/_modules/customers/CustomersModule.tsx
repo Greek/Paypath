@@ -26,6 +26,11 @@ import { useEffect } from "react";
 import Moment from "react-moment";
 import LoadingIndicator from "@/components/loadingindicator";
 import { Skeleton } from "@/components/ui/skeleton";
+import Masthead, {
+  MastheadButtonSet,
+  MastheadHeading,
+  MastheadHeadingWrapper,
+} from "@/components/masthead-layout";
 
 export default function CustomersModule({
   searchParams,
@@ -45,12 +50,12 @@ export default function CustomersModule({
 
   return (
     <>
-      <div className={`border-b-[.05em] border-foreground-muted w-full`}>
-        <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
-          <span className="font-semibold text-4xl lg:text-5xl">Customers</span>
-          <div className={"space-x-2 mt-2 lg:mt:0"}></div>
-        </div>
-      </div>
+      <Masthead>
+        <MastheadHeadingWrapper>
+          <MastheadHeading>Customers</MastheadHeading>
+        </MastheadHeadingWrapper>
+      </Masthead>
+
       {isStoreLoading && <LoadingIndicator />}
       {store && store.licenses?.length > 0 ? (
         <div className="grid gap-x-6 gap-y-3 px-10 pt-5">
