@@ -26,6 +26,11 @@ import {
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Moment from "react-moment";
+import Masthead, {
+  MastheadButtonSet,
+  MastheadHeading,
+  MastheadHeadingWrapper,
+} from "@/components/masthead-layout";
 
 export default function CustomerModule(context: { params: { id: string } }) {
   const { push } = useRouter();
@@ -46,12 +51,12 @@ export default function CustomerModule(context: { params: { id: string } }) {
 
   return (
     <>
-      <div className={`border-b-[.05em] border-foreground-muted w-full`}>
-        <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
-          <div className="flex flex-col">
-            {license && (
-              <>
-                <div className="flex flex-row gap-3 align-middle items-center">
+      <Masthead>
+        <div className="flex flex-col">
+          {license && (
+            <>
+              <MastheadHeadingWrapper>
+                <div className="flex flex-row gap-3 align-middle items-center pb-1">
                   <Image
                     alt={`${license.customer.name}'s profile picture.`}
                     src={license.customer.image as string}
@@ -60,9 +65,7 @@ export default function CustomerModule(context: { params: { id: string } }) {
                     className="rounded-full"
                   />
                   <div>
-                    <span className="flex font-semibold text-2xl lg:text-3xl items-center align-middle">
-                      @{license.customer.name}
-                    </span>
+                    <MastheadHeading>@{license.customer.name}</MastheadHeading>
                     <span className="flex text-lg items-center align-middle">
                       on&nbsp;
                       <LinkTo href={`/d/products/${license.product.id}`}>
@@ -84,48 +87,42 @@ export default function CustomerModule(context: { params: { id: string } }) {
                     </span>
                   </div>
                 </div>
-                <div
-                  className={`space-x-2 mt-3 align-middle items-center justify-center`}
+              </MastheadHeadingWrapper>
+              <MastheadButtonSet>
+                <Button
+                  size={"sm"}
+                  disabled={!license.active}
+                  onClick={() => {
+                    push(`/d/links/new?product=${license.id}`);
+                  }}
                 >
-                  <Button
-                    size={"sm"}
-                    disabled={!license.active}
-                    onClick={() => {
-                      push(`/d/links/new?product=${license.id}`);
-                    }}
-                  >
-                    <LinkIcon size={16} className={`mr-2`} /> Create Link
-                  </Button>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <Button size={`sm`} variant={"outline"}>
-                        <MoreHorizontal size={16} />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuGroup>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => {
-                            push(`/d/links/${license.link?.id}`);
-                          }}
-                        >
-                          <LucideArrowRight
-                            size={16}
-                            className="mr-2 h-4 w-4"
-                          />
-                          View link
-                        </DropdownMenuItem>
-                      </DropdownMenuGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </>
-            )}
-          </div>
-          <div className={"space-x-2 mt-2 lg:mt:0"}></div>
+                  <LinkIcon size={16} className={`mr-2`} /> Create Link
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button size={`sm`} variant={"outline"}>
+                      <MoreHorizontal size={16} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuGroup>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={() => {
+                          push(`/d/links/${license.link?.id}`);
+                        }}
+                      >
+                        <LucideArrowRight size={16} className="mr-2 h-4 w-4" />
+                        View link
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </MastheadButtonSet>
+            </>
+          )}
         </div>
-      </div>
+      </Masthead>
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 px-10 -mt-10">
         {license && (
           <>
