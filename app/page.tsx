@@ -17,6 +17,7 @@ export default async function Home({
   const time = new Date().getHours();
   const session = await auth();
   if (session == null) redirect("/i/login");
+  if (session) redirect("/d/overview");
 
   return (
     <div className="flex flex-col px-10 py-10 min-h-screen box-border relative">
