@@ -1,9 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
-import { authConfig } from "../../auth/[...nextauth]/route";
+import { auth } from "@/app/auth";
 
 async function getRawBody(
   readable: ReadableStream<Uint8Array> | null
@@ -16,7 +14,10 @@ async function getRawBody(
 }
 
 export const GET = async (req: NextRequest) => {
-  const session = await getServerSession(authConfig);
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const store = session?.user?.stores?.find((store) => {
     return store;
   });

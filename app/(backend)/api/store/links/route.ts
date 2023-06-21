@@ -1,12 +1,15 @@
 import { LinkModel } from "@/app/_schemas";
+import { auth } from "@/app/auth";
 import { prisma } from "@/lib/prisma";
 import { Link } from "@prisma/client";
 import { nanoid } from "nanoid";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const session = await getServerSession();
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const store = session?.user?.stores?.find((store) => {
     return store;
   });
@@ -20,7 +23,10 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession();
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const store = session?.user?.stores?.find((store) => {
     return store;
   });

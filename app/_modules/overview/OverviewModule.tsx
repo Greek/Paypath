@@ -1,4 +1,3 @@
-import { authConfig } from "@/app/(backend)/api/auth/[...nextauth]/route";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import OnboardCheck, {
   LinkToLinksPage,
@@ -23,6 +21,7 @@ import {
 } from "@/components/ui/accordion";
 import { prisma } from "@/lib/prisma";
 import { Store } from "@prisma/client";
+import { auth } from "@/app/auth";
 
 export const metadata = {
   title: "Overview",
@@ -33,7 +32,7 @@ export default async function OverviewModule({
 }: {
   params: { id: string };
 }) {
-  const session = await getServerSession(authConfig);
+  const session = await auth();
   if (!session) return redirect("/");
 
   const store = await prisma.store.findFirst({

@@ -1,18 +1,15 @@
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { authConfig } from "../../../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/app/auth";
 
 export async function GET(
   req: NextRequest,
   context: { params: { id: string } }
 ) {
-  const session = await getServerSession(authConfig);
-  if (!session?.user)
-    return NextResponse.json(
-      { message: "You are not authenticated." },
-      { status: 401 }
-    );
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   const license = await prisma.license.findFirst({
     where: {
@@ -34,17 +31,15 @@ export async function PUT(
   req: NextRequest,
   context: { params: { id: string } }
 ) {
-  const session = await getServerSession(authConfig);
-  if (!session?.user)
-    return NextResponse.json(
-      { message: "You are not authenticated." },
-      { status: 401 }
-    );
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   const license = await prisma.license.findFirst({
     where: {
       OR: [{ id: context.params.id }, { customer: { id: context.params.id } }],
-      AND: { storeId: session.user.stores[0].id },
+      AND: { storeId: session?.user?.stores[0].id },
     },
     include: { customer: { include: { accounts: true } }, product: true },
   });

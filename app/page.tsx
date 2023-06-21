@@ -1,5 +1,3 @@
-import { getServerSession } from "next-auth";
-import { authConfig } from "@/app/(backend)/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import {
   Card,
@@ -9,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import SignInButton from "@/components/sign-in";
+import { auth } from "./auth";
 
 export default async function Home({
   searchParams,
@@ -16,8 +15,8 @@ export default async function Home({
   searchParams: { error: string };
 }) {
   const time = new Date().getHours();
-  const session = await getServerSession(authConfig);
-  if (session?.user) redirect("/d/overview");
+  const session = await auth();
+  if (session == null) redirect("/i/login");
 
   return (
     <div className="flex flex-col px-10 py-10 min-h-screen box-border relative">

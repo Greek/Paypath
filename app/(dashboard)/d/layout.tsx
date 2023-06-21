@@ -8,10 +8,10 @@ import {
   ShareIcon,
   UserIcon,
 } from "lucide-react";
-import { getServerSession } from "next-auth";
-import { authConfig } from "@/app/(backend)/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import ToasterLoader from "@/app/ToasterLoader";
+import { auth } from "@/app/auth";
+import { prisma } from "@/lib/prisma";
 
 export type LinkItem = {
   [key: string]: {
@@ -27,13 +27,13 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authConfig);
-  if (!session?.user) return redirect("/");
-  if (session?.user?.stores.length! < 1) redirect("/onboarding");
+  const session = await auth();
+  if (!session?.user) return redirect("/i/login");
 
-  const store = session?.user.stores.find((store) => {
-    return store;
-  });
+  if (!session.user?.stores || session.user.stores.length! < 1)
+    redirect("/onboarding");
+
+  const store = session.user.stores[0];
 
   const links: LinkItem = {
     "/d/overview": {

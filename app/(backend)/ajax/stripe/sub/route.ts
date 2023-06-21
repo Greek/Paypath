@@ -1,8 +1,8 @@
+import { auth } from "@/app/auth";
 import { generateLicenseKey } from "@/lib/nanoid";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 import { nanoid } from "nanoid";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -19,7 +19,10 @@ const dashify = (s: string) => {
 };
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession();
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const body = (await req.json()) as {
     linkId: string;
     paymentMethod: string;

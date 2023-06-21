@@ -1,13 +1,12 @@
 import { nanoid } from "nanoid";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authConfig } from "@/app/(backend)/api/auth/[...nextauth]/route";
 import { Plan } from "@prisma/client";
+import { auth } from "@/app/auth";
 
 export async function POST(req: NextRequest) {
   const formData = await req.json();
-  const session = await getServerSession(authConfig);
+  const session = await auth();
 
   await prisma.store.create({
     data: {
@@ -15,7 +14,11 @@ export async function POST(req: NextRequest) {
       name: formData.name,
       description: "",
       domain: `${formData.name.replaceAll([" "], "-").toLowerCase()}`,
-      owner: session?.user?.id as string,
+      User: {
+        connect: {
+          id: session?.user?.id,
+        },
+      },
       plan: Plan.Starter,
       stripeId: "",
     },

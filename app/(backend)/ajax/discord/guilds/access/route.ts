@@ -1,14 +1,17 @@
-import { authConfig } from "@/app/(backend)/api/auth/[...nextauth]/route";
+import { auth } from "@/app/auth";
 import { discordBotRest } from "@/lib/discord";
 import { Routes } from "discord-api-types/v10";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const session = await getServerSession(authConfig);
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   const token = session?.user?.accounts.find((account) => {
     return account.provider == "discord";
   })?.access_token;

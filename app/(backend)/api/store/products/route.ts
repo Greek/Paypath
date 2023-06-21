@@ -1,11 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { ProductType } from "@prisma/client";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { authConfig } from "../../auth/[...nextauth]/route";
 import { nanoid } from "nanoid";
 import { stripe } from "@/lib/stripe";
 import { ProductModel } from "@/app/_schemas";
+import { auth } from "@/app/auth";
 
 const mapProductTypeEnum = (type: string) => {
   switch (type) {
@@ -19,7 +18,10 @@ const mapProductTypeEnum = (type: string) => {
 };
 
 export async function GET(req: NextRequest) {
-  const session = await getServerSession(authConfig);
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const store = session?.user?.stores?.find((store) => {
     return store;
   });
@@ -35,7 +37,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authConfig);
+  const session = await auth();
   const store = session?.user?.stores?.find((store) => {
     return store;
   });

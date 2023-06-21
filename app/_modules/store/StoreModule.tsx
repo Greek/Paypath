@@ -1,8 +1,7 @@
-import { authConfig } from "@/app/(backend)/api/auth/[...nextauth]/route";
+import { auth } from "@/app/auth";
 import { AlternativeSignInButton } from "@/components/sign-in";
 import { prisma } from "@/lib/prisma";
 import { ArrowRight, StoreIcon } from "lucide-react";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -11,7 +10,7 @@ export default async function StoreModule({
 }: {
   params: { name: string };
 }) {
-  const session = getServerSession(authConfig);
+  const session = await auth();
   const store = await prisma.store.findFirst({
     where: { name: params.name },
     include: { Link: { include: { product: true } } },

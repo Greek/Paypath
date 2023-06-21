@@ -1,12 +1,4 @@
-"use client"
-
-import { ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
+"use client";
 export const fetchAbsoluteUrl = (path: string) => {
   let base_url =
     process.env.NODE_ENV === "development"
@@ -33,7 +25,10 @@ export const useKeyPress = (keys: [any], callback: any, node = null) => {
   const handleKeyPress = useCallback(
     (event: any) => {
       // check if one of the key is part of the ones we want
-      if (!(event.metaKey || event.ctrlKey) && keys.some((key) => event.key === key)) {
+      if (
+        !(event.metaKey || event.ctrlKey) &&
+        keys.some((key) => event.key === key)
+      ) {
         callbackRef.current(event);
       }
     },

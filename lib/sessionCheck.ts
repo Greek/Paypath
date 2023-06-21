@@ -1,9 +1,8 @@
-import { authConfig } from "@/app/(backend)/api/auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
+import { auth } from "@/app/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export const sessionCheck = async (req: NextRequest) => {
-  const session = await getServerSession(authConfig);
+  const session = await auth();
 
   if (!session?.user)
     return NextResponse.json(

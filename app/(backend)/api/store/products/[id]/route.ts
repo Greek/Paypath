@@ -1,14 +1,16 @@
 import { prisma } from "@/lib/prisma";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { authConfig } from "../../../auth/[...nextauth]/route";
 import { stripe } from "@/lib/stripe";
+import { auth } from "@/app/auth";
 
 export async function GET(
   req: NextRequest,
   context: { params: { id: string } }
 ) {
-  const session = await getServerSession(authConfig);
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const store = session?.user?.stores?.find((store) => {
     return store;
   });
@@ -31,8 +33,10 @@ export async function PATCH(
   req: NextRequest,
   context: { params: { id: string } }
 ) {
-  console.log(context.params.id);
-  const session = await getServerSession(authConfig);
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const store = session?.user?.stores?.find((store) => {
     return store;
   });

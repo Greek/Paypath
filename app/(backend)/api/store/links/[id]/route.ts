@@ -1,19 +1,16 @@
-import { authConfig } from "@/app/(backend)/api/auth/[...nextauth]/route";
+import { auth } from "@/app/auth";
 import { prisma } from "@/lib/prisma";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
   context: { params: { id: string } }
 ) {
-  const session = await getServerSession(authConfig);
-  if (!session?.user)
-    return NextResponse.json(
-      { message: "You are not authenticated." },
-      { status: 401 }
-    );
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   let link;
   try {
@@ -46,12 +43,10 @@ export async function POST(
   req: NextRequest,
   context: { params: { id: string } }
 ) {
-  const session = await getServerSession(authConfig);
-  if (!session?.user)
-    return NextResponse.json(
-      { message: "You are not authenticated." },
-      { status: 401 }
-    );
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   let link;
   try {

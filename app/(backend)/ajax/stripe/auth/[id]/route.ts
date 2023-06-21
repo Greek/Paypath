@@ -1,13 +1,14 @@
-import { authConfig } from "@/app/(backend)/api/auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
+import { auth } from "@/app/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
   req: NextRequest,
   context: { params: { id: string } }
 ) => {
-  const session = await getServerSession(authConfig);
-
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   // if (
   //   !session?.user?.stores.find((store) => {
   //     return store.id == (json.id as string);

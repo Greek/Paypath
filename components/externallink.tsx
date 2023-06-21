@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/cn";
 import { ArrowUpRight } from "lucide-react";
 import { Url } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
