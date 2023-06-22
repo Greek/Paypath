@@ -38,3 +38,5 @@ next-env.d.ts
 # other
 scripts/venv
 .env.prod
+
+.turbo
