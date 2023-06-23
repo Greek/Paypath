@@ -40,3 +40,4 @@ scripts/venv
 .env.prod
 
 .turbo
+app/_schemas
