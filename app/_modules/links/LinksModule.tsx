@@ -48,19 +48,19 @@ export default function LinksModule({
       <Masthead>
         <MastheadHeadingWrapper>
           <MastheadHeading>Links</MastheadHeading>
-          <MastheadButtonSet>
-            {links && links?.length > 0 && (
-              <Button
-                onClick={() => {
-                  router.push("/d/links/new");
-                }}
-              >
-                <Plus scale={16} className="mr-2" />
-                Create Link
-              </Button>
-            )}
-          </MastheadButtonSet>
         </MastheadHeadingWrapper>
+        <MastheadButtonSet>
+          {links && links?.length > 0 && (
+            <Button
+              onClick={() => {
+                router.push("/d/links/new");
+              }}
+            >
+              <Plus scale={16} className="mr-2" />
+              Create Link
+            </Button>
+          )}
+        </MastheadButtonSet>
       </Masthead>
       {isLoading && <LoadingIndicator />}
       {links && links.length > 0 && (
