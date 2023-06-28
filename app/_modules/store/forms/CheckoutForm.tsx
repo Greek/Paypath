@@ -39,6 +39,7 @@ export default function CheckoutForm({
     },
     onError() {
       setFormSubmitting(false);
+      return;
     },
     onSuccess() {
       setCompletion(true);
