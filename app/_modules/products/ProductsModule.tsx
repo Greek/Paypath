@@ -53,6 +53,7 @@ import Masthead, {
   MastheadButtonSet,
   MastheadHeading,
 } from "@/components/masthead-layout";
+import CurrencyInput from "react-currency-input-field";
 
 export interface Guild {
   id: string;
@@ -80,7 +81,8 @@ export default function ProductsModule() {
   const [formStep, setFormStep] = useState<number>(0);
   const [redirectId, setRedirectId] = useState<number>();
   const [productType, setProductType] = useState<string>();
-  const [formattedPrice, setFormattedPrice] = useState<number>();
+  const [formattedPrice, setFormattedPrice] = useState<string>();
+  const [formattedPrice2, setFormattedPrice2] = useState<number>();
 
   const { data: session } = useSession();
   const {
@@ -156,28 +158,29 @@ export default function ProductsModule() {
     },
   });
 
-  const { data: products, isLoading: isProductsLoading } = useQuery({
-    queryFn: async () => {
-      return await fetch("/api/store/products").then(async (res) => {
-        return (await res.json()) as Product[];
-      });
-    },
-  });
+  const { data: products, isLoading: isProductsLoading } = useQuery(
+    ["products"],
+    {
+      queryFn: async () => {
+        return await fetch("/api/store/products").then(async (res) => {
+          return (await res.json()) as Product[];
+        });
+      },
+    }
+  );
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(ProductModel) });
+  } = useForm();
 
   const createProduct = (data: any) => {
-    console.log(data);
-
     createProductMutation({
       name: data.name,
       description: data.description,
       type: data.type,
-      price: data.price,
+      price: formattedPrice2,
       server: selectedServer,
     });
   };
@@ -329,6 +332,7 @@ export default function ProductsModule() {
                         placeholder="Product name"
                         {...register("name")}
                         className="mb-4"
+                        required
                       ></Input>
                       <TinyErrorMessage>
                         {errors.name?.message as string}
@@ -344,6 +348,7 @@ export default function ProductsModule() {
                         onValueChange={(s) => {
                           setProductType(s);
                         }}
+                        required
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Product type" />
@@ -370,25 +375,20 @@ export default function ProductsModule() {
                         <>
                           <label>Price</label>
                           <div className="flex flex-row space-x-2">
-                            <Input
-                              placeholder="Product name"
-                              defaultValue={formatPrice(0o000)}
-                              {...register("price", {
-                                required:
-                                  productType == "Free" ||
-                                  productType == "Lifetime"
-                                    ? false
-                                    : true,
-                              })}
-                              className="mb-4"
-                              onInput={(e) => {
-                                e.preventDefault();
-                                setFormattedPrice(
-                                  e.currentTarget.value as unknown as number
-                                );
+                            <CurrencyInput
+                              placeholder="Please enter a number"
+                              decimalsLimit={2}
+                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                              onValueChange={(s) => {
+                                setFormattedPrice(s);
+                                let price: string;
+                                price = formattedPrice as string;
+                                price.replace(".", "");
+                                setFormattedPrice2(Number(price));
                               }}
-                            ></Input>
-                            <p>{formatPrice(formattedPrice as number)}</p>
+                              {...register("price")}
+                            />
+                            ;
                             <Input
                               placeholder="Monthly"
                               disabled

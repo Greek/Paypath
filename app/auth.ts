@@ -58,6 +58,7 @@ export const {
               description: true,
               domain: true,
               licenses: true,
+              stripeId: true,
             },
           },
           accounts: true,

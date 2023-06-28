@@ -38,9 +38,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const session = await auth();
-  const store = session?.user?.stores?.find((store) => {
-    return store;
-  });
+  const store = session?.user?.stores[0];
 
   const body = await req.json();
 
@@ -48,23 +46,16 @@ export async function POST(req: NextRequest) {
 
   let price;
   if (body.type == "Free") price = null;
-  else price = body.price;
+  else price = String(body.price);
 
   const id = nanoid(32);
-
-  if (!(await ProductModel.safeParseAsync(body)).success) {
-    return NextResponse.json(await ProductModel.safeParseAsync(body), {
-      status: 400,
-    });
-  }
-
   await stripe.products.create(
     {
       name: body.name as string,
       id,
       default_price_data: {
         currency: "USD",
-        unit_amount: price as unknown as number,
+        unit_amount: Number(price?.replace(".", "")),
         recurring: { interval: interval },
       },
     },
@@ -79,7 +70,7 @@ export async function POST(req: NextRequest) {
       type: mapProductTypeEnum(body.type),
       recurrencyPeriod: interval,
       // @ts-ignore
-      price: price as unknown as string,
+      price: Number(price?.replace(".", "")),
       server: body.server as string,
       store: { connect: { id: store?.id! } },
     },

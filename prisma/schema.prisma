@@ -146,9 +146,9 @@ model Product {
   active Boolean @default(true)
 
   description String?
-  /// @zod.min(1, { message: "Your product's price cannot be empty." })
+
   price       Int?    @default(0)
-  currency    String?
+  currency    String? @default("USD")
 
   // Per month, year, week, etc.. Only active if recurring.
   /// @zod.optional()

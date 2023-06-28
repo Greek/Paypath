@@ -127,6 +127,9 @@ dependencies:
   react:
     specifier: 18.2.0
     version: 18.2.0
+  react-currency-input-field:
+    specifier: ^3.6.11
+    version: 3.6.11(react@18.2.0)
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
@@ -227,10 +230,10 @@ packages:
       preact-render-to-string: 5.2.3(preact@10.11.3)
     dev: false
 
-  /@auth/nextjs@0.0.0-manual.b53ca00b(next@13.4.2)(react@18.2.0):
+  /@auth/nextjs@0.0.0-manual.179c08d4(next@13.4.2)(react@18.2.0):
     resolution:
       {
-        integrity: sha512-g0XvlP+3MSXPX512K6Hu0mGOkb1QPCkXkaA0Zr9i+bmTEDU9TtYTTNmX2EyvLeTfmrEEU/CMS92aWTmiki1KVA==,
+        integrity: sha512-HVuDgb6xlYLV5mHTGc0Pycg8BlwtcvjvS+54QXEbOBpA5tulzKxAH8QlCoKj5R9XHW9hP9DiCnvXyVV9x2N+jA==,
       }
     peerDependencies:
       next: ^13.4.6
@@ -4569,7 +4572,7 @@ packages:
       nodemailer:
         optional: true
     dependencies:
-      "@auth/nextjs": 0.0.0-manual.b53ca00b(next@13.4.2)(react@18.2.0)
+      "@auth/nextjs": 0.0.0-manual.179c08d4(next@13.4.2)(react@18.2.0)
       next: 13.4.2(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -5221,6 +5224,17 @@ packages:
       {
         integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==,
       }
+
+  /react-currency-input-field@3.6.11(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-M9vOx1eaioSaYWirm7W2WSBi4bpLg+LK4Gf7C1kNhy6MvoSoOzd0mYZPxA78OC9UBIQ2nM080Wu9D1CwTY6n3w==,
+      }
+    peerDependencies:
+      react: ^16.9.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /react-dom@18.2.0(react@18.2.0):
     resolution:
