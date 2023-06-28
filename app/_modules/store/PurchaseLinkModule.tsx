@@ -12,7 +12,7 @@ import { CompletionContext } from "./providers/CompletionProvider";
 import LinkTag from "next/link";
 
 export const formatPrice = (price: number | null) => {
-  if (!price) return "?";
+  if (!price) return 0;
 
   const newPrice = price.toString();
 

@@ -207,63 +207,64 @@ export default function LinkModule({ params }: { params: { id: string } }) {
 
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 px-10 -mt-10">
         {!isLinkLoading && link ? (
-          <Card>
-            <CardHeader>
-              <CardTitle>Details</CardTitle>
-            </CardHeader>
-            <Separator />
-            <CardContent className={`py-3 space-y-2 text-left text-sm`}>
-              <div className={`grid grid-cols-3`}>
-                <p className={`text-muted-foreground`}>Nickname</p>
-                {link?.nickname?.length != 0 ? (
-                  <p>{link?.nickname}</p>
-                ) : (
-                  <p className={`text-muted-foreground`}>No nickname</p>
-                )}
-              </div>
-              <div className={`grid grid-cols-3`}>
-                <p className={`text-muted-foreground`}>Stock</p>
-                {link?.stock == -1 ? (
-                  <p className={`text-muted-foreground`}>Unlimited stock</p>
-                ) : (
-                  link?.stock
-                )}
-              </div>
-              <div className={`grid grid-cols-3`}>
-                <p className={`text-muted-foreground`}>Created on</p>
-                <p>
-                  <Moment format={"MMMM Do YYYY"}>{link?.createdAt}</Moment>
-                </p>
-              </div>{" "}
-              <div className={`grid grid-cols-3`}>
-                <p className={`text-muted-foreground`}>Created by</p>
-                <p>{link?.user?.name}</p>
-              </div>
-              <div className={`grid grid-cols-3`}>
-                <p className={`text-muted-foreground`}>Expires on</p>
-                <p className={`text-muted-foreground`}>Coming soon.</p>
-              </div>
-              <div className={`grid grid-cols-3`}>
-                <p className={`text-muted-foreground`}>Password</p>
-                <p className={`text-muted-foreground`}>Coming soon.</p>
-              </div>
-              <div className={`grid grid-cols-3`}>
-                <p className={`text-muted-foreground`}>Initial fee</p>
-                <p className={`text-muted-foreground`}>Coming soon.</p>
-              </div>
-              <div className={`grid grid-cols-3`}>
-                <p className={`text-muted-foreground`}>Free trial</p>
-                <p className={`text-muted-foreground`}>Coming soon.</p>
-              </div>
-              <div className={`grid grid-cols-3`}>
-                <p className={`text-muted-foreground`}>Restrictions</p>
-                <p className={`text-muted-foreground`}>None applied.</p>
-              </div>
-              <div className={`grid grid-cols-3`}>
-                <p className={`text-muted-foreground`}>Requires product</p>
-                <p className={`text-muted-foreground`}>Coming soon.</p>
-              </div>
-              {/* <div className={`grid grid-cols-2`}>
+          <>
+            <Card>
+              <CardHeader>
+                <CardTitle>Details</CardTitle>
+              </CardHeader>
+              <Separator />
+              <CardContent className={`py-3 space-y-2 text-left text-sm`}>
+                <div className={`grid grid-cols-3`}>
+                  <p className={`text-muted-foreground`}>Nickname</p>
+                  {link?.nickname?.length != 0 ? (
+                    <p>{link?.nickname}</p>
+                  ) : (
+                    <p className={`text-muted-foreground`}>No nickname</p>
+                  )}
+                </div>
+                <div className={`grid grid-cols-3`}>
+                  <p className={`text-muted-foreground`}>Stock</p>
+                  {link?.stock == -1 ? (
+                    <p className={`text-muted-foreground`}>Unlimited stock</p>
+                  ) : (
+                    link?.stock
+                  )}
+                </div>
+                <div className={`grid grid-cols-3`}>
+                  <p className={`text-muted-foreground`}>Created on</p>
+                  <p>
+                    <Moment format={"MMMM Do YYYY"}>{link?.createdAt}</Moment>
+                  </p>
+                </div>{" "}
+                <div className={`grid grid-cols-3`}>
+                  <p className={`text-muted-foreground`}>Created by</p>
+                  <p>{link?.user?.name}</p>
+                </div>
+                <div className={`grid grid-cols-3`}>
+                  <p className={`text-muted-foreground`}>Expires on</p>
+                  <p className={`text-muted-foreground`}>Coming soon.</p>
+                </div>
+                <div className={`grid grid-cols-3`}>
+                  <p className={`text-muted-foreground`}>Password</p>
+                  <p className={`text-muted-foreground`}>Coming soon.</p>
+                </div>
+                <div className={`grid grid-cols-3`}>
+                  <p className={`text-muted-foreground`}>Initial fee</p>
+                  <p className={`text-muted-foreground`}>Coming soon.</p>
+                </div>
+                <div className={`grid grid-cols-3`}>
+                  <p className={`text-muted-foreground`}>Free trial</p>
+                  <p className={`text-muted-foreground`}>Coming soon.</p>
+                </div>
+                <div className={`grid grid-cols-3`}>
+                  <p className={`text-muted-foreground`}>Restrictions</p>
+                  <p className={`text-muted-foreground`}>None applied.</p>
+                </div>
+                <div className={`grid grid-cols-3`}>
+                  <p className={`text-muted-foreground`}>Requires product</p>
+                  <p className={`text-muted-foreground`}>Coming soon.</p>
+                </div>
+                {/* <div className={`grid grid-cols-2`}>
               <p className={`text-muted-foreground`}>ID</p>
               <a
                 href={`https://dashboard.stripe.com${
@@ -274,8 +275,29 @@ export default function LinkModule({ params }: { params: { id: string } }) {
                 {product.id}
               </a>
             </div> */}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Link preview</CardTitle>
+              </CardHeader>
+              <Separator />
+              <CardContent className={`p-0 text-left text-sm h-full`}>
+                <iframe
+                  src={combinedURI}
+                  title="preview"
+                  className="-mt-[3rem]"
+                  style={{
+                    transform: "scale(0.7)",
+                    width: "calc(100%)",
+                    height: "calc(110%)",
+                    visibility: "visible",
+                    userSelect: "none",
+                  }}
+                ></iframe>
+              </CardContent>
+            </Card>
+          </>
         ) : null}
       </div>
     </>

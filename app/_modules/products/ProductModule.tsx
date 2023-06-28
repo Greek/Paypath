@@ -217,60 +217,6 @@ export default function ProductModule(context: { params: { id: string } }) {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Details</CardTitle>
-              </CardHeader>
-              <Separator />
-              <CardContent className={`py-3 space-y-2 text-left text-sm`}>
-                <div className={`grid grid-cols-3`}>
-                  <p className={`text-muted-foreground`}>Name</p>
-                  <p>{product.name}</p>
-                </div>
-                <div className={`grid grid-cols-3`}>
-                  <p className={`text-muted-foreground`}>Description</p>
-                  {product.description ? (
-                    product.description
-                  ) : (
-                    <p className="text-muted-foreground">No description</p>
-                  )}
-                </div>
-                <div className={`grid grid-cols-3`}>
-                  <p className={`text-muted-foreground`}>Price</p>
-                  <p>{formatPrice(product.price)}</p>
-                </div>
-                {/* <div className={`grid grid-cols-2`}>
-                <p className={`text-muted-foreground`}>Transfers</p>
-                <p>{product.price}</p>
-              </div> */}
-                <div className={`grid grid-cols-3`}>
-                  <p className={`text-muted-foreground`}>Customers</p>
-                  <div className="flex flex-row align-middle">
-                    {product.licenses.length > 1 ? (
-                      <>
-                        <ExternalLinkTo
-                          href="/"
-                          className={`${
-                            product.licenses.length < 1
-                              ? "text-muted-foreground"
-                              : null
-                          }`}
-                        >
-                          {product.licenses.length} customer
-                          {product.licenses.length <= 1 ? "s" : null}
-                        </ExternalLinkTo>
-                      </>
-                    ) : (
-                      <p className="text-muted-foreground">No customers</p>
-                    )}
-                  </div>
-                </div>
-                <div className={`grid grid-cols-3`}>
-                  <p className={`text-muted-foreground`}>ID</p>
-                  <p>{product.id}</p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
                 <CardTitle>Waitlist</CardTitle>
               </CardHeader>
               <Separator />
