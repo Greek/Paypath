@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
         email: localCust?.email as string,
         name: body.customer?.name,
         payment_method: body.paymentMethod,
-        metadata: { license: license.key ?? "HELLO" },
+        metadata: { license: license.key },
       },
       { stripeAccount: item?.store.stripeId }
     );
@@ -87,7 +87,8 @@ export async function POST(req: NextRequest) {
         currency: "USD",
         items: [{ price: stripeProduct.default_price as string }],
         expand: ["latest_invoice.payment_intent"],
-        application_fee_percent: 2,
+        application_fee_percent:
+          item.store.id == process.env.STRIPE_GATEKEEP_ACCT_ID ? 0 : 2,
       },
       { stripeAccount: item?.store.stripeId }
     );
