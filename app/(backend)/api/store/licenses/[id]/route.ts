@@ -50,7 +50,20 @@ export async function PUT(
       { status: 404 }
     );
 
-  await prisma.license.delete({ where: { id: license.id } });
+  await prisma.license.update({
+    where: { id: license.id },
+    data: { active: false },
+  });
 
   return NextResponse.json({ success: true });
+}
+
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
+  const session = await auth();
+  if (session == null) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 }

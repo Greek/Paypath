@@ -9,9 +9,13 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Account, License, Link, Product, User } from "@prisma/client";
 import { formatPrice } from "@/app/_modules/store/PurchaseLinkModule";
 import {
+  ArrowLeftRight,
   LinkIcon,
   LucideArrowRight,
+  LucideKey,
+  LucideMail,
   MoreHorizontal,
+  Pencil,
   Trash,
 } from "lucide-react";
 import { LinkTo } from "@/components/externallink";
@@ -31,6 +35,8 @@ import Masthead, {
   MastheadHeading,
   MastheadHeadingWrapper,
 } from "@/components/masthead-layout";
+import { useEffect } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function CustomerModule(context: { params: { id: string } }) {
   const { push } = useRouter();
@@ -38,16 +44,31 @@ export default function CustomerModule(context: { params: { id: string } }) {
     data: license,
     refetch,
     isLoading,
-  } = useQuery(["product"], {
+  } = useQuery(["license"], {
     queryFn: async () => {
       return (await axios.get(`/api/store/licenses/${context.params.id}`)).data
         .license as License & {
         product: Product;
         customer: User & { accounts: Account[] };
-        link: Link;
       };
     },
   });
+
+  const isNotActive = !license?.active;
+
+  const { isLoading: isDeletingLicense, mutate: deactivateLicense } =
+    useMutation(["deactivateLicense"], {
+      mutationFn: async () => {
+        return (await axios.put(`/api/store/licenses/${license?.id}`)).data;
+      },
+    });
+
+  const { toast } = useToast();
+
+  const cancelUserSubscription = async () => {
+    deactivateLicense();
+    refetch();
+  };
 
   return (
     <>
@@ -89,14 +110,18 @@ export default function CustomerModule(context: { params: { id: string } }) {
                 </div>
               </MastheadHeadingWrapper>
               <MastheadButtonSet>
+                <Button size={"sm"} disabled={isNotActive}>
+                  <Pencil size={16} className="mr-2" /> Edit
+                </Button>
+                <Button size={"sm"} disabled={isNotActive}>
+                  <ArrowLeftRight size={16} className="mr-2" /> Transfer
+                </Button>
                 <Button
                   size={"sm"}
-                  disabled={!license.active}
-                  onClick={() => {
-                    push(`/d/links/new?product=${license.id}`);
-                  }}
+                  disabled={isNotActive}
+                  onClick={cancelUserSubscription}
                 >
-                  <LinkIcon size={16} className={`mr-2`} /> Create Link
+                  <Trash size={16} className="mr-2" /> Cancel
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger>
@@ -106,14 +131,34 @@ export default function CustomerModule(context: { params: { id: string } }) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        <LucideKey size={16} className="mr-2" /> Change license
+                        key
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <LucideMail size={16} className="mr-2 " />
+                        Send email receipt
+                      </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
                         onClick={() => {
-                          push(`/d/links/${license.link?.id}`);
+                          push(`/d/links/${license.linkId}`);
                         }}
                       >
-                        <LucideArrowRight size={16} className="mr-2 h-4 w-4" />
+                        <LucideArrowRight size={16} className="mr-2 " />
                         View link
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={() => {
+                          navigator.clipboard.writeText(license.key);
+                          toast({
+                            title: "License key copied!",
+                            value: "Your copy is ready for the pasta!",
+                          });
+                        }}
+                      >
+                        Copy license key
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
