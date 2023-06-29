@@ -25,9 +25,7 @@ export default async function OverviewModule({
 
   const store = await prisma.store.findFirst({
     where: {
-      id: session.user?.stores.find((store) => {
-        return store;
-      })?.id,
+      id: session.user?.stores[0]?.id,
     },
     include: {
       products: true,
@@ -44,6 +42,8 @@ export default async function OverviewModule({
       stripeAccount: store?.stripeId as string,
     });
   }
+
+  if (session.user?.stores.length! < 1) return redirect("/onboarding");
 
   return (
     <>
@@ -106,6 +106,7 @@ export default async function OverviewModule({
           </>
         </div>
       ) : (
+        // @ts-ignore
         <OnboardingSteps store={store} />
       )}
     </>

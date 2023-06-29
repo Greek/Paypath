@@ -17,11 +17,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useEffect } from "react";
 
 export const OnboardingSteps = (
-  store: (Store & { products: Product[]; links: Link[] }) | null | any
+  storeStore: Store & { products: Product[]; links: Link[] }
 ) => {
   const { push } = useRouter();
+
+  // @ts-ignore
+  const { store } = storeStore;
+
+  useEffect(() => {
+    console.log(!store.stripeId);
+  }, [store]);
 
   return (
     <div className="-mt-10 p-4">
@@ -39,14 +47,14 @@ export const OnboardingSteps = (
               <AccordionTrigger className={`px-6`}>
                 Connect Stripe
               </AccordionTrigger>
-              <AccordionContent className={`px-6`}>
+              <AccordionContent className={`px-6`} forceMount>
                 To begin using Paypath, you must connect a Stripe account so
                 that we can process payments to your account.
                 <br />
                 <br />
                 <Button
                   onClick={() => push(`/ajax/stripe/auth/${store?.id}`)}
-                  disabled={!store?.stripeId}
+                  disabled={!!store.stripeId}
                 >
                   Connect Stripe
                 </Button>
@@ -56,7 +64,7 @@ export const OnboardingSteps = (
               <AccordionTrigger className={`px-6`}>
                 Create a product
               </AccordionTrigger>
-              <AccordionContent className={`px-6`}>
+              <AccordionContent className={`px-6`} forceMount>
                 Products represent access to your Discord server and what they
                 provide. You can make one so that people are able to access your
                 server as well as any optional roles you&apos;d like to make
@@ -66,7 +74,7 @@ export const OnboardingSteps = (
                 <br />
                 <Button
                   onClick={() => push(`/d/products`)}
-                  disabled={store?.stripeId?.length == 0}
+                  disabled={!store?.stripeId}
                 >
                   Create a new product
                 </Button>
@@ -76,7 +84,7 @@ export const OnboardingSteps = (
               <AccordionTrigger className={`px-6`}>
                 Create a link
               </AccordionTrigger>
-              <AccordionContent className={`px-6`}>
+              <AccordionContent className={`px-6`} forceMount>
                 Links are the front pages where people will purchase your
                 product and get access. Go ahead and create one and share it to
                 the world.

@@ -482,12 +482,25 @@ export default function ProductsModule() {
                 Products are the access gates to your Discord server. You can
                 provide roles along with this access.
               </SectionIntroductionDescription>
-              <DialogTrigger>
-                <Button onClick={() => setDialogActive(true)}>
+              {session?.user?.stores[0].stripeId ? (
+                <DialogTrigger>
+                  <Button
+                    onClick={() => {
+                      if (!session?.user?.stores[0].stripeId) return;
+                      else setDialogActive(true);
+                    }}
+                    disabled={!session?.user?.stores[0].stripeId}
+                  >
+                    <Plus scale={16} className="mr-2" />
+                    Create Product
+                  </Button>
+                </DialogTrigger>
+              ) : (
+                <Button disabled={true}>
                   <Plus scale={16} className="mr-2" />
                   Create Product
                 </Button>
-              </DialogTrigger>
+              )}
             </SectionIntroduction>
           )
         )}

@@ -26,8 +26,8 @@ import { Link, Product } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Book, Plus } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import Moment from "react-moment";
 
 export default function LinksModule({
@@ -37,6 +37,7 @@ export default function LinksModule({
 }) {
   const router = useRouter();
 
+  const { data: session } = useSession();
   const { data: links, isLoading } = useQuery(["links"], {
     queryFn: async () => {
       return (await axios.get("/api/store/links")).data as Link[];
@@ -124,6 +125,7 @@ export default function LinksModule({
             onClick={() => {
               router.push("/d/links/new");
             }}
+            disabled={!session?.user?.stores[0].stripeId}
           >
             <Plus scale={16} className="mr-2" />
             Create Link
