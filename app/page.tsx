@@ -34,14 +34,7 @@ export default async function Home({
               Manage access to your Discord server.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <SignInButton />
-            {searchParams.error == "AccessDenied" && (
-              <p className="text-red-700 text-sm pt-3">
-                You are not authorized to sign in.
-              </p>
-            )}
-          </CardContent>
+          <CardContent></CardContent>
         </Card>
       </div>
     </div>

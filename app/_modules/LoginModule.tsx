@@ -11,7 +11,11 @@ export const metadata: Metadata = {
   description: "Authentication forms built using the components.",
 };
 
-export default function LoginModule() {
+export default function LoginModule({
+  searchParams,
+}: {
+  searchParams: { error: string };
+}) {
   return (
     <>
       <div className="md:hidden">
@@ -73,6 +77,11 @@ export default function LoginModule() {
               </p>
             </div>
             <UserAuthForm />
+            {searchParams.error == "AccessDenied" && (
+              <p className="text-red-700 text-sm pt-3">
+                You are not authorized to sign in.
+              </p>
+            )}
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link
