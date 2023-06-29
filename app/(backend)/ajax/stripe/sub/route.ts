@@ -18,6 +18,12 @@ const dashify = (s: string) => {
   );
 };
 
+const calculateApplicationFee = (stripeId: string) => {
+  if (stripeId == process.env.STRIPE_GATEKEEP_ACCT_ID) return 0;
+
+  return 2;
+};
+
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (session == null) {
@@ -87,8 +93,7 @@ export async function POST(req: NextRequest) {
         currency: "USD",
         items: [{ price: stripeProduct.default_price as string }],
         expand: ["latest_invoice.payment_intent"],
-        application_fee_percent:
-          item.store.id == process.env.STRIPE_GATEKEEP_ACCT_ID ? 0 : 2,
+        application_fee_percent: calculateApplicationFee(item.store.stripeId),
       },
       { stripeAccount: item?.store.stripeId }
     );
