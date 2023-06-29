@@ -2,7 +2,8 @@
 
 import { LinkItem } from "@/app/(dashboard)/d/layout";
 import {
-  DropdownMenu, DropdownMenuTrigger
+  DropdownMenu,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Store } from "@prisma/client";
 import clsx from "clsx";
@@ -21,9 +22,7 @@ export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
 
   return (
     <aside className="hidden md:flex top-1 md:flex-shrink-0 -mx-4 md:mx-0 md:px-0">
-      <nav
-        className="flex flex-row w-60 shrink-0 md:flex-col items-start relative px-4 md:px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative border-r-[.05em]"
-      >
+      <nav className="flex flex-row w-60 shrink-0 md:flex-col items-start relative px-4 md:px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative border-r-[.05em]">
         <div className="shrink-0 w-full">
           <div className="relative z-30">
             <DropdownMenu>
@@ -44,7 +43,7 @@ export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
                   </div>
                 </span>
               </DropdownMenuTrigger>
-              </DropdownMenu>
+            </DropdownMenu>
           </div>
         </div>
         <div className="flex flex-row md:flex-col space-x-0 mb-2 mt-2 md:mt-0 w-full">
