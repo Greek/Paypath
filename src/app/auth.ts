@@ -41,7 +41,7 @@ export const {
   ],
   callbacks: {
     async signIn({ profile }) {
-      if (profile?.email != "apapuig+discord@gmail.com") return false;
+      // if (profile?.email != "apapuig+discord@gmail.com") return false;
 
       return true;
     },
