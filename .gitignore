@@ -41,4 +41,4 @@ scripts/venv
 .env
 
 .turbo
-app/_schemas
+src/app/_schemas
