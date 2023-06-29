@@ -2,7 +2,7 @@ import { PurchaseLinkSignInConfrontation } from "@/modules/store/PurchaseLinkSig
 import { auth } from "@/app/auth";
 import { prisma } from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
-import { APP_NAME, WEBAPP_URL } from "@/lib/constants";
+import { APP_NAME, WEBAPP_URL, WEBSITE_URL } from "@/lib/constants";
 
 export async function generateMetadata({
   params,
@@ -17,7 +17,26 @@ export async function generateMetadata({
   if (!link) return { title: "Not found" };
 
   return {
-    title: `${link?.nickname || link?.product.name} on ${link?.store.name}`,
+    openGraph: {
+      title: {
+        absolute: `Purchase ${link?.nickname || link?.product.name} on ${
+          link?.store.name
+        }`,
+      },
+      description: `${
+        link.product.description ||
+        `Purchase ${
+          link.nickname || link.product.name
+        } on Paypath, a way to discover new resources and communities.`
+      }`,
+    },
+    title: `Purchase ${link?.nickname || link?.product.name}`,
+    description: `${
+      link.product.description ||
+      `Purchase ${
+        link.nickname || link.product.name
+      } on Paypath, a way to discover new resources and communities.`
+    }`,
   };
 }
 

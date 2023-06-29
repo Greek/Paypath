@@ -3,18 +3,27 @@ import { Inter } from "next/font/google";
 import { AuthContext } from "./AuthContext";
 import { ThemeProvider } from "@/components/themes-provider";
 import { QueryContext } from "./QueryContext";
-import { REST } from "@discordjs/rest";
-import { APP_NAME } from "@/lib/constants";
+import { APP_NAME, WEBSITE_URL } from "@/lib/constants";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
+  openGraph: {
+    title: `Monitize your communities and resources on ${APP_NAME}.`,
+    description:
+      "Sell access to your Discord server with Paypath, the prime platform to sell access to your communities and resources. Easy to use, free for everyone, for life.",
+    siteName: `${APP_NAME}`,
+    url: `${WEBSITE_URL}`,
+    locale: "en_US",
+    type: "website",
+  },
   title: {
     template: `%s · ${APP_NAME}`,
-    default: `${APP_NAME} - Sell access to your Discord servers.`,
+    default: `Paypath`,
   },
+  creator: APP_NAME,
   description:
-    "Sell access to your Discord server with Paypath, a new and easy way to manage on your experiences.",
+    "Sell access to your Discord server with Paypath, the prime platform to sell access to your communities and resources. Easy to use, free for everyone, for life.",
 };
 
 export default function RootLayout({
