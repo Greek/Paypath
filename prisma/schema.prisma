@@ -123,7 +123,7 @@ model Store {
 
   /// @zod.optional()
   owner    String
-  User     User      @relation(fields: [owner], references: [id])
+  User     User      @relation(fields: [owner], references: [id], onDelete: Cascade)
   products Product[]
   licenses License[]
   Link     Link[]
@@ -180,10 +180,10 @@ model License {
   storeId    String
   product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId  String
-  customer   User    @relation(fields: [customerId], references: [id])
+  customer   User    @relation(fields: [customerId], references: [id], onDelete: Cascade)
   customerId String
-  link       Link    @relation(fields: [linkId], references: [id])
-  linkId     String  @default("")
+  link       Link?   @relation(fields: [linkId], references: [id], onDelete: SetNull)
+  linkId     String? @default("")
 
   purchasedAt DateTime  @default(now())
   cancelledAt DateTime?
@@ -228,7 +228,7 @@ model Link {
   /// @zod.optional()
   storeId String
 
-  user     User?     @relation(fields: [userId], references: [id])
+  user     User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
   /// @zod.optional()
   userId   String?
   licenses License[]
