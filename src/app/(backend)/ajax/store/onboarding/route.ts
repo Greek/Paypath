@@ -11,7 +11,8 @@ export async function POST(req: NextRequest) {
   await prisma.store.create({
     data: {
       id: nanoid(30),
-      name: formData.name,
+      name: formData.name.toLowerCase().replaceAll([" "], "-"),
+      displayName: formData.name,
       description: "",
       domain: `${formData.name.replaceAll([" "], "-").toLowerCase()}`,
       User: {

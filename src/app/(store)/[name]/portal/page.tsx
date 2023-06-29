@@ -10,7 +10,7 @@ export async function generateMetadata({
 
   return {
     title: {
-      absolute: `${store?.name} portal`,
+      absolute: `${store?.name} Portal`,
     },
   };
 }

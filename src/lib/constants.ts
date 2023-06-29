@@ -12,6 +12,7 @@ const RENDER_URL = process.env.RENDER_EXTERNAL_URL
   : "";
 export const WEBAPP_URL =
   process.env.NEXTAUTH_URL ||
+  process.env.NEXT_PUBLIC_NEXTAUTH_URL ||
   VERCEL_URL ||
   RAILWAY_STATIC_URL ||
   HEROKU_URL ||
@@ -19,7 +20,7 @@ export const WEBAPP_URL =
   "http://localhost:3000";
 
 export const WEBSITE_URL =
-  process.env.NEXT_PUBLIC_WEBSITE_URL ||
+  process.env.NEXT_PUBLIC_NEXTAUTH_URL ||
   process.env.NEXTAUTH_URL ||
   "https://paypath.app";
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Paypath";

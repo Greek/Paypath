@@ -1,7 +1,8 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
-import Head from "next/head";
+
+export const metadata = {
+  title: "Settings",
+};
 
 export default function SettingsLayout({
   children,

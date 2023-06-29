@@ -107,6 +107,8 @@ model Store {
   /// @zod.min(1, { message: "Your store name can't be empty." }).max(32, {message: "Your store name can't be longer than 32 characters."})
   name String
 
+  displayName String @default("")
+
   /// @zod.max(256, { message: "Your description can't be longer than 256 characters." })
   description String
 
@@ -147,8 +149,8 @@ model Product {
 
   description String?
 
-  price       Int?    @default(0)
-  currency    String? @default("USD")
+  price    Int?    @default(0)
+  currency String? @default("USD")
 
   // Per month, year, week, etc.. Only active if recurring.
   /// @zod.optional()

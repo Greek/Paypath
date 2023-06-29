@@ -38,6 +38,7 @@ import Masthead, {
   MastheadHeading,
   MastheadHeadingWrapper,
 } from "@/components/masthead-layout";
+import { WEBAPP_URL } from "@/lib/constants";
 
 export default function LinkModule({ params }: { params: { id: string } }) {
   const { push } = useRouter();
@@ -93,7 +94,7 @@ export default function LinkModule({ params }: { params: { id: string } }) {
   useKeyPress(["s"], copyLinkLink);
   const [copied, setCopiedState] = useState(false);
 
-  const combinedURI = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/${link?.store.name}/${link?.id}`;
+  const combinedURI = `${WEBAPP_URL}/${link?.store.name}/${link?.id}`;
 
   return (
     <>
@@ -282,10 +283,10 @@ export default function LinkModule({ params }: { params: { id: string } }) {
                 <iframe
                   src={combinedURI}
                   title="preview"
-                  className="-mt-[3rem]"
+                  className="-mt-[3rem] -ml-20"
                   style={{
                     transform: "scale(0.7)",
-                    width: "calc(100%)",
+                    width: "calc(120.8%)",
                     height: "calc(110%)",
                     visibility: "visible",
                     userSelect: "none",

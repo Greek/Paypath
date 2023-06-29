@@ -1,5 +1,6 @@
 import StoreModule from "@/modules/store/StoreModule";
 import { prisma } from "@/lib/prisma";
+import { APP_NAME } from "@/lib/constants";
 
 export async function generateMetadata({
   params,
@@ -10,7 +11,7 @@ export async function generateMetadata({
 
   return {
     title: {
-      absolute: `${store?.name} on Paypath`,
+      absolute: `${store?.name} on ${APP_NAME}`,
     },
   };
 }

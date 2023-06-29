@@ -1,4 +1,5 @@
 import { auth } from "@/app/auth";
+import { WEBAPP_URL } from "@/lib/constants";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
@@ -18,6 +19,6 @@ export const GET = async (
   // }
 
   return NextResponse.redirect(
-    `https://connect.stripe.com/oauth/v2/authorize?response_type=code&client_id=${process.env.STRIPE_CONNECT_ID}&scope=read_write&redirect_uri=${process.env.NEXTAUTH_URL}/api/stripe/onboard`
+    `https://connect.stripe.com/oauth/v2/authorize?response_type=code&client_id=${process.env.STRIPE_CONNECT_ID}&scope=read_write&redirect_uri=${WEBAPP_URL}/api/stripe/onboard`
   );
 };
