@@ -93,11 +93,7 @@ export default function LinkModule({ params }: { params: { id: string } }) {
   useKeyPress(["s"], copyLinkLink);
   const [copied, setCopiedState] = useState(false);
 
-  const combinedURI = `${
-    process.env.NEXT_PUBLIC_NODE_ENV == "development"
-      ? "http://localhost:3000"
-      : process.env.NEXT_PUBLIC_NEXTAUTH_URL
-  }/${link?.store.name}/${link?.id}`;
+  const combinedURI = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/${link?.store.name}/${link?.id}`;
 
   return (
     <>

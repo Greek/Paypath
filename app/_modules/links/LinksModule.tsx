@@ -125,7 +125,11 @@ export default function LinksModule({
             onClick={() => {
               router.push("/d/links/new");
             }}
-            disabled={!session?.user?.stores[0].stripeId}
+            disabled={
+              !session?.user?.stores[0].stripeId ||
+              // @ts-ignore
+              !session.user.stores[0].products
+            }
           >
             <Plus scale={16} className="mr-2" />
             Create Link
