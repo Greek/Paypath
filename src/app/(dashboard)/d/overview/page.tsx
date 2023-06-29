@@ -1,3 +1,3 @@
-import OverviewModule from "@/app/_modules/overview/OverviewModule";
+import OverviewModule from "@/modules/overview/OverviewModule";
 
 export default OverviewModule;

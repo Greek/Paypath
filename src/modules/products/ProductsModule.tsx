@@ -486,10 +486,8 @@ export default function ProductsModule() {
                 <DialogTrigger>
                   <Button
                     onClick={() => {
-                      if (!session?.user?.stores[0].stripeId) return;
-                      else setDialogActive(true);
+                      setDialogActive(true);
                     }}
-                    disabled={!session?.user?.stores[0].stripeId}
                   >
                     <Plus scale={16} className="mr-2" />
                     Create Product

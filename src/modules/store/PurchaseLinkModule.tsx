@@ -1,6 +1,6 @@
 "use client";
 
-import CheckoutForm from "@/app/_modules/store/forms/CheckoutForm";
+import CheckoutForm from "@/modules/store/forms/CheckoutForm";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Elements } from "@stripe/react-stripe-js";

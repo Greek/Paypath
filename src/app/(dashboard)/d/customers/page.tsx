@@ -1,3 +1,3 @@
-import CustomersModule from "@/app/_modules/customers/CustomersModule";
+import CustomersModule from "@/modules/customers/CustomersModule";
 
 export default CustomersModule;

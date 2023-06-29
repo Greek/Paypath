@@ -16,7 +16,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { TinyErrorMessage } from "@/app/_modules/products/ProductsModule";
+import { TinyErrorMessage } from "@/modules/products/ProductsModule";
 
 export default function NewLink({
   searchParams,

@@ -1,4 +1,4 @@
-import StoreModule from "@/app/_modules/store/StoreModule";
+import StoreModule from "@/modules/store/StoreModule";
 import { prisma } from "@/lib/prisma";
 
 export async function generateMetadata({

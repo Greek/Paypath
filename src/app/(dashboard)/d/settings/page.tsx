@@ -1,3 +1,3 @@
-import SettingsModule from "@/app/_modules/settings/SettingsModule";
+import SettingsModule from "@/modules/settings/SettingsModule";
 
 export default SettingsModule;

@@ -1,4 +1,4 @@
-import { PurchaseLinkSignInConfrontation } from "@/app/_modules/store/PurchaseLinkSigninConfrontation";
+import { PurchaseLinkSignInConfrontation } from "@/modules/store/PurchaseLinkSigninConfrontation";
 import { auth } from "@/app/auth";
 import { prisma } from "@/lib/prisma";
 import { signIn } from "next-auth/react";

@@ -1,3 +1,3 @@
-import LinksModule from "@/app/_modules/links/LinksModule";
+import LinksModule from "@/modules/links/LinksModule";
 
 export default LinksModule;

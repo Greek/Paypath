@@ -1,3 +1,3 @@
-import ProductsModule from "@/app/_modules/products/ProductsModule";
+import ProductsModule from "@/modules/products/ProductsModule";
 
 export default ProductsModule;

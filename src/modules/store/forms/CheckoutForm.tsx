@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { CompletionContext } from "../providers/CompletionProvider";
 import { Store } from "@prisma/client";
-import { TinyErrorMessage } from "@/app/_modules/products/ProductsModule";
+import { TinyErrorMessage } from "@/modules/products/ProductsModule";
 
 export default function CheckoutForm({
   link,

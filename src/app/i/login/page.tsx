@@ -1,3 +1,3 @@
-import LoginModule from "@/app/_modules/LoginModule";
+import LoginModule from "@/modules/LoginModule";
 
 export default LoginModule;

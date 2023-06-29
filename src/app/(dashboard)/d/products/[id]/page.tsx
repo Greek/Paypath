@@ -1,4 +1,4 @@
-import ProductModule from "@/app/_modules/products/ProductModule";
+import ProductModule from "@/modules/products/ProductModule";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 

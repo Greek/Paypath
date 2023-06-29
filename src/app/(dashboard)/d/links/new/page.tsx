@@ -1,3 +1,3 @@
-import NewLink from "@/app/_modules/links/NewLinkModule";
+import NewLink from "@/modules/links/NewLinkModule";
 
 export default NewLink;

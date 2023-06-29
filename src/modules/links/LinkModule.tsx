@@ -1,6 +1,6 @@
 "use client";
 
-import { formatPrice } from "@/app/_modules/store/PurchaseLinkModule";
+import { formatPrice } from "@/modules/store/PurchaseLinkModule";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
