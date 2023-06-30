@@ -12,6 +12,7 @@ import {
   LinkIcon,
   LucideArrowRight,
   MoreHorizontal,
+  PlusIcon,
   Trash,
 } from "lucide-react";
 import { ExternalLinkTo } from "@/components/externallink";
@@ -21,9 +22,10 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useKeyPress } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import Masthead, {
@@ -31,6 +33,7 @@ import Masthead, {
   MastheadHeading,
   MastheadHeadingWrapper,
 } from "@/components/masthead-layout";
+import Link from "next/link";
 
 export default function ProductModule(context: { params: { id: string } }) {
   const { push } = useRouter();
@@ -61,6 +64,10 @@ export default function ProductModule(context: { params: { id: string } }) {
     modifyProduct({ active: !product?.active });
   };
 
+  useKeyPress(["c"], () => {
+    push(`/d/links/new?product=${product?.id}`);
+  });
+
   return (
     <>
       <Masthead>
@@ -85,18 +92,34 @@ export default function ProductModule(context: { params: { id: string } }) {
                   <Badge>{product.active ? "Active" : "Archived"}</Badge>
                 </MastheadHeading>
                 <span className="text-muted-foreground">
-                  sold for {formatPrice(product.price)}
+                  sold for {formatPrice(product.price)} {product.currency}
                 </span>
               </MastheadHeadingWrapper>
               <MastheadButtonSet>
                 <Button
                   size={"sm"}
-                  disabled={!product.active}
+                  disabled={!product.active || isLoading}
                   onClick={() => {
                     push(`/d/links/new?product=${product.id}`);
                   }}
                 >
-                  <LinkIcon size={16} className={`mr-2`} /> Create Link
+                  <PlusIcon size={16} className={`mr-2`} /> Create Link
+                  <DropdownMenuShortcut variant={"default"}>
+                    C
+                  </DropdownMenuShortcut>
+                </Button>
+                <Button
+                  onClick={() => {
+                    push(`/d/links/?product=${product.id}`);
+                  }}
+                  size="sm"
+                  variant={"outline"}
+                >
+                  <LinkIcon size={16} className="mr-2 h-4 w-4" />
+                  See links
+                  <DropdownMenuShortcut variant={"secondary"}>
+                    L
+                  </DropdownMenuShortcut>
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger>
@@ -112,15 +135,6 @@ export default function ProductModule(context: { params: { id: string } }) {
                       >
                         <Trash size={16} className="mr-2 h-4 w-4" />
                         {product.active ? "Archive" : "Unarchive"} product
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        onClick={() => {
-                          push(`/d/links/?product=${product.id}`);
-                        }}
-                      >
-                        <LucideArrowRight size={16} className="mr-2 h-4 w-4" />
-                        See links
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
@@ -181,7 +195,9 @@ export default function ProductModule(context: { params: { id: string } }) {
                 </div>
                 <div className={`grid grid-cols-3`}>
                   <p className={`text-muted-foreground`}>Price</p>
-                  <p>{formatPrice(product.price)}</p>
+                  <p>
+                    {formatPrice(product.price)} {product.currency}
+                  </p>
                 </div>
                 {/* <div className={`grid grid-cols-2`}>
                 <p className={`text-muted-foreground`}>Transfers</p>

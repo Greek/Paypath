@@ -451,7 +451,9 @@ export default function ProductsModule() {
                           <TableCell className="font-medium w-[20rem]">
                             {product.name}
                           </TableCell>
-                          <TableCell>{product.price}</TableCell>
+                          <TableCell>
+                            {formatPrice(product.price)} {product.currency}
+                          </TableCell>
                           <TableCell>
                             <kbd>{product.licenses.length}</kbd>
                           </TableCell>

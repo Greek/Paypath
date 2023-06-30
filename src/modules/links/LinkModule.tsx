@@ -113,7 +113,10 @@ export default function LinkModule({ params }: { params: { id: string } }) {
             </MastheadHeading>
             <span className="text-muted-foreground ">
               {!link ? null : (
-                <>sold for ${formatPrice(link?.product?.price)} USD</>
+                <>
+                  sold for {formatPrice(link?.product?.price)}{" "}
+                  {link.product.currency}
+                </>
               )}
             </span>
           </MastheadHeadingWrapper>
