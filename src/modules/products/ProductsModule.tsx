@@ -26,7 +26,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { DataTable } from "./table/data-table";
 import { columns } from "./table/columns";
-import { Product } from "@prisma/client";
+import { License, Product, Store } from "@prisma/client";
 import { APIRole } from "discord-api-types/v10";
 import { Plus, Upload } from "lucide-react";
 import { ExternalLinkTo } from "@/components/externallink";
@@ -86,6 +86,14 @@ export default function ProductsModule() {
   const [formattedPrice2, setFormattedPrice2] = useState<number>();
 
   const { data: session } = useSession();
+  const { data: store, isLoading: isLoadingStore } = useQuery(["store"], {
+    queryFn: async () => {
+      return (await axios.get(`/api/store/${session?.user?.stores[0].name}`))
+        .data as Store & { products: Product[] };
+    },
+    enabled: !!session,
+  });
+
   const {
     data: guildsData,
     isError,
@@ -143,7 +151,7 @@ export default function ProductsModule() {
     isSuccess: mutationIsSuccess,
   } = useMutation(["createProduct"], {
     mutationFn: async (data: any) => {
-      return await fetch("/api/store/products", {
+      return await fetch(`/api/store/${store?.name}/products`, {
         method: "POST",
         body: JSON.stringify(data),
       }).then((res) => {
@@ -158,20 +166,6 @@ export default function ProductsModule() {
       return;
     },
   });
-
-  const { data: products, isLoading: isProductsLoading } = useQuery(
-    ["products"],
-    {
-      queryFn: async () => {
-        return (
-          await axios.get(
-            `/api/store/${session?.user?.stores[0].name}/products`
-          )
-        ).data;
-      },
-      enabled: !!session,
-    }
-  );
 
   const {
     register,
@@ -211,7 +205,7 @@ export default function ProductsModule() {
           <MastheadHeading>Products</MastheadHeading>
           <MastheadButtonSet>
             <DialogTrigger>
-              {products?.length! > 0 && (
+              {store?.products?.length! > 0 && (
                 <Button onClick={() => setDialogActive(true)}>
                   <Plus scale={12} className="mr-2" /> Create New Product
                 </Button>
@@ -429,8 +423,8 @@ export default function ProductsModule() {
           </MastheadButtonSet>
         </Masthead>
 
-        {isProductsLoading && <LoadingIndicator />}
-        {products && products.length > 0 ? (
+        {isLoadingStore && <LoadingIndicator />}
+        {store?.products && store.products.length > 0 ? (
           <div className="grid gap-x-6 gap-y-3 px-10 mt-4">
             <Table>
               <TableHeader>
@@ -444,39 +438,42 @@ export default function ProductsModule() {
 
               <TableBody>
                 {/*@ts-ignore */}
-                {products.map((product: Product & { licenses: License[] }) => {
-                  return (
-                    <>
-                      <a
-                        href={`/d/products/${product.id}`}
-                        className="w-full contents"
-                      >
-                        <TableRow>
-                          <TableCell className="font-medium w-[20rem]">
-                            {product.name}
-                          </TableCell>
-                          <TableCell>
-                            {formatPrice(product.price)} {product.currency}
-                          </TableCell>
-                          <TableCell>
-                            <kbd>{product.licenses.length}</kbd>
-                          </TableCell>
-                          <TableCell>
-                            <Moment format="MMMM Do YYYY">
-                              {product.createdAt}
-                            </Moment>
-                          </TableCell>
-                        </TableRow>
-                      </a>
-                    </>
-                  );
-                })}
+                {store?.products.map(
+                  // @ts-ignore
+                  (product: Product & { licenses: License[] }) => {
+                    return (
+                      <>
+                        <a
+                          href={`/d/products/${product.id}`}
+                          className="w-full contents"
+                        >
+                          <TableRow>
+                            <TableCell className="font-medium w-[20rem]">
+                              {product.name}
+                            </TableCell>
+                            <TableCell>
+                              {formatPrice(product.price)} {product.currency}
+                            </TableCell>
+                            <TableCell>
+                              <kbd>{product?.licenses?.length}</kbd>
+                            </TableCell>
+                            <TableCell>
+                              <Moment format="MMMM Do YYYY">
+                                {product.createdAt}
+                              </Moment>
+                            </TableCell>
+                          </TableRow>
+                        </a>
+                      </>
+                    );
+                  }
+                )}
               </TableBody>
             </Table>
           </div>
         ) : (
-          products?.length == 0 &&
-          !isProductsLoading && (
+          store?.products?.length == 0 &&
+          !isLoadingStore && (
             <SectionIntroduction>
               <SectionIntroductionIcon>
                 <Upload size={24} />
@@ -488,7 +485,7 @@ export default function ProductsModule() {
                 Products are the access gates to your Discord server. You can
                 provide roles along with this access.
               </SectionIntroductionDescription>
-              {session?.user?.stores[0].stripeId ? (
+              {store.stripeId ? (
                 <DialogTrigger>
                   <Button
                     onClick={() => {

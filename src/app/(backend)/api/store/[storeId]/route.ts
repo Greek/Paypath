@@ -17,6 +17,7 @@ export async function GET(
         OR: [
           { id: context.params.storeId },
           { name: context.params.storeId.toLowerCase() },
+          { displayName: context.params.storeId },
         ],
       },
       include: {
@@ -27,6 +28,7 @@ export async function GET(
             link: true,
           },
         },
+        products: true,
       },
     })
   );
