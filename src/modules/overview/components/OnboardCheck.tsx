@@ -101,12 +101,6 @@ export const OnboardingSteps = (
           </Accordion>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Okay, what now?</CardTitle>
-        </CardHeader>
-        <CardContent></CardContent>
-      </Card>
     </div>
   );
 };
