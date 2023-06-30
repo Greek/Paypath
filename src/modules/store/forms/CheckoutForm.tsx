@@ -151,7 +151,8 @@ export default function CheckoutForm({
           <div className="px-4">
             <Button
               type="submit"
-              className="w-full mb-4"
+              className="w-full mb-4 rounded-full"
+              variant={"branded"}
               disabled={!!formSubmitting}
             >
               Purchase
