@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const dashify = (s: string) => {
+export const dashify = (s: string) => {
   return (
     s.substring(0, 3) +
     "-" +

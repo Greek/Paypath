@@ -7,9 +7,6 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     include: { customer: true },
   });
 
-  console.log(license);
-  console.log(params);
-
   return {
     title: {
       absolute: `"${license?.customer.name}" · ${APP_NAME}`,

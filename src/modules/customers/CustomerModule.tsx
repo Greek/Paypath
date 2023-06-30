@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Account, License, Link, Product, User } from "@prisma/client";
 import { formatPrice } from "@/modules/store/PurchaseLinkModule";
@@ -55,20 +55,45 @@ export default function CustomerModule(context: { params: { id: string } }) {
   });
 
   const isNotActive = !license?.active;
+  const { toast } = useToast();
 
   const { isLoading: isDeletingLicense, mutate: deactivateLicense } =
     useMutation(["deactivateLicense"], {
       mutationFn: async () => {
-        return (await axios.put(`/api/store/licenses/${license?.id}`)).data;
+        return (
+          await axios.put(`/api/store/licenses/${license?.id}`, {
+            active: false,
+            cancelDate: new Date(),
+          })
+        ).data;
+      },
+      onSuccess() {
+        refetch();
+        toast({ title: "License deactivated." });
+      },
+      onError(err) {
+        if (err instanceof AxiosError)
+          toast({
+            title: "Woah there...",
+            description: err.response?.data.message,
+          });
       },
     });
 
-  const { toast } = useToast();
-
-  const cancelUserSubscription = async () => {
-    deactivateLicense();
-    refetch();
-  };
+  const { isLoading: isRefreshingLicense, mutate: refreshLicense } =
+    useMutation(["refreshLicense"], {
+      mutationFn: async () => {
+        return (
+          await axios.put(`/api/store/licenses/${license?.id}`, {
+            refresh: true,
+          })
+        ).data;
+      },
+      onSuccess() {
+        refetch();
+        toast({ title: "License key refreshed." });
+      },
+    });
 
   return (
     <>
@@ -98,7 +123,7 @@ export default function CustomerModule(context: { params: { id: string } }) {
                           "Active"
                         ) : (
                           <p>
-                            Cancelled{" "}
+                            Cancelled on{" "}
                             <Moment format="MMMM Do">
                               {license.cancelledAt as unknown as string}
                             </Moment>
@@ -110,16 +135,23 @@ export default function CustomerModule(context: { params: { id: string } }) {
                 </div>
               </MastheadHeadingWrapper>
               <MastheadButtonSet>
+                {/* PAY-25 Implement. */}
                 <Button size={"sm"} disabled={isNotActive}>
                   <Pencil size={16} className="mr-2" /> Edit
                 </Button>
-                <Button size={"sm"} disabled={isNotActive}>
+
+                {/* PAY-26 Implement. */}
+                {/* <Button size={"sm"} variant={'outline'} disabled={isNotActive}>
                   <ArrowLeftRight size={16} className="mr-2" /> Transfer
-                </Button>
+                </Button> */}
+
                 <Button
                   size={"sm"}
                   disabled={isNotActive}
-                  onClick={cancelUserSubscription}
+                  variant={"outline"}
+                  onClick={() => {
+                    deactivateLicense();
+                  }}
                 >
                   <Trash size={16} className="mr-2" /> Cancel
                 </Button>
@@ -131,11 +163,14 @@ export default function CustomerModule(context: { params: { id: string } }) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuGroup>
-                      <DropdownMenuItem>
+                      <DropdownMenuItem
+                        disabled={isNotActive}
+                        onClick={() => refreshLicense()}
+                      >
                         <LucideKey size={16} className="mr-2" /> Change license
                         key
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
+                      <DropdownMenuItem disabled={isNotActive}>
                         <LucideMail size={16} className="mr-2 " />
                         Send email receipt
                       </DropdownMenuItem>

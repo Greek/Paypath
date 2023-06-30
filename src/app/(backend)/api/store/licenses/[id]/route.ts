@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/app/auth";
+import { dashify } from "@/app/(backend)/ajax/stripe/sub/route";
+import { generateLicenseKey } from "@/lib/nanoid";
 
 export async function GET(
   req: NextRequest,
@@ -36,6 +38,12 @@ export async function PUT(
     return new Response("Unauthorized", { status: 401 });
   }
 
+  const body = (await req.json()) as {
+    active: boolean;
+    refresh: boolean;
+    cancelDate: Date;
+  };
+
   const license = await prisma.license.findFirst({
     where: {
       OR: [{ id: context.params.id }, { customer: { id: context.params.id } }],
@@ -50,9 +58,22 @@ export async function PUT(
       { status: 404 }
     );
 
+  if (body.refresh == true && !license.active)
+    return NextResponse.json(
+      {
+        success: false,
+        message: "You can't refresh keys of a de-activated license.",
+      },
+      { status: 400 }
+    );
+
   await prisma.license.update({
     where: { id: license.id },
-    data: { active: false },
+    data: {
+      active: body.active,
+      key: body.refresh ? dashify(generateLicenseKey()) : undefined,
+      cancelledAt: body.cancelDate ? body.cancelDate : undefined,
+    },
   });
 
   return NextResponse.json({ success: true });

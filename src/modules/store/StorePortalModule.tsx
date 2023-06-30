@@ -101,6 +101,9 @@ export default function StorePortalModule({
                     .filter((license) => {
                       return license.storeId == store.id;
                     })
+                    .filter((license) => {
+                      return license.active == true;
+                    })
                     //@ts-ignore
                     .sort((lNew, lOld) => {
                       return lOld.purchasedAt > lNew.purchasedAt;
