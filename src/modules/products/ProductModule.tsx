@@ -58,7 +58,7 @@ export default function ProductModule(context: { params: { id: string } }) {
   const { mutate: modifyProduct, isLoading } = useMutation(["archiveProduct"], {
     mutationFn: async (input: any) => {
       return await axios.patch(
-        `/api/store/products/${context.params.id}`,
+        `/api/store/${session?.user?.stores[0].name}/products/${context.params.id}`,
         input
       );
     },

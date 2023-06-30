@@ -22,9 +22,6 @@ export async function GET(req: NextRequest, searchParams: { store: string }) {
   if (session == null) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const store = session?.user?.stores?.find((store) => {
-    return store;
-  });
 
   const products = await prisma.product.findMany({
     where: { storeId: searchParams.store },

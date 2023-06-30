@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: { storeId: string } }
 ) {
   const session = await auth();
   if (session == null) {
@@ -15,8 +15,8 @@ export async function GET(
     await prisma.store.findFirst({
       where: {
         OR: [
-          { id: context.params.id },
-          { name: context.params.id.toLowerCase() },
+          { id: context.params.storeId },
+          { name: context.params.storeId.toLowerCase() },
         ],
       },
       include: {

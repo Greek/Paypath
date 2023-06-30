@@ -165,7 +165,7 @@ export default function ProductsModule() {
       queryFn: async () => {
         return (
           await axios.get(
-            `/api/store/products?store=${session?.user?.stores[0].name}`
+            `/api/store/${session?.user?.stores[0].name}/products`
           )
         ).data;
       },
