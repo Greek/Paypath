@@ -54,6 +54,7 @@ import Masthead, {
   MastheadHeading,
 } from "@/components/masthead-layout";
 import CurrencyInput from "react-currency-input-field";
+import axios from "axios";
 
 export interface Guild {
   id: string;
@@ -162,10 +163,13 @@ export default function ProductsModule() {
     ["products"],
     {
       queryFn: async () => {
-        return await fetch("/api/store/products").then(async (res) => {
-          return (await res.json()) as Product[];
-        });
+        return (
+          await axios.get(
+            `/api/store/products?store=${session?.user?.stores[0].name}`
+          )
+        ).data;
       },
+      enabled: !!session,
     }
   );
 

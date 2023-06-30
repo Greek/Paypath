@@ -34,18 +34,25 @@ import Masthead, {
   MastheadHeadingWrapper,
 } from "@/components/masthead-layout";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function ProductModule(context: { params: { id: string } }) {
   const { push } = useRouter();
+  const { data: session } = useSession();
+
   const {
     data: product,
     isLoading: isProductLoading,
     refetch,
   } = useQuery(["product"], {
     queryFn: async () => {
-      return (await axios.get(`/api/store/products/${context.params.id}`)).data
-        .product as Product & { licenses: License[] };
+      return (
+        await axios.get(
+          `/api/store/${session?.user?.stores[0].name}/products/${context.params.id}`
+        )
+      ).data.product as Product & { licenses: License[] };
     },
+    enabled: !!session,
   });
 
   const { mutate: modifyProduct, isLoading } = useMutation(["archiveProduct"], {

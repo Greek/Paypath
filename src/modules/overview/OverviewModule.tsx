@@ -111,7 +111,7 @@ export default async function OverviewModule({
           </div>
           <div className="py-6 px-10">
             {/* @ts-ignore */}
-            <AfterOnboardSteps storeInfo={store} />
+            <AfterOnboardSteps store={store} />
           </div>
         </>
       ) : (

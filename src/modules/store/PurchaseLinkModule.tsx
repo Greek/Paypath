@@ -5,11 +5,14 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Product, Store } from "@prisma/client";
 import { StoreIcon } from "lucide-react";
 import { CompletionContext } from "./providers/CompletionProvider";
 import LinkTag from "next/link";
+import { useSession } from "next-auth/react";
+import SignInButton from "@/components/sign-in";
+import { WEBAPP_URL } from "@/lib/constants";
 
 export const formatPrice = (price: number | null) => {
   if (!price) return 0;
@@ -26,8 +29,10 @@ export const formatPrice = (price: number | null) => {
 export default function PurchaseLinkModule({
   params,
 }: {
-  params: { id: string };
+  params: { id: string; name: string };
 }) {
+  const { data: session } = useSession();
+
   const { data: link, isLoading } = useQuery(["link"], {
     queryFn: async () => {
       return (await axios.get(`/api/store/links/${params.id}`)).data as Link & {
@@ -93,20 +98,26 @@ export default function PurchaseLinkModule({
           <div className="bg-white dark:bg-gray-800">
             <div className="h-screen sm:flex md:min-h-[8rem] md:h-full flex-col">
               <div className="text-black dark:text-white text-xs !text-opacity-50 w-full">
-                <Elements
-                  stripe={stripe}
-                  options={{
-                    fonts: [
-                      {
-                        cssSrc:
-                          "https://fonts.googleapis.com/css2?family=Inter&display=swap",
-                        family: "Inter",
-                      },
-                    ],
-                  }}
-                >
-                  <CheckoutForm link={params.id} store={link.store} />
-                </Elements>
+                {session?.user ? (
+                  <Elements
+                    stripe={stripe}
+                    options={{
+                      fonts: [
+                        {
+                          cssSrc:
+                            "https://fonts.googleapis.com/css2?family=Inter&display=swap",
+                          family: "Inter",
+                        },
+                      ],
+                    }}
+                  >
+                    <CheckoutForm link={params.id} store={link.store} />
+                  </Elements>
+                ) : (
+                  <SignInButton
+                    callbackUri={`${WEBAPP_URL}/${params.name}/${params.id}`}
+                  />
+                )}
               </div>
             </div>
           </div>

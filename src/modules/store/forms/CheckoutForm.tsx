@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -104,7 +104,12 @@ export default function CheckoutForm({
       <div className={""}>
         <div className={"space-y-4 flex justify-between flex-col"}>
           <div className="pt-3 px-4">
-            <label>Email</label>
+            <label>
+              Email{" "}
+              <a className="text-blue-400" onClick={() => signOut()}>
+                Not you?
+              </a>
+            </label>
             <Input
               placeholder={session.data?.user?.email as string}
               disabled

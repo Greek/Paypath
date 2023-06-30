@@ -5,22 +5,23 @@ import { auth } from "@/app/auth";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: { id: string; storeId: string } },
+  searchParams: { store: string }
 ) {
   const session = await auth();
   if (session == null) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const store = session?.user?.stores?.find((store) => {
-    return store;
-  });
 
-  const product = await prisma.product.findUnique({
-    where: { id: context.params.id },
+  const product = await prisma.product.findFirst({
+    where: {
+      id: context.params.id,
+      store: { name: context.params.storeId },
+    },
     include: { licenses: true },
   });
 
-  if (product?.storeId != store?.id)
+  if (!product)
     return NextResponse.json({
       success: false,
       message: "Could not find product.",

@@ -10,9 +10,14 @@ import {
 import { Store } from "@prisma/client";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-export const AfterOnboardSteps = (storeInfo: { store: Store }) => {
+export const AfterOnboardSteps = (store: Store) => {
   const { push } = useRouter();
+
+  useEffect(() => {
+    console.log(store);
+  });
 
   return (
     <Card>
@@ -24,7 +29,8 @@ export const AfterOnboardSteps = (storeInfo: { store: Store }) => {
           <div className="flex flex-col gap-y-2">
             <Card
               onClick={() => {
-                push(`/${storeInfo.store.name}`);
+                //@ts-ignore
+                push(`/${store.store?.name}`);
               }}
               className="cursor-pointer"
             >

@@ -7,11 +7,6 @@ export async function GET(
   req: NextRequest,
   context: { params: { id: string } }
 ) {
-  const session = await auth();
-  if (session == null) {
-    return new Response("Unauthorized", { status: 401 });
-  }
-
   let link;
   try {
     link = await prisma.link.findUnique({

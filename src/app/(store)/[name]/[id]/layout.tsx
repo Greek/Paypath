@@ -56,13 +56,5 @@ export default async function Layout({
 
   if (!link) return notFound();
 
-  if (session == null) {
-    return (
-      <PurchaseLinkSignInConfrontation
-        callbackUri={`${WEBAPP_URL}/${link.store.name}/${link.id}`}
-      />
-    );
-  }
-
   return children;
 }

@@ -17,7 +17,7 @@ const mapProductTypeEnum = (type: string) => {
   }
 };
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest, searchParams: { store: string }) {
   const session = await auth();
   if (session == null) {
     return new Response("Unauthorized", { status: 401 });
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
   });
 
   const products = await prisma.product.findMany({
-    where: { storeId: store?.id },
+    where: { storeId: searchParams.store },
     include: {
       licenses: true,
     },
