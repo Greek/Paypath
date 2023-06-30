@@ -177,39 +177,41 @@ export default function SettingsPage() {
               </SettingsCardFooter>
             </Card>
           </form>
-          <Card>
-            <CardHeader className={`pb-2`}>
-              <CardTitle>Store slug</CardTitle>
-              <CardDescription>
-                This will be the URL to the domain your users will go to for
-                purchasing plans, and managing memberships. As of now, there is
-                no support for custom domains but make sure to{" "}
-                <a
-                  href={"https://discord.gg/3MPGTCPAEe"}
-                  className={`text-blue-400`}
-                >
-                  stay tuned!
-                </a>
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Input
-                className={"w-[50%]"}
-                defaultValue={storeData?.name}
-                {...register("name")}
-                onInput={(e) => {
-                  e.preventDefault();
-                  e.currentTarget.value.replaceAll(" ", "-");
-                }}
-              ></Input>
-            </CardContent>
-            <SettingsCardFooter>
-              <p>Ensure your domain is active.</p>
-              <Button size="sm" disabled>
-                Change Domain
-              </Button>
-            </SettingsCardFooter>
-          </Card>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Card>
+              <CardHeader className={`pb-2`}>
+                <CardTitle>Store slug</CardTitle>
+                <CardDescription>
+                  This will be the URL to the domain your users will go to for
+                  purchasing plans, and managing memberships. As of now, there
+                  is no support for custom domains but make sure to{" "}
+                  <a
+                    href={"https://discord.gg/3MPGTCPAEe"}
+                    className={`text-blue-400`}
+                  >
+                    stay tuned!
+                  </a>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Input
+                  className={"w-[50%]"}
+                  defaultValue={storeData?.name}
+                  {...register("name")}
+                  onInput={(e) => {
+                    e.preventDefault();
+                    e.currentTarget.value.replaceAll(" ", "-");
+                  }}
+                ></Input>
+              </CardContent>
+              <SettingsCardFooter>
+                <span></span>
+                <Button size="sm" type="submit" disabled={isLoading}>
+                  Save
+                </Button>
+              </SettingsCardFooter>
+            </Card>
+          </form>
         </div>
       )}
     </>

@@ -1,18 +1,5 @@
+import { generateMetadata } from "@/modules/store/StorePortalLayoutModule";
 import StorePortalModule from "@/modules/store/StorePortalModule";
-import { prisma } from "@/lib/prisma";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { name: string };
-}) {
-  const store = await prisma.store.findFirst({ where: { name: params.name } });
-
-  return {
-    title: {
-      absolute: `${store?.name} Portal`,
-    },
-  };
-}
-
+export { generateMetadata };
 export default StorePortalModule;

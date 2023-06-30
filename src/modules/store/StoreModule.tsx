@@ -1,10 +1,12 @@
 import { auth } from "@/app/auth";
-import { AlternativeSignInButton } from "@/components/sign-in";
+import SignInButton, { AlternativeSignInButton } from "@/components/sign-in";
+import { Button } from "@/components/ui/button";
 import { APP_NAME, WEBSITE_URL } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { ArrowRight, StoreIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { GoToPortal } from "./components/GoToPortal";
 
 export async function generateMetadata({
   params,
@@ -70,7 +72,10 @@ export default async function StoreModule({
             </div>
             <div>
               <div className="flex space-x-2">
-                {!session ? <AlternativeSignInButton /> : null}
+                {!session ? (
+                  <SignInButton callbackUri={`/${params.name}`} />
+                ) : null}
+                {session && <GoToPortal name={params.name} />}
               </div>
             </div>
           </div>

@@ -16,9 +16,8 @@ export default function SignInButton({
       onClick={() =>
         signIn("discord", { callbackUrl: callbackUri ?? "/d/overview" })
       }
-      size="sm"
       variant={"branded"}
-      className={`w-full bg-neutral-200 border border-black/10 hover:border-black/20`}
+      className={`w-full rounded-full bg-neutral-100 border border-black/10 hover:border-black/20`}
     >
       {text || "Sign in with Discord"}
     </Button>

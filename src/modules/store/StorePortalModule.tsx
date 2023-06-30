@@ -204,10 +204,10 @@ export default function StorePortalModule({
                     Price
                   </div>
                   <div className="text-black dark:text-white truncate text-sm !text-opacity-50">
-                    $
                     {selectedLicense
                       ? formatPrice(selectedLicense?.product?.price)
-                      : NaN}
+                      : NaN}{" "}
+                    {selectedLicense?.product.currency}
                   </div>
                 </div>
               </div>
