@@ -68,7 +68,7 @@ export default function PurchaseLinkModule({
                 </div>
                 <div className="flex-col flex pl-4">
                   <div className="flex text-lg font-semibold dark:text-white">
-                    {link?.store?.name}
+                    {link?.store?.displayName}
                   </div>
                   <div className="flex dark:text-white text-neutral-600 text-2xl font-semibold">
                     {formatPrice(link.product.price)}

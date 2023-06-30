@@ -17,7 +17,11 @@ export async function PATCH(req: NextRequest) {
 
   await prisma.store.update({
     where: { id: store?.id },
-    data: { name: body.name, description: body.description },
+    data: {
+      displayName: body.displayName,
+      name: body.name.replaceAll([" "], "-"),
+      description: body.description,
+    },
   });
 
   return NextResponse.json({ message: "Okay." });

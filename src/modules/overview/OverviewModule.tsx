@@ -54,7 +54,7 @@ export default async function OverviewModule({
       <div className={`border-b-[.1em] border-foreground-muted w-full`}>
         <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
           <span className="font-semibold text-4xl lg:text-5xl">
-            {store?.name}
+            {store?.displayName}
           </span>
           <div className={"space-x-2 mt-2 lg:mt:0"}>
             <ButtonSet />

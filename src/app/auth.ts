@@ -55,6 +55,7 @@ export const {
             select: {
               id: true,
               name: true,
+              displayName: true,
               description: true,
               domain: true,
               licenses: true,

@@ -35,10 +35,10 @@ export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
                   <StoreIcon size={24} className="mr-3" />{" "}
                   <div className="flex-1 grow overflow-hidden">
                     <div className="text-black dark:text-white truncate text-sm font-medium text-left">
-                      {store?.name ?? "n/a"}
+                      {store?.displayName ?? "n/a"}
                     </div>
                     <div className="-mt-0.5 text-black dark:text-white truncate text-xs !text-opacity-50 text-left">
-                      {store?.domain ?? "n/a"}
+                      {store?.name ?? "n/a"}
                     </div>
                   </div>
                 </span>

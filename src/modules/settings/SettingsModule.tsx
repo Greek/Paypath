@@ -15,6 +15,7 @@ import { StoreModel } from "@/app/_schemas";
 import { useForm } from "react-hook-form";
 import { Store } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 
 const SettingsCardFooter = React.forwardRef<
   HTMLDivElement,
@@ -39,12 +40,21 @@ export default function SettingsPage() {
     resolver: zodResolver(StoreModel),
   });
 
+  const { data: session } = useSession();
+
   const {
     isLoading: isLoadingSession,
     error,
     data: storeData,
     refetch,
-  } = useQuery(["user"], () => fetch("/api/session").then((res) => res.json()));
+  } = useQuery(
+    ["user"],
+    () =>
+      fetch(`/api/store/${session?.user?.stores[0].name}`).then((res) =>
+        res.json()
+      ),
+    { enabled: !!session }
+  );
 
   const { mutate, isLoading } = useMutation(["title"], {
     mutationFn: async (data: Store) =>
@@ -117,13 +127,13 @@ export default function SettingsPage() {
               <CardContent className={`pb-2`}>
                 <Input
                   className={"w-[50%]"}
-                  defaultValue={storeData?.name}
-                  {...register("name")}
+                  defaultValue={storeData?.displayName}
+                  {...register("displayName")}
                 ></Input>
 
                 <div className="mt-2">
                   <span className={`text-sm text-muted-foreground`}>
-                    {errors?.name?.message as string}
+                    {errors?.displayName?.message as string}
                   </span>
                 </div>
               </CardContent>
@@ -160,7 +170,7 @@ export default function SettingsPage() {
                 </div>
               </CardContent>
               <SettingsCardFooter>
-                <p>Hi</p>
+                <p>Make sure your description is at most 64 characters long!</p>
                 <Button size="sm" disabled={isLoadingDescription}>
                   {isLoadingDescription ? "···" : "Save"}
                 </Button>
@@ -169,7 +179,7 @@ export default function SettingsPage() {
           </form>
           <Card>
             <CardHeader className={`pb-2`}>
-              <CardTitle>Domain</CardTitle>
+              <CardTitle>Store slug</CardTitle>
               <CardDescription>
                 This will be the URL to the domain your users will go to for
                 purchasing plans, and managing memberships. As of now, there is
@@ -185,8 +195,12 @@ export default function SettingsPage() {
             <CardContent>
               <Input
                 className={"w-[50%]"}
-                defaultValue={storeData?.name + ".paypath.app"}
-                disabled
+                defaultValue={storeData?.name}
+                {...register("name")}
+                onInput={(e) => {
+                  e.preventDefault();
+                  e.currentTarget.value.replaceAll(" ", "-");
+                }}
               ></Input>
             </CardContent>
             <SettingsCardFooter>

@@ -15,11 +15,11 @@ export async function generateMetadata({
 
   const description =
     store?.description ||
-    `Purchase products from ${store?.name} on ${APP_NAME}, a way to discover new resources and communities.`;
+    `Purchase products from ${store?.displayName} on ${APP_NAME}, a way to discover new resources and communities.`;
 
   return {
     openGraph: {
-      title: `${store?.name}`,
+      title: `${store?.displayName}`,
       description: description,
       siteName: `${APP_NAME}`,
       url: `${WEBSITE_URL}/${store?.name}`,
@@ -27,7 +27,7 @@ export async function generateMetadata({
       type: "website",
     },
     title: {
-      absolute: `${store?.name} · ${APP_NAME}`,
+      absolute: `${store?.displayName} · ${APP_NAME}`,
     },
     description: description,
   };
@@ -59,7 +59,7 @@ export default async function StoreModule({
               </div>
               <div className="mt-5 flex items-center">
                 <span className="text-black dark:text-white text-3xl font-semibold text-center">
-                  {store?.name}
+                  {store?.displayName}
                 </span>
               </div>
               <div className="px-3 mb-1 text-black dark:text-white text-sm !text-opacity-70 text-center">
@@ -77,35 +77,39 @@ export default async function StoreModule({
         </div>
         <div className="bg-white dark:bg-gray-800">
           <div className="h-full p-8 flex flex-col justify-center space-y-3">
-            {store?.Link.filter((link) => {
-              return link.active && link.product.active;
-            }).map((link) => {
-              return (
-                <Link
-                  className="block"
-                  href={`/${store.name}/${link.id}`}
-                  key={link.id}
-                >
-                  <div className="relative bg-white dark:bg-gray-800 border-1 border-neutral-600 shadow-sm transition hover:shadow rounded-md">
-                    <div className="flex justify-between items-center pl-3 pr-5 py-2">
-                      <div>
-                        <div className="text-black dark:text-white text-lg">
-                          {link.nickname!.length > 0
-                            ? link.nickname
-                            : link.product.name}
+            {store?.Link ? (
+              store.Link.filter((link) => {
+                return link.active && link.product.active;
+              }).map((link) => {
+                return (
+                  <Link
+                    className="block"
+                    href={`/${store.name}/${link.id}`}
+                    key={link.id}
+                  >
+                    <div className="relative bg-white dark:bg-gray-800 border-1 border-neutral-600 shadow-sm transition hover:shadow rounded-md">
+                      <div className="flex justify-between items-center pl-3 pr-5 py-2">
+                        <div>
+                          <div className="text-black dark:text-white text-lg">
+                            {link.nickname!.length > 0
+                              ? link.nickname
+                              : link.product.name}
+                          </div>
+                          <div className="text-black dark:text-white text-xs !text-opacity-50">
+                            {link.product.price} / month
+                          </div>
                         </div>
-                        <div className="text-black dark:text-white text-xs !text-opacity-50">
-                          {link.product.price} / month
+                        <div className="text-black dark:text-white !text-opacity-70">
+                          <ArrowRight />
                         </div>
-                      </div>
-                      <div className="text-black dark:text-white !text-opacity-70">
-                        <ArrowRight />
                       </div>
                     </div>
-                  </div>
-                </Link>
-              );
-            })}
+                  </Link>
+                );
+              })
+            ) : (
+              <p>There&apos;s nothing here...</p>
+            )}
           </div>
         </div>
       </div>
