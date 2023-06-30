@@ -114,9 +114,12 @@ export default function PurchaseLinkModule({
                     <CheckoutForm link={params.id} store={link.store} />
                   </Elements>
                 ) : (
-                  <SignInButton
-                    callbackUri={`${WEBAPP_URL}/${params.name}/${params.id}`}
-                  />
+                  <div className="flex justify-center items-center py-[50%] px-6">
+                    <SignInButton
+                      callbackUri={`${WEBAPP_URL}/${params.name}/${params.id}`}
+                      text="Sign In to Purchase"
+                    />
+                  </div>
                 )}
               </div>
             </div>

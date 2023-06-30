@@ -4,16 +4,23 @@ import { signIn } from "next-auth/react";
 import { Button } from "./ui/button";
 import { DoorOpen } from "lucide-react";
 
-export default function SignInButton({ callbackUri }: { callbackUri: string }) {
+export default function SignInButton({
+  callbackUri,
+  text,
+}: {
+  callbackUri: string;
+  text?: string;
+}) {
   return (
     <Button
       onClick={() =>
         signIn("discord", { callbackUrl: callbackUri ?? "/d/overview" })
       }
       size="sm"
-      className={`w-full bg-[#849df9] hover:bg-[#849df9]`}
+      variant={"branded"}
+      className={`w-full bg-neutral-200 border border-black/10 hover:border-black/20`}
     >
-      Sign in with Discord
+      {text || "Sign in with Discord"}
     </Button>
   );
 }

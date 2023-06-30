@@ -18,7 +18,7 @@ export async function generateMetadata({
   return {
     openGraph: {
       title: {
-        absolute: `Purchase ${link?.nickname || link?.product.name} on ${
+        absolute: `${link?.nickname || link?.product.name} on ${
           link?.store.name
         }`,
       },
