@@ -11,6 +11,7 @@ import { LargeCard } from "@/components/largecard";
 import { formatPrice } from "./PurchaseLinkModule";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function StorePortalModule({
   params,
@@ -141,7 +142,7 @@ export default function StorePortalModule({
                                   {license.key}
                                 </div>
                                 <div className="text-black dark:text-white text-sm !text-opacity-50">
-                                  <Moment format="MMMM Do YYYY HH:MM">
+                                  <Moment format="MMMM Do YYYY">
                                     {license.purchasedAt
                                       ? license.purchasedAt
                                       : "Date unavailable"}
@@ -215,9 +216,8 @@ export default function StorePortalModule({
           </div>
           <div>
             <div className="flex space-x-3">
-              <button
-                type="button"
-                className="w-full mx-2 px-3 h-8 text-sm rounded-md bg-[rgb(88_101_242)] disabled:opacity-45 text-white shadow-sm hover:shadow focus:shadow active:shadow-none box-border relative after:absolute inline-flex items-center align-middle min-w-min select-none outline-none justify-center text-center whitespace-nowrap transition appearance-none focus:outline-none font-medium"
+              <Button
+                className="bg-[rgb(88_101_242)] hover:bg-[rgb(88_101_242)] w-full mx-2"
                 onClick={(e) => {
                   e.preventDefault();
                   redeem();
@@ -242,7 +242,7 @@ export default function StorePortalModule({
                   ></path>
                 </svg>
                 {!isLoading ? "Claim Roles" : "Claiming..."}
-              </button>
+              </Button>
             </div>
             <div className="flex space-x-3"></div>
           </div>

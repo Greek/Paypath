@@ -17,6 +17,8 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { TinyErrorMessage } from "@/modules/products/ProductsModule";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 export default function NewLink({
   searchParams,
@@ -32,14 +34,23 @@ export default function NewLink({
     if (searchParams.product) setSelectedProduct(searchParams.product);
   }, [searchParams]);
 
+  const { data: session } = useSession();
+
+  const { data: store, isLoading: isLoadingStore } = useQuery(["store"], {
+    queryFn: async () => {
+      return (await axios.get(`/api/store/${session?.user?.stores[0].name}`))
+        .data;
+    },
+    enabled: !!session,
+  });
+
   const { data: products } = useQuery({
     queryFn: async () => {
-      return await fetch("/api/store/products").then(async (res) => {
-        return (await res.json()) as Product[];
-      });
-    },
-    onSuccess(d) {
-      setStoreId(d[0].storeId);
+      return await fetch(`/api/store/${store.name}/products`).then(
+        async (res) => {
+          return (await res.json()) as Product[];
+        }
+      );
     },
   });
 
@@ -47,7 +58,7 @@ export default function NewLink({
     ["createLink"],
     {
       mutationFn: async (data: Link) =>
-        await fetch("/api/store/links", {
+        await fetch(`/api/store/${store.id}/links`, {
           method: "POST",
           body: JSON.stringify(data),
         }).then(async (r) => {

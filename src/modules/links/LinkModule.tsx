@@ -39,23 +39,36 @@ import Masthead, {
   MastheadHeadingWrapper,
 } from "@/components/masthead-layout";
 import { WEBAPP_URL } from "@/lib/constants";
+import { useSession } from "next-auth/react";
 
 export default function LinkModule({ params }: { params: { id: string } }) {
   const { push } = useRouter();
   const { toast } = useToast();
+  const { data: session } = useSession();
+
+  const { data: store, isLoading: isLoadingStore } = useQuery(["store"], {
+    queryFn: async () => {
+      return (await axios.get(`/api/store/${session?.user?.stores[0].name}`))
+        .data as Store & { products: Product[] };
+    },
+    enabled: !!session,
+  });
+
   const {
     data: link,
     isLoading: isLinkLoading,
     refetch: refetchProduct,
   } = useQuery(["link"], {
     queryFn: async () => {
-      return await fetch(`/api/store/links/${params.id}`).then(async (res) => {
-        return (await res.json()) as Link & {
-          product: Product;
-          user: User;
-          store: Store;
-        };
-      });
+      return await fetch(`/api/store/${store?.id}/links/${params.id}`).then(
+        async (res) => {
+          return (await res.json()) as Link & {
+            product: Product;
+            user: User;
+            store: Store;
+          };
+        }
+      );
     },
   });
 
@@ -63,8 +76,9 @@ export default function LinkModule({ params }: { params: { id: string } }) {
     ["archiveLink"],
     {
       mutationFn: async (data: any) => {
-        return (await axios.post(`/api/store/links/${link?.id}`, data)).data
-          .link as Link;
+        return (
+          await axios.post(`/api/store/${store?.id}/links/${link?.id}`, data)
+        ).data.link as Link;
       },
       onSuccess() {
         refetchProduct();

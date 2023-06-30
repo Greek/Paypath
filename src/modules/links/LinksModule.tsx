@@ -22,7 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Link, Product } from "@prisma/client";
+import { Link, Product, Store } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Book, Plus } from "lucide-react";
@@ -38,10 +38,20 @@ export default function LinksModule({
   const router = useRouter();
 
   const { data: session } = useSession();
+
+  const { data: store, isLoading: isLoadingStore } = useQuery(["store"], {
+    queryFn: async () => {
+      return (await axios.get(`/api/store/${session?.user?.stores[0].name}`))
+        .data as Store & { products: Product[] };
+    },
+    enabled: !!session,
+  });
+
   const { data: links, isLoading } = useQuery(["links"], {
     queryFn: async () => {
-      return (await axios.get("/api/store/links")).data as Link[];
+      return (await axios.get(`/api/store/${store?.id}/links`)).data as Link[];
     },
+    enabled: !!store,
   });
 
   return (
@@ -126,9 +136,9 @@ export default function LinksModule({
               router.push("/d/links/new");
             }}
             disabled={
-              !session?.user?.stores[0].stripeId ||
+              !store?.stripeId ||
               // @ts-ignore
-              !session.user.stores[0].products
+              !store?.products
             }
           >
             <Plus scale={16} className="mr-2" />

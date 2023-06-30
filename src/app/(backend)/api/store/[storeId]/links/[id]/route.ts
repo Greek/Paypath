@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: { id: string; storeId: string } }
 ) {
   let link;
   try {
@@ -36,7 +36,7 @@ export async function GET(
 
 export async function POST(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: { id: string; storeId: string } }
 ) {
   const session = await auth();
   if (session == null) {

@@ -35,7 +35,8 @@ export default function PurchaseLinkModule({
 
   const { data: link, isLoading } = useQuery(["link"], {
     queryFn: async () => {
-      return (await axios.get(`/api/store/links/${params.id}`)).data as Link & {
+      return (await axios.get(`/api/store/${params.name}/links/${params.id}`))
+        .data as Link & {
         store: Store;
         product: Product;
       };

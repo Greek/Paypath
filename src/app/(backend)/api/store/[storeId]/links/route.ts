@@ -5,24 +5,27 @@ import { Link } from "@prisma/client";
 import { nanoid } from "nanoid";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET(
+  req: NextRequest,
+  context: { params: { storeId: string } }
+) {
   const session = await auth();
   if (session == null) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const store = session?.user?.stores?.find((store) => {
-    return store;
-  });
 
   const links = await prisma.link.findMany({
-    where: { storeId: store?.id },
+    where: { storeId: context.params.storeId },
     include: { product: true, licenses: true },
   });
 
   return NextResponse.json(links);
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(
+  req: NextRequest,
+  context: { params: { storeId: string } }
+) {
   const session = await auth();
   if (session == null) {
     return new Response("Unauthorized", { status: 401 });
@@ -43,7 +46,7 @@ export async function POST(req: NextRequest) {
       id: nanoid(32),
       nickname: body.nickname,
       product: { connect: { id: body.productId } },
-      store: { connect: { id: body.storeId } },
+      store: { connect: { id: context.params.storeId } },
       user: { connect: { email: session?.user?.email! } },
     },
   });
