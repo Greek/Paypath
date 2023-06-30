@@ -1,11 +1,4 @@
-export const metadata = {
-  title: "Customers",
-};
+import Layout, { metadata } from "@/modules/customers/CustomersLayoutModule";
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return children;
-}
+export { metadata };
+export default Layout;

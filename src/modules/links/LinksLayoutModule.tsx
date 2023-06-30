@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "New Link",
+  title: "Links",
 };
 
 export default function Layout({

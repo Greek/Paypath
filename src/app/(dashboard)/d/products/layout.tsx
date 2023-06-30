@@ -1,7 +1,4 @@
-export const metadata = {
-  title: "Products",
-};
+import layout, { metadata } from "@/modules/products/ProductsLayoutModule";
 
-export default function layout({ children }: { children: React.ReactNode }) {
-  return children;
-}
+export { metadata };
+export default layout;

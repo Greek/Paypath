@@ -1,11 +1,4 @@
-export const metadata = {
-  title: "Links",
-};
+import Layout, { metadata } from "@/modules/links/LinksLayoutModule";
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactElement[];
-}) {
-  return children;
-}
+export { metadata };
+export default Layout;
