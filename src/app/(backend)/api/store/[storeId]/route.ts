@@ -28,7 +28,7 @@ export async function GET(
             link: true,
           },
         },
-        products: true,
+        products: { include: { licenses: true } },
       },
     })
   );
