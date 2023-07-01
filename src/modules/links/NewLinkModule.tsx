@@ -52,6 +52,7 @@ export default function NewLink({
         }
       );
     },
+    enabled: !!store,
   });
 
   const { mutate: createLink, isLoading: isCreatingLink } = useMutation(

@@ -118,7 +118,7 @@ export default function PurchaseLinkModule({
                   <div className="flex justify-center items-center py-[50%] px-6">
                     <SignInButton
                       callbackUri={`${WEBAPP_URL}/${params.name}/${params.id}`}
-                      text="Sign In to Purchase"
+                      text="Sign in to Purchase"
                     />
                   </div>
                 )}
