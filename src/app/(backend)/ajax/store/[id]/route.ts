@@ -22,7 +22,7 @@ export async function PATCH(
     where: { id: context.params.id },
     data: {
       displayName: body.displayName,
-      name: body.name.replaceAll([" "], "-"),
+      name: body.name.replaceAll([" "], "-").toLowerCase(),
       description: body.description,
     },
   });
