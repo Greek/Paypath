@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/components/ui/header";
 import Sidebar from "@/components/sidebar";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
@@ -8,10 +10,16 @@ import {
   ShareIcon,
   UserIcon,
 } from "lucide-react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import ToasterLoader from "@/app/ToasterLoader";
 import { auth } from "@/app/auth";
 import { prisma } from "@/lib/prisma";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useAtom } from "jotai/react";
+import { selectedStoreAtom } from "@/lib/atoms";
 
 export type LinkItem = {
   [key: string]: {
@@ -22,18 +30,25 @@ export type LinkItem = {
   };
 };
 
-export default async function DashboardLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-  if (!session?.user) return redirect("/i/login");
+  const { data: session } = useSession();
+  const { push } = useRouter();
+  const [store, setStore] = useAtom(selectedStoreAtom);
 
-  if (!session.user?.stores || session.user.stores.length! < 1)
-    redirect("/onboarding");
+  const { data: stores } = useQuery(["stores"], {
+    queryFn: async () => {
+      return (await axios.get(`/api/me/stores`)).data.stores;
+    },
+  });
 
-  const store = session.user.stores[0];
+  useEffect(() => {
+    if (session === null) return push("/i/login");
+    if (session?.user?.stores?.length! < 1) push("/onboarding");
+  }, [session, push, stores]);
 
   const links: LinkItem = {
     "/d/overview": {
@@ -69,16 +84,18 @@ export default async function DashboardLayout({
   };
 
   return (
-    <div className={`flex flex-row`}>
-      <Sidebar links={links} store={store} />
-      <div className={`flex flex-col w-full`}>
-        <Header links={links} store={store} />
-        <div className="w-auto pt-4 h-screen">
-          {children}
-          <ToasterLoader />
-          <TailwindIndicator />
+    stores && (
+      <div className={`flex flex-row`}>
+        <Sidebar links={links} store={store} />
+        <div className={`flex flex-col w-full`}>
+          <Header links={links} store={store} />
+          <div className="w-auto pt-4 h-screen">
+            {children}
+            <ToasterLoader />
+            <TailwindIndicator />
+          </div>
         </div>
       </div>
-    </div>
+    )
   );
 }

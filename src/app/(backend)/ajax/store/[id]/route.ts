@@ -3,7 +3,10 @@ import { prisma } from "@/lib/prisma";
 import { StoreModel } from "@/app/_schemas";
 import { auth } from "@/app/auth";
 
-export async function PATCH(req: NextRequest) {
+export async function PATCH(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   const body = await req.json();
   const session = await auth();
   if (session == null) {
@@ -15,8 +18,8 @@ export async function PATCH(req: NextRequest) {
 
   await StoreModel.safeParseAsync(req.body);
 
-  await prisma.store.update({
-    where: { id: store?.id },
+  const newStore = await prisma.store.update({
+    where: { id: context.params.id },
     data: {
       displayName: body.displayName,
       name: body.name.replaceAll([" "], "-"),
@@ -24,5 +27,5 @@ export async function PATCH(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ message: "Okay." });
+  return NextResponse.json(newStore);
 }

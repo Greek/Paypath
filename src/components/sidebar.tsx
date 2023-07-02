@@ -14,7 +14,7 @@ import React from "react";
 
 interface Navbar {
   links: LinkItem;
-  store: Store | undefined;
+  store: Store | null;
 }
 
 export const Sidebar: React.FC<Navbar> = ({ links, store }) => {

@@ -1,53 +1,30 @@
+"use client";
+
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import { redirect } from "next/navigation";
-import { stripe } from "@/lib/stripe";
 import ButtonSet from "./components/ButtonSet";
-import { prisma } from "@/lib/prisma";
-import { auth } from "@/app/auth";
-import { OnboardingSteps } from "./components/OnboardCheck";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import { AfterOnboardSteps } from "./components/AfterOnboardSteps";
+import { useAtom } from "jotai/react";
+import { selectedStoreAtom } from "@/lib/atoms";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export const metadata = {
   title: "Overview",
 };
 
-export default async function OverviewModule({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const session = await auth();
-  if (!session) return redirect("/");
+export default function OverviewModule({ params }: { params: { id: string } }) {
+  const [selectedStore, setSelectedStore] = useAtom(selectedStoreAtom);
 
-  const store = await prisma.store.findFirst({
-    where: {
-      id: session.user?.stores[0]?.id,
-    },
-    include: {
-      products: true,
-      Link: true,
+  const { data: store } = useQuery(["store"], {
+    queryFn: async () => {
+      return (await axios.get(`/api/store/${selectedStore?.id}`)).data;
     },
   });
-
-  let storeStripe;
-  let balanceStripe;
-  if (store?.stripeId) {
-    storeStripe = await stripe.accounts.retrieve(store?.stripeId as string);
-
-    balanceStripe = await stripe.balance.retrieve({
-      stripeAccount: store?.stripeId as string,
-    });
-  }
-
-  if (session.user?.stores.length! < 1) return redirect("/onboarding");
 
   return (
     <>
@@ -102,9 +79,7 @@ export default async function OverviewModule({
                   <CardDescription>Available balance</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <span className="text-3xl">
-                    {balanceStripe?.available![0].amount ?? "N/A"}
-                  </span>
+                  <span className="text-3xl">Not implemented</span>
                 </CardContent>
               </Card>
             </>
@@ -114,10 +89,9 @@ export default async function OverviewModule({
             <AfterOnboardSteps store={store} />
           </div>
         </>
-      ) : (
-        // @ts-ignore
-        <OnboardingSteps store={store} />
-      )}
+      ) : // @ts-ignore
+      // <OnboardingSteps store={store} />
+      null}
     </>
   );
 }
