@@ -51,6 +51,7 @@
     "discord-api-types": "^0.37.42",
     "eslint": "8.39.0",
     "eslint-config-next": "^13.3.1",
+    "jotai": "^2.2.1",
     "lucide-react": "^0.183.0",
     "moment": "^2.29.4",
     "nanoid": "^4.0.2",

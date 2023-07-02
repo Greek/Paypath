@@ -7,10 +7,14 @@ export async function GET(
   req: NextRequest,
   context: { params: { id: string; storeId: string } }
 ) {
+  const session = await auth();
+
   let link;
   try {
-    link = await prisma.link.findUnique({
-      where: { id: context.params.id },
+    link = await prisma.link.findFirst({
+      where: {
+        id: context.params.id,
+      },
       include: { user: true, product: true, store: true },
     });
   } catch (e: unknown) {

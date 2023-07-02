@@ -18,8 +18,12 @@ export const GET = async (req: NextRequest) => {
   if (session == null) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const store = session?.user?.stores?.find((store) => {
-    return store;
+  const store = await prisma.store.findFirst({
+    where: {
+      id: session.user?.stores.find((s) => {
+        return s.stripeId.length < 1;
+      })?.id,
+    },
   });
 
   const response = await stripe.oauth.token({

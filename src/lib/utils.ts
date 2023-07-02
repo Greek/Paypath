@@ -8,10 +8,6 @@ export const fetchAbsoluteUrl = (path: string) => {
   return base_url + path;
 };
 
-export const wait = (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 
 export const useKeyPress = (keys: [any], callback: any, node = null) => {

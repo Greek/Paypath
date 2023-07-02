@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Card,
   CardContent,
@@ -8,10 +9,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useAtom } from "jotai/react";
+import { selectedStoreAtom } from "@/lib/atoms";
 
 export interface OnboardingInput {
   name: string;
@@ -22,13 +26,22 @@ export default function Onboarding() {
   const { register, handleSubmit } = useForm<OnboardingInput>();
   const { push } = useRouter();
 
-  const handleOnboarding: SubmitHandler<OnboardingInput> = async (formData) => {
-    await fetch("/ajax/store/onboarding", {
-      method: "POST",
-      body: JSON.stringify(formData),
-    }).then(async (res) => {
+  const [store, setStore] = useAtom(selectedStoreAtom);
+
+  const { mutate } = useMutation(["createStore"], {
+    mutationFn: async (d: OnboardingInput) => {
+      return (await axios.post("/ajax/store/onboarding", d)).data;
+    },
+    onSuccess(data, variables, context) {
+      console.log(data);
+      setStore(data);
+      console.log("the store", store);
       push("/d/overview");
-    });
+    },
+  });
+
+  const handleOnboarding: SubmitHandler<OnboardingInput> = async (formData) => {
+    mutate(formData);
   };
 
   return (

@@ -16,6 +16,9 @@ import { useForm } from "react-hook-form";
 import { Store } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+import { useAtom } from "jotai/react";
+import { selectedStoreAtom } from "@/lib/atoms";
+import axios from "axios";
 
 const SettingsCardFooter = React.forwardRef<
   HTMLDivElement,
@@ -42,6 +45,8 @@ export default function SettingsPage() {
 
   const { data: session } = useSession();
 
+  const [selectedStore, setSelectedStore] = useAtom(selectedStoreAtom);
+
   const {
     isLoading: isLoadingSession,
     error,
@@ -49,32 +54,32 @@ export default function SettingsPage() {
     refetch,
   } = useQuery(
     ["user"],
-    () =>
-      fetch(`/api/store/${session?.user?.stores[0].name}`).then((res) =>
-        res.json()
-      ),
-    { enabled: !!session }
+    () => fetch(`/api/store/${selectedStore?.id}`).then((res) => res.json()),
+    {
+      enabled: !!session,
+    }
   );
 
   const { mutate, isLoading } = useMutation(["title"], {
-    mutationFn: async (data: Store) =>
-      await fetch("/ajax/store", {
-        method: "PATCH",
-        body: JSON.stringify({ ...data }),
-      }).then(async (r) => {
-        await r.json();
-      }),
+    mutationFn: async (input: any) => {
+      return (await axios.patch(`/ajax/store/${selectedStore?.id}`, input))
+        .data as Store;
+    },
+    onSuccess(data: Store, variables, context) {
+      setSelectedStore(data);
+      return data;
+    },
   });
 
   const { mutate: mutateDescription, isLoading: isLoadingDescription } =
     useMutation(["description"], {
-      mutationFn: async (data: Store) =>
-        await fetch("/ajax/store", {
-          method: "PATCH",
-          body: JSON.stringify(data),
-        }).then(async (r) => {
-          await r.json();
-        }),
+      mutationFn: async (input: any) => {
+        return (await axios.patch("/ajax/store", input)).data as Store;
+      },
+      onSuccess(data: Store, variables, context) {
+        setSelectedStore(data);
+        return data;
+      },
     });
 
   const onSubmit = async (data: any) => {

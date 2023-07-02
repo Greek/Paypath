@@ -32,7 +32,8 @@ import {
 import { useRouter } from "next/navigation";
 import Moment from "react-moment";
 import { useState } from "react";
-import { useKeyPress, wait } from "@/lib/utils";
+import { useKeyPress } from "@/lib/utils";
+import { wait } from "@/lib/wait";
 import Masthead, {
   MastheadButtonSet,
   MastheadHeading,
@@ -40,19 +41,15 @@ import Masthead, {
 } from "@/components/masthead-layout";
 import { WEBAPP_URL } from "@/lib/constants";
 import { useSession } from "next-auth/react";
+import { useAtom } from "jotai/react";
+import { selectedStoreAtom } from "@/lib/atoms";
 
 export default function LinkModule({ params }: { params: { id: string } }) {
   const { push } = useRouter();
   const { toast } = useToast();
   const { data: session } = useSession();
 
-  const { data: store, isLoading: isLoadingStore } = useQuery(["store"], {
-    queryFn: async () => {
-      return (await axios.get(`/api/store/${session?.user?.stores[0].name}`))
-        .data as Store & { products: Product[] };
-    },
-    enabled: !!session,
-  });
+  const [store, setStore] = useAtom(selectedStoreAtom);
 
   const {
     data: link,

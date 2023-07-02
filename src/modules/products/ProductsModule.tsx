@@ -55,6 +55,8 @@ import Masthead, {
 } from "@/components/masthead-layout";
 import CurrencyInput from "react-currency-input-field";
 import axios from "axios";
+import { selectedStoreAtom } from "@/lib/atoms";
+import { useAtom } from "jotai/react";
 
 export interface Guild {
   id: string;
@@ -86,9 +88,11 @@ export default function ProductsModule() {
   const [formattedPrice2, setFormattedPrice2] = useState<number>();
 
   const { data: session } = useSession();
+  const [selectedStore, setStore] = useAtom(selectedStoreAtom);
+
   const { data: store, isLoading: isLoadingStore } = useQuery(["store"], {
     queryFn: async () => {
-      return (await axios.get(`/api/store/${session?.user?.stores[0].name}`))
+      return (await axios.get(`/api/store/${selectedStore?.id}`))
         .data as Store & { products: Product[] };
     },
     enabled: !!session,
@@ -151,7 +155,7 @@ export default function ProductsModule() {
     isSuccess: mutationIsSuccess,
   } = useMutation(["createProduct"], {
     mutationFn: async (data: any) => {
-      return await fetch(`/api/store/${store?.name}/products`, {
+      return await fetch(`/api/store/${store?.id}/products`, {
         method: "POST",
         body: JSON.stringify(data),
       }).then((res) => {

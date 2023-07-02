@@ -15,10 +15,6 @@ import { useEffect } from "react";
 export const AfterOnboardSteps = (store: Store) => {
   const { push } = useRouter();
 
-  useEffect(() => {
-    console.log(store);
-  });
-
   return (
     <Card>
       <CardHeader>

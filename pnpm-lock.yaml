@@ -103,6 +103,9 @@ dependencies:
   eslint-config-next:
     specifier: ^13.3.1
     version: 13.3.1(eslint@8.39.0)(typescript@5.0.4)
+  jotai:
+    specifier: ^2.2.1
+    version: 2.2.1(react@18.2.0)
   lucide-react:
     specifier: ^0.183.0
     version: 0.183.0(react@18.2.0)
@@ -4232,6 +4235,21 @@ packages:
       {
         integrity: sha512-j8GhLiKmUAh+dsFXlX1aJCbt5KMibuKb+d7j1JaOJG6s2UjX1PQlW+OKB/sD4a/5ZYF4RcmYmLSndOoU3Lt/3g==,
       }
+    dev: false
+
+  /jotai@2.2.1(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-Gz4tpbRQy9OiFgBwF9F7TieDn0UTE3C0IFSDuxHjOIvgn2tACH30UKz6p/wIlfoZROXSTCIxEvYEa7Y25WM+8g==,
+      }
+    engines: { node: ">=12.20.0" }
+    peerDependencies:
+      react: ">=17.0.0"
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /js-sdsl@4.4.0:

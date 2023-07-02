@@ -1,66 +1,99 @@
+"use client";
+
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import { redirect } from "next/navigation";
-import { stripe } from "@/lib/stripe";
 import ButtonSet from "./components/ButtonSet";
-import { prisma } from "@/lib/prisma";
-import { auth } from "@/app/auth";
-import { OnboardingSteps } from "./components/OnboardCheck";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import { AfterOnboardSteps } from "./components/AfterOnboardSteps";
+import { useAtom } from "jotai/react";
+import { selectedStoreAtom } from "@/lib/atoms";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
+import { OnboardingSteps } from "./components/OnboardCheck";
 
 export const metadata = {
   title: "Overview",
 };
 
-export default async function OverviewModule({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const session = await auth();
-  if (!session) return redirect("/");
+export default function OverviewModule({ params }: { params: { id: string } }) {
+  const [selectedStore, setSelectedStore] = useAtom(selectedStoreAtom);
 
-  const store = await prisma.store.findFirst({
-    where: {
-      id: session.user?.stores[0]?.id,
+  const { data: store, isLoading } = useQuery(["store"], {
+    queryFn: async () => {
+      return (await axios.get(`/api/store/${selectedStore?.id}`)).data;
     },
-    include: {
-      products: true,
-      Link: true,
+    onSuccess(data) {
+      console.log(data);
+      return data;
     },
   });
-
-  let storeStripe;
-  let balanceStripe;
-  if (store?.stripeId) {
-    storeStripe = await stripe.accounts.retrieve(store?.stripeId as string);
-
-    balanceStripe = await stripe.balance.retrieve({
-      stripeAccount: store?.stripeId as string,
-    });
-  }
-
-  if (session.user?.stores.length! < 1) return redirect("/onboarding");
 
   return (
     <>
       <div className={`border-b-[.1em] border-foreground-muted w-full`}>
         <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
           <span className="font-semibold text-4xl lg:text-5xl">
-            {store?.displayName}
+            {store?.displayName || <Skeleton className={`h-6 w-64`} />}
           </span>
           <div className={"space-x-2 mt-2 lg:mt:0"}>
-            <ButtonSet />
+            {store ? <ButtonSet /> : <Skeleton className={`h-6 w-40`} />}
           </div>
         </div>
       </div>
+      {isLoading && (
+        <>
+          <>
+            <div className="grid grid-cols-4 gap-x-6 gap-y-3 px-10 -mt-10">
+              <>
+                <Card>
+                  <CardHeader className={`pb-2`}>
+                    <CardDescription>
+                      <Skeleton className={`h-6 w-64`} />
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className={`h-9 w-24`} />
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className={`pb-2`}>
+                    <CardDescription>
+                      <Skeleton className={`h-6 w-64`} />
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className={`h-9 w-12`} />
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className={`pb-2`}>
+                    <CardDescription>
+                      <Skeleton className={`h-6 w-64`} />
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className={`h-9 w-36`} />
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className={`pb-2`}>
+                    <CardDescription>
+                      <Skeleton className={`h-6 w-64`} />
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className={`h-9 w-24`} />
+                  </CardContent>
+                </Card>
+              </>
+            </div>
+          </>
+        </>
+      )}
       {store?.stripeId?.length! > 0 &&
       store?.products?.length! > 0 &&
       store?.Link?.length! > 0 ? (
@@ -102,9 +135,7 @@ export default async function OverviewModule({
                   <CardDescription>Available balance</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <span className="text-3xl">
-                    {balanceStripe?.available![0].amount ?? "N/A"}
-                  </span>
+                  <span className="text-3xl">Not implemented</span>
                 </CardContent>
               </Card>
             </>
@@ -116,7 +147,7 @@ export default async function OverviewModule({
         </>
       ) : (
         // @ts-ignore
-        <OnboardingSteps store={store} />
+        !isLoading && store && <OnboardingSteps store={store} />
       )}
     </>
   );
