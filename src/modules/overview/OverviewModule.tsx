@@ -30,6 +30,7 @@ export default function OverviewModule({ params }: { params: { id: string } }) {
       console.log(data);
       return data;
     },
+    enabled: !!selectedStore,
   });
 
   return (

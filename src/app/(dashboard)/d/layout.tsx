@@ -36,7 +36,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { data: session } = useSession();
-  const { push } = useRouter();
+  const { push, refresh } = useRouter();
   const [store, setStore] = useAtom(selectedStoreAtom);
 
   const { data: stores } = useQuery(["stores"], {
@@ -48,7 +48,12 @@ export default function DashboardLayout({
   useEffect(() => {
     if (session === null) return push("/i/login");
     if (stores?.length < 1) push("/onboarding");
-  }, [session, push, stores]);
+
+    if (!store && stores) {
+      setStore(stores[0]);
+      refresh();
+    }
+  }, [session, push, stores, refresh, store, setStore]);
 
   const links: LinkItem = {
     "/d/overview": {
