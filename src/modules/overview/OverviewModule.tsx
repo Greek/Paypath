@@ -11,9 +11,9 @@ import { AfterOnboardSteps } from "./components/AfterOnboardSteps";
 import { useAtom } from "jotai/react";
 import { selectedStoreAtom } from "@/lib/atoms";
 import { useQuery } from "@tanstack/react-query";
-import { OnboardingSteps } from "./components/OnboardCheck";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
+import { OnboardingSteps } from "./components/OnboardCheck";
 
 export const metadata = {
   title: "Overview",
@@ -22,7 +22,7 @@ export const metadata = {
 export default function OverviewModule({ params }: { params: { id: string } }) {
   const [selectedStore, setSelectedStore] = useAtom(selectedStoreAtom);
 
-  const { data: store } = useQuery(["store"], {
+  const { data: store, isLoading } = useQuery(["store"], {
     queryFn: async () => {
       return (await axios.get(`/api/store/${selectedStore?.id}`)).data;
     },
@@ -44,7 +44,7 @@ export default function OverviewModule({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
-      {!store && (
+      {isLoading && (
         <>
           <>
             <div className="grid grid-cols-4 gap-x-6 gap-y-3 px-10 -mt-10">
@@ -95,57 +95,60 @@ export default function OverviewModule({ params }: { params: { id: string } }) {
         </>
       )}
       {store?.stripeId?.length! > 0 &&
-        store?.products?.length! > 0 &&
-        store?.Link?.length! > 0 && (
-          <>
-            <div className="grid grid-cols-4 gap-x-6 gap-y-3 px-10 -mt-10">
-              <>
-                <Card>
-                  <CardHeader className={`pb-2`}>
-                    <CardDescription>Total customers</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <span className="text-3xl">
-                      {/* @ts-ignore */}
-                      {store?.licenses?.length == 0
-                        ? "0 :("
-                        : /* @ts-ignore */
-                          store?.licenses?.length}
-                    </span>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className={`pb-2`}>
-                    <CardDescription>Upcoming cancellations</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <span className="text-3xl">Not implemented</span>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className={`pb-2`}>
-                    <CardDescription>Monthly revenue</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <span className="text-3xl">Not implemented</span>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className={`pb-2`}>
-                    <CardDescription>Available balance</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <span className="text-3xl">Not implemented</span>
-                  </CardContent>
-                </Card>
-              </>
-            </div>
-            <div className="py-6 px-10">
-              {/* @ts-ignore */}
-              <AfterOnboardSteps store={store} />
-            </div>
-          </>
-        )}
+      store?.products?.length! > 0 &&
+      store?.Link?.length! > 0 ? (
+        <>
+          <div className="grid grid-cols-4 gap-x-6 gap-y-3 px-10 -mt-10">
+            <>
+              <Card>
+                <CardHeader className={`pb-2`}>
+                  <CardDescription>Total customers</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <span className="text-3xl">
+                    {/* @ts-ignore */}
+                    {store?.licenses?.length == 0
+                      ? "0 :("
+                      : /* @ts-ignore */
+                        store?.licenses?.length}
+                  </span>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className={`pb-2`}>
+                  <CardDescription>Upcoming cancellations</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <span className="text-3xl">Not implemented</span>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className={`pb-2`}>
+                  <CardDescription>Monthly revenue</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <span className="text-3xl">Not implemented</span>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className={`pb-2`}>
+                  <CardDescription>Available balance</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <span className="text-3xl">Not implemented</span>
+                </CardContent>
+              </Card>
+            </>
+          </div>
+          <div className="py-6 px-10">
+            {/* @ts-ignore */}
+            <AfterOnboardSteps store={store} />
+          </div>
+        </>
+      ) : (
+        // @ts-ignore
+        !isLoading && store && <OnboardingSteps store={store} />
+      )}
     </>
   );
 }
