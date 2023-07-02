@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 import { OnboardingSteps } from "./components/OnboardCheck";
+import { Link, Product, Store } from "@prisma/client";
 
 export const metadata = {
   title: "Overview",
@@ -24,7 +25,8 @@ export default function OverviewModule({ params }: { params: { id: string } }) {
 
   const { data: store, isLoading } = useQuery(["store"], {
     queryFn: async () => {
-      return (await axios.get(`/api/store/${selectedStore?.id}`)).data;
+      return (await axios.get(`/api/store/${selectedStore?.id}`))
+        .data as Store & { products: Product[]; Link: Link[] };
     },
     onSuccess(data) {
       console.log(data);
@@ -41,7 +43,11 @@ export default function OverviewModule({ params }: { params: { id: string } }) {
             {store?.displayName || <Skeleton className={`h-6 w-64`} />}
           </span>
           <div className={"space-x-2 mt-2 lg:mt:0"}>
-            {store ? <ButtonSet /> : <Skeleton className={`h-6 w-40`} />}
+            {store ? (
+              <ButtonSet storeName={store.name} />
+            ) : (
+              <Skeleton className={`h-6 w-40`} />
+            )}
           </div>
         </div>
       </div>

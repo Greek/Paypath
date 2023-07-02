@@ -19,6 +19,8 @@ import { useSession } from "next-auth/react";
 import { useAtom } from "jotai/react";
 import { selectedStoreAtom } from "@/lib/atoms";
 import axios from "axios";
+import { Icons } from "@/components/icons";
+import { wait } from "@/lib/wait";
 
 const SettingsCardFooter = React.forwardRef<
   HTMLDivElement,
@@ -62,6 +64,7 @@ export default function SettingsPage() {
 
   const { mutate, isLoading } = useMutation(["title"], {
     mutationFn: async (input: any) => {
+      await wait(250);
       return (await axios.patch(`/ajax/store/${selectedStore?.id}`, input))
         .data as Store;
     },
@@ -74,7 +77,9 @@ export default function SettingsPage() {
   const { mutate: mutateDescription, isLoading: isLoadingDescription } =
     useMutation(["description"], {
       mutationFn: async (input: any) => {
-        return (await axios.patch("/ajax/store", input)).data as Store;
+        await wait(250);
+        return (await axios.patch(`/ajax/store/${selectedStore?.id}`, input))
+          .data as Store;
       },
       onSuccess(data: Store, variables, context) {
         setSelectedStore(data);
@@ -147,8 +152,11 @@ export default function SettingsPage() {
                   Make sure your store&apos;s name is at <b>most</b> 32
                   characters.
                 </p>
-                <Button size="sm" type="submit" disabled={isLoading}>
-                  {isLoading ? "···" : "Save"}
+                <Button size="sm" type="submit" disabled={!!isLoading}>
+                  {isLoading && (
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                  )}{" "}
+                  Save
                 </Button>
               </SettingsCardFooter>
             </Card>
@@ -176,8 +184,15 @@ export default function SettingsPage() {
               </CardContent>
               <SettingsCardFooter>
                 <p>Make sure your description is at most 64 characters long!</p>
-                <Button size="sm" disabled={isLoadingDescription}>
-                  {isLoadingDescription ? "···" : "Save"}
+                <Button
+                  size="sm"
+                  type="submit"
+                  disabled={!!isLoadingDescription}
+                >
+                  {isLoadingDescription && (
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                  )}{" "}
+                  Save
                 </Button>
               </SettingsCardFooter>
             </Card>
