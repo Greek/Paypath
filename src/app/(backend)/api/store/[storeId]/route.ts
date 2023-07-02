@@ -1,5 +1,6 @@
 import { auth } from "@/app/auth";
 import { prisma } from "@/lib/prisma";
+import { wait } from "@/lib/wait";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -11,26 +12,29 @@ export async function GET(
     return new Response("Unauthorized", { status: 401 });
   }
 
-  return NextResponse.json(
-    await prisma.store.findFirst({
-      where: {
-        OR: [
-          { id: context.params.storeId },
-          { name: context.params.storeId.toLowerCase() },
-          { displayName: context.params.storeId },
-        ],
-        AND: [{ owner: session?.user?.id }],
-      },
-      include: {
-        licenses: {
-          include: {
-            customer: true,
-            product: true,
-            link: true,
-          },
+  const store = await prisma.store.findFirst({
+    where: {
+      OR: [
+        { id: context.params.storeId },
+        { name: context.params.storeId.toLowerCase() },
+        { displayName: context.params.storeId },
+      ],
+      AND: [{ owner: session?.user?.id }],
+    },
+    include: {
+      licenses: {
+        include: {
+          customer: true,
+          product: true,
+          link: true,
         },
-        products: { include: { licenses: true } },
       },
-    })
-  );
+      products: { include: { licenses: true } },
+      Link: true,
+    },
+  });
+
+  await wait(300);
+
+  return NextResponse.json(store);
 }

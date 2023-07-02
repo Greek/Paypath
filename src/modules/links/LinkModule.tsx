@@ -32,7 +32,8 @@ import {
 import { useRouter } from "next/navigation";
 import Moment from "react-moment";
 import { useState } from "react";
-import { useKeyPress, wait } from "@/lib/utils";
+import { useKeyPress } from "@/lib/utils";
+import { wait } from "@/lib/wait";
 import Masthead, {
   MastheadButtonSet,
   MastheadHeading,
