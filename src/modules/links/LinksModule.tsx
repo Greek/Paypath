@@ -22,9 +22,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { selectedStoreAtom } from "@/lib/atoms";
 import { Link, Product, Store } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useAtom } from "jotai/react";
 import { Book, Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -39,13 +41,7 @@ export default function LinksModule({
 
   const { data: session } = useSession();
 
-  const { data: store, isLoading: isLoadingStore } = useQuery(["store"], {
-    queryFn: async () => {
-      return (await axios.get(`/api/store/${session?.user?.stores[0].name}`))
-        .data as Store & { products: Product[] };
-    },
-    enabled: !!session,
-  });
+  const [store, setStore] = useAtom(selectedStoreAtom);
 
   const { data: links, isLoading } = useQuery(["links"], {
     queryFn: async () => {

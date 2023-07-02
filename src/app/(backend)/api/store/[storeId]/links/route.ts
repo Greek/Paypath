@@ -14,8 +14,12 @@ export async function GET(
     return new Response("Unauthorized", { status: 401 });
   }
 
+  const store = await prisma.store.findFirst({
+    where: { AND: [{ id: context.params.storeId, owner: session?.user?.id }] },
+  });
+
   const links = await prisma.link.findMany({
-    where: { storeId: context.params.storeId },
+    where: { storeId: store?.id },
     include: { product: true, licenses: true },
   });
 
@@ -30,8 +34,9 @@ export async function POST(
   if (session == null) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const store = session?.user?.stores?.find((store) => {
-    return store;
+
+  const store = await prisma.store.findFirst({
+    where: { AND: [{ id: context.params.storeId, owner: session?.user?.id }] },
   });
 
   const body = (await req.json()) as Link;
@@ -46,7 +51,7 @@ export async function POST(
       id: nanoid(32),
       nickname: body.nickname,
       product: { connect: { id: body.productId } },
-      store: { connect: { id: context.params.storeId } },
+      store: { connect: { id: store?.id } },
       user: { connect: { email: session?.user?.email! } },
     },
   });

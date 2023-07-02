@@ -35,10 +35,14 @@ import Masthead, {
 } from "@/components/masthead-layout";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useAtom } from "jotai/react";
+import { selectedStoreAtom } from "@/lib/atoms";
 
 export default function ProductModule(context: { params: { id: string } }) {
   const { push } = useRouter();
   const { data: session } = useSession();
+
+  const [store, setStore] = useAtom(selectedStoreAtom);
 
   const {
     data: product,
@@ -48,7 +52,7 @@ export default function ProductModule(context: { params: { id: string } }) {
     queryFn: async () => {
       return (
         await axios.get(
-          `/api/store/${session?.user?.stores[0].name}/products/${context.params.id}`
+          `/api/store/${store?.name}/products/${context.params.id}`
         )
       ).data.product as Product & { licenses: License[] };
     },
@@ -58,7 +62,7 @@ export default function ProductModule(context: { params: { id: string } }) {
   const { mutate: modifyProduct, isLoading } = useMutation(["archiveProduct"], {
     mutationFn: async (input: any) => {
       return await axios.patch(
-        `/api/store/${session?.user?.stores[0].name}/products/${context.params.id}`,
+        `/api/store/${store?.name}/products/${context.params.id}`,
         input
       );
     },

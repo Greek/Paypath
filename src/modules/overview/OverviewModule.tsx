@@ -11,6 +11,7 @@ import { AfterOnboardSteps } from "./components/AfterOnboardSteps";
 import { useAtom } from "jotai/react";
 import { selectedStoreAtom } from "@/lib/atoms";
 import { useQuery } from "@tanstack/react-query";
+import { OnboardingSteps } from "./components/OnboardCheck";
 import axios from "axios";
 
 export const metadata = {
@@ -89,9 +90,10 @@ export default function OverviewModule({ params }: { params: { id: string } }) {
             <AfterOnboardSteps store={store} />
           </div>
         </>
-      ) : // @ts-ignore
-      // <OnboardingSteps store={store} />
-      null}
+      ) : (
+        // @ts-ignore
+        <OnboardingSteps store={store} />
+      )}
     </>
   );
 }

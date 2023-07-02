@@ -47,7 +47,7 @@ export default function DashboardLayout({
 
   useEffect(() => {
     if (session === null) return push("/i/login");
-    if (session?.user?.stores?.length! < 1) push("/onboarding");
+    if (stores?.length < 1) push("/onboarding");
   }, [session, push, stores]);
 
   const links: LinkItem = {

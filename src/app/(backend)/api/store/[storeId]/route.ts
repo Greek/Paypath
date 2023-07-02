@@ -19,6 +19,7 @@ export async function GET(
           { name: context.params.storeId.toLowerCase() },
           { displayName: context.params.storeId },
         ],
+        AND: [{ owner: session?.user?.id }],
       },
       include: {
         licenses: {

@@ -28,7 +28,7 @@ export default async function Layout({
     return new Response("Unauthorized", { status: 401 });
   }
   const link = await prisma.link.findFirst({
-    where: { id: params.id, storeId: session?.user?.stores[0].id },
+    where: { id: params.id },
   });
 
   if (!link) return notFound();

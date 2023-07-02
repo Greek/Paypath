@@ -40,19 +40,15 @@ import Masthead, {
 } from "@/components/masthead-layout";
 import { WEBAPP_URL } from "@/lib/constants";
 import { useSession } from "next-auth/react";
+import { useAtom } from "jotai/react";
+import { selectedStoreAtom } from "@/lib/atoms";
 
 export default function LinkModule({ params }: { params: { id: string } }) {
   const { push } = useRouter();
   const { toast } = useToast();
   const { data: session } = useSession();
 
-  const { data: store, isLoading: isLoadingStore } = useQuery(["store"], {
-    queryFn: async () => {
-      return (await axios.get(`/api/store/${session?.user?.stores[0].name}`))
-        .data as Store & { products: Product[] };
-    },
-    enabled: !!session,
-  });
+  const [store, setStore] = useAtom(selectedStoreAtom);
 
   const {
     data: link,

@@ -33,12 +33,20 @@ export async function GET(req: NextRequest, searchParams: { store: string }) {
   return NextResponse.json(products);
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(
+  req: NextRequest,
+  context: { params: { storeId: string } }
+) {
   const session = await auth();
-  const store = session?.user?.stores[0];
+
+  const store = await prisma.store.findFirst({
+    where: {
+      id: context.params.storeId,
+      AND: { owner: session?.user?.id },
+    },
+  });
 
   const body = await req.json();
-
   const interval = "month";
 
   let price;

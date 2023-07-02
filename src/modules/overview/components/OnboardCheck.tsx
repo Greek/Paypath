@@ -27,10 +27,6 @@ export const OnboardingSteps = (
   // @ts-ignore
   const { store } = storeStore;
 
-  useEffect(() => {
-    console.log(!store.stripeId);
-  }, [store]);
-
   return (
     <div className="-mt-10 p-4">
       <Card>
@@ -54,7 +50,7 @@ export const OnboardingSteps = (
                 <br />
                 <Button
                   onClick={() => push(`/ajax/stripe/auth/${store?.id}`)}
-                  disabled={!!store.stripeId}
+                  disabled={!!store?.stripeId}
                 >
                   Connect Stripe
                 </Button>

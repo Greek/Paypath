@@ -16,7 +16,9 @@ export async function GET(
   const product = await prisma.product.findFirst({
     where: {
       id: context.params.id,
-      store: { name: context.params.storeId },
+      store: {
+        AND: [{ name: context.params.storeId, owner: session?.user?.id }],
+      },
     },
     include: { licenses: true },
   });
