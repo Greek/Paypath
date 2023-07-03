@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import font from "next/font/local";
+import { Roboto } from "next/font/google";
 import { auth } from "./auth";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -12,6 +13,10 @@ const switzer = font({
 const switzerRegular = font({
   src: "../../public/assets/fonts/switzer/Switzer-Regular.woff2",
 });
+
+const roboto = Roboto({ subsets: ["latin"], weight: "300" });
+const robotoBold = Roboto({ subsets: ["latin"], weight: "500" });
+
 export default async function Home({
   searchParams,
 }: {
@@ -22,7 +27,7 @@ export default async function Home({
 
   return (
     <div
-      className={`mx-14 max-w-2xl -px-8 py-8 space-y-6 lg:py-0 lg:py-14 ${switzer.className}`}
+      className={`mx-14 max-w-2xl -px-8 py-8 space-y-6 lg:py-0 lg:py-14 ${roboto.className}`}
     >
       <Image
         alt="Paypath logo"
@@ -31,11 +36,13 @@ export default async function Home({
         height={52}
         className="rounded-md"
       ></Image>
-      <h1 className={`text-2xl font-[525] dark:text-white/80`}>
+      <h1
+        className={`text-2xl font-[525] dark:text-white/80 ${robotoBold.className}`}
+      >
         A new way to monitize your Discord server.
       </h1>
       <div
-        className={`text-base font-[300] text-black/50 dark:text-white/70 space-y-4 break-words ${switzerRegular.className}`}
+        className={`text-base font-[300] text-black/50 dark:text-white/70 space-y-4 break-words ${roboto.className}`}
       >
         <p>
           Finding ways to monitize your business is hard, especially when trying
