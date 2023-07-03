@@ -1,41 +1,59 @@
 import { redirect } from "next/navigation";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import SignInButton from "@/components/sign-in";
+import Image from "next/image";
+import font from "next/font/local";
 import { auth } from "./auth";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { LandingInviteButton } from "./LandingInviteButton";
 
+const switzer = font({
+  src: "../../public/assets/fonts/switzer/Switzer-Medium.woff2",
+});
+const switzerRegular = font({
+  src: "../../public/assets/fonts/switzer/Switzer-Regular.woff2",
+});
 export default async function Home({
   searchParams,
 }: {
   searchParams: { error: string };
 }) {
-  const time = new Date().getHours();
   const session = await auth();
-  if (session == null) redirect("/i/login");
   if (session) redirect("/d/overview");
 
   return (
-    <div className="flex flex-col px-10 py-10 min-h-screen box-border relative">
-      <span className="font-semibold text-3xl">
-        {time < 12 && "Good morning."}{" "}
-        {time > 12 && time <= 17 ? "Good afternoon." : null}
-        {time > 17 && "Good evening."}
-      </span>
-      <div className="flex justify-center items-center h-full flex-1">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle>Gatekeep</CardTitle>
-            <CardDescription>
-              Manage access to your Discord server.
-            </CardDescription>
-          </CardHeader>
-          <CardContent></CardContent>
-        </Card>
+    <div
+      className={`mx-14 max-w-2xl -px-8 py-8 space-y-6 lg:py-0 lg:py-14 ${switzer.className}`}
+    >
+      <Image
+        alt="Paypath logo"
+        src={`/assets/Paypath enlarged 2.png`}
+        width={52}
+        height={52}
+        className="rounded-md"
+      ></Image>
+      <h1 className={`text-2xl font-[525] dark:text-white/80`}>
+        A new way to monitize your Discord server.
+      </h1>
+      <div
+        className={`text-base font-[300] text-black/50 dark:text-white/70 space-y-4 break-words ${switzerRegular.className}`}
+      >
+        <p>
+          Finding ways to monitize your business is hard, especially when trying
+          to find the right platform to do it for you. Trust me, We&apos;ve been
+          there. Fees, subscriptions, slow UI and overall bad experiences. You
+          name it. So we decided to take action.
+        </p>
+        <p>
+          Paypath allows you to monitize your Discord server and other kinds of
+          resources all in one place. We want to enable individuals and
+          businesses to grow without any of the bloat and filler that comes with
+          other services. That&apos;s why we&apos;re building Paypath.
+        </p>
+        <p>
+          We want you to join the journey in building Paypath. Tell us what we
+          need to know and what you&apos;re looking for in our service. Join us.
+        </p>
+        <LandingInviteButton />
       </div>
     </div>
   );
