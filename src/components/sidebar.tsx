@@ -22,7 +22,7 @@ export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
 
   return (
     <aside className="hidden md:flex top-1 md:flex-shrink-0 -mx-4 md:mx-0 md:px-0">
-      <nav className="flex flex-row w-60 shrink-0 md:flex-col items-start relative px-4 md:px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative border-r-[.05em]">
+      <nav className="flex flex-row w-60 shrink-0 md:flex-col items-start relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative border-r-[.05em]">
         <div className="shrink-0 w-full">
           <div className="relative z-30">
             <DropdownMenu>
@@ -46,7 +46,7 @@ export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
             </DropdownMenu>
           </div>
         </div>
-        <div className="flex flex-row md:flex-col space-x-0 mb-2 mt-2 md:mt-0 w-full">
+        <div className="flex flex-row md:flex-col space-x-0 px-4 mb-2 mt-2 md:mt-0 w-full">
           {Object.entries(links).map(([link, { name, icon }]) => {
             const isActive = link == pathname;
             return (
@@ -54,14 +54,16 @@ export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
                 key={link}
                 href={link}
                 className={clsx(
-                  "whitespace-nowrap flex items-center py-1.5 pl-4 hover:bg-neutral-200 dark:hover:bg-neutral-100/10",
-                  { "text-neutral-600 dark:text-neutral-400": !isActive }
+                  "flex flex-row align-middle items-center justify-center my-2 hover:bg-slate-100 rounded-full px-5 py-2 border border-neutral-300/40 shadow-sm",
+                  { "text-neutral-600 dark:text-neutral-400": !isActive },
+                  { "bg-slate-100": isActive }
                 )}
               >
-                {icon}
+                <span className="">{icon}</span>
+
                 <span
                   className={clsx(
-                    "flex-1 text-sm font-medium ml-3 !text-opacity-60"
+                    "flex-1 text-sm font-medium !text-opacity-60"
                   )}
                 >
                   {name}

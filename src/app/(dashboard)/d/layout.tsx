@@ -61,27 +61,27 @@ export default function DashboardLayout({
   const links: LinkItem = {
     "/d/overview": {
       name: "Home",
-      icon: <HomeIcon size={16} />,
+      icon: <HomeIcon size={18} className="mr-2" />,
       breadcrumb: "Overview",
     },
     "/d/products": {
       name: "Products",
       breadcrumb: "Products",
-      icon: <PackageIcon size={16} />,
+      icon: <PackageIcon size={18} className="mr-2" />,
     },
     "/d/links": {
       name: "Links",
       breadcrumb: "Links",
-      icon: <ShareIcon size={16} />,
+      icon: <ShareIcon size={18} className="mr-2" />,
     },
     "/d/customers": {
       name: "Customers",
       breadcrumb: "Customers",
-      icon: <UserIcon size={16} />,
+      icon: <UserIcon size={18} className="mr-2" />,
     },
     "/d/billing": {
       name: "Billing",
-      icon: <CircleSlashIcon size={16} />,
+      icon: <CircleSlashIcon size={18} className="mr-2" />,
       breadcrumb: "Billing",
     },
     "/d/settings": {
