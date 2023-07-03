@@ -7,13 +7,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { LandingInviteButton } from "./LandingInviteButton";
 
-const switzer = font({
-  src: "../../public/assets/fonts/switzer/Switzer-Medium.woff2",
-});
-const switzerRegular = font({
-  src: "../../public/assets/fonts/switzer/Switzer-Regular.woff2",
-});
-
 const roboto = Roboto({ subsets: ["latin"], weight: "300" });
 const robotoBold = Roboto({ subsets: ["latin"], weight: "500" });
 
