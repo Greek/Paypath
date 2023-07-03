@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   openGraph: {
-    title: `Monitize your communities and resources on ${APP_NAME}.`,
+    title: `${APP_NAME}`,
     description:
       "Sell access to your Discord server with Paypath, the prime platform to sell access to your communities and resources. Easy to use, free for everyone, for life.",
     siteName: `${APP_NAME}`,
