@@ -34,6 +34,12 @@ export async function GET(
     },
   });
 
+  if (!store)
+    return NextResponse.json(
+      { success: false, message: "Store not found." },
+      { status: 404 }
+    );
+
   await wait(300);
 
   return NextResponse.json(store);

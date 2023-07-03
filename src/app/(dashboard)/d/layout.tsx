@@ -46,7 +46,10 @@ export default function DashboardLayout({
   });
 
   useEffect(() => {
-    if (session === null) return push("/i/login");
+    if (session === null) {
+      setStore(null);
+      return push("/i/login");
+    }
     if (stores?.length < 1) push("/onboarding");
 
     if (!store && stores) {
