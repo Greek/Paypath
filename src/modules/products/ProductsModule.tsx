@@ -211,7 +211,7 @@ export default function ProductsModule() {
             <DialogTrigger>
               {store?.products?.length! > 0 && (
                 <Button onClick={() => setDialogActive(true)}>
-                  <Plus scale={12} className="mr-2" /> Create New Product
+                  <Plus scale={16} className="mr-2" /> Create New Product
                 </Button>
               )}
             </DialogTrigger>

@@ -27,7 +27,7 @@ export function SectionIntroductionDescription({
 }: {
   children: React.ReactElement[] | JSX.Element[] | string;
 }) {
-  return <p className="text-sm dark:text-slate-300">{children}</p>;
+  return <p className="text-sm dark:text-slate-300 mb-4">{children}</p>;
 }
 
 export function SectionIntroduction({

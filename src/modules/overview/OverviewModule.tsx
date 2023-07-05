@@ -15,6 +15,11 @@ import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 import { OnboardingSteps } from "./components/OnboardCheck";
 import { Link, Product, Store } from "@prisma/client";
+import Masthead, {
+  MastheadButtonSet,
+  MastheadHeading,
+  MastheadHeadingWrapper,
+} from "@/components/masthead-layout";
 
 export const metadata = {
   title: "Overview",
@@ -36,20 +41,20 @@ export default function OverviewModule({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className={`border-b-[.1em] border-foreground-muted w-full`}>
-        <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
-          <span className="font-semibold text-4xl lg:text-5xl">
+      <Masthead>
+        <MastheadHeadingWrapper>
+          <MastheadHeading>
             {store?.displayName || <Skeleton className={`h-6 w-64`} />}
-          </span>
-          <div className={"space-x-2 mt-2 lg:mt:0"}>
-            {store ? (
-              <ButtonSet storeName={store.name} />
-            ) : (
-              <Skeleton className={`h-6 w-40`} />
-            )}
-          </div>
-        </div>
-      </div>
+          </MastheadHeading>
+        </MastheadHeadingWrapper>
+        <MastheadButtonSet>
+          {store ? (
+            <ButtonSet storeName={store.name} />
+          ) : (
+            <Skeleton className={`h-6 w-40`} />
+          )}
+        </MastheadButtonSet>
+      </Masthead>
       {isLoading && (
         <>
           <>

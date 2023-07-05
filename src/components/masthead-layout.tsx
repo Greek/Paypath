@@ -19,7 +19,7 @@ export const MastheadHeadingWrapper = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("flex flex-col pb-2", className)} {...props} />
+  <div ref={ref} className={cn("flex flex-col", className)} {...props} />
 ));
 MastheadHeadingWrapper.displayName = "MastheadHeadingWrapper";
 
