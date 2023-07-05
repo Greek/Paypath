@@ -43,6 +43,17 @@ export default function LinksModule({
 
   const [store, setStore] = useAtom(selectedStoreAtom);
 
+  const { data: products, isLoading: isProductsLoading } = useQuery(
+    ["products"],
+    {
+      queryFn: async () => {
+        return (await axios.get(`/api/store/${store?.id}/products`))
+          .data as Product[];
+      },
+      enabled: !!store,
+    }
+  );
+
   const { data: links, isLoading } = useQuery(["links"], {
     queryFn: async () => {
       return (await axios.get(`/api/store/${store?.id}/links`)).data as Link[];
@@ -57,16 +68,19 @@ export default function LinksModule({
           <MastheadHeading>Links</MastheadHeading>
         </MastheadHeadingWrapper>
         <MastheadButtonSet>
-          {links && links?.length > 0 && (
-            <Button
-              onClick={() => {
-                router.push("/d/links/new");
-              }}
-            >
-              <Plus scale={16} className="mr-2" />
-              Create Link
-            </Button>
-          )}
+          {products &&
+            products.filter((p) => {
+              return p.active == true;
+            }).length > 0 && (
+              <Button
+                onClick={() => {
+                  router.push("/d/links/new");
+                }}
+              >
+                <Plus scale={16} className="mr-2" />
+                Create Link
+              </Button>
+            )}
         </MastheadButtonSet>
       </Masthead>
       {isLoading && <LoadingIndicator />}
@@ -132,9 +146,10 @@ export default function LinksModule({
               router.push("/d/links/new");
             }}
             disabled={
-              !store?.stripeId ||
               // @ts-ignore
-              !store?.products
+              !products?.filter((p) => {
+                return p.active == true;
+              }).length > 0
             }
           >
             <Plus scale={16} className="mr-2" />

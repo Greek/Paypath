@@ -34,17 +34,21 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: { id: string; storeId: string } }
 ) {
   const session = await auth();
   if (session == null) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const store = session?.user?.stores?.find((store) => {
-    return store;
+  const store = await prisma.store.findFirst({
+    where: {
+      AND: [{ name: context.params.storeId, owner: session?.user?.id }],
+    },
+    include: { licenses: true },
   });
 
   const body = await req.json();
+  console.log(body);
 
   try {
     const productPrice = (
@@ -73,13 +77,6 @@ export async function PATCH(
       where: { id: context.params.id },
       data: { active: body.active },
     });
-
-    if (body.active == false) {
-      await prisma.link.updateMany({
-        where: { productId: context.params.id },
-        data: { active: false },
-      });
-    }
   } catch (err) {
     console.log(err);
   }
