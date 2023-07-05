@@ -29,7 +29,6 @@ export default function OverviewModule({ params }: { params: { id: string } }) {
         .data as Store & { products: Product[]; Link: Link[] };
     },
     onSuccess(data) {
-      console.log(data);
       return data;
     },
     enabled: !!selectedStore,

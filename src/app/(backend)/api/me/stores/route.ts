@@ -7,9 +7,15 @@ export async function GET(req: Request) {
   if (session === null) return new Response("Unauthorized", { status: 401 });
 
   const data = await prisma.user.findFirst({
-    where: { id: session.user?.id },
-    select: { stores: true },
+    where: { id: session?.user?.id },
+    include: { stores: true },
   });
+
+  if (!data?.stores)
+    return NextResponse.json(
+      { success: false, message: "Not found" },
+      { status: 404 }
+    );
 
   return NextResponse.json(data);
 }

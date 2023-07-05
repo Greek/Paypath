@@ -59,7 +59,7 @@
     "lucide-react": "^0.183.0",
     "moment": "^2.29.4",
     "nanoid": "^4.0.2",
-    "next": "^13.4.2",
+    "next": "^13.4.8",
     "next-auth": "0.0.0-manual.e65faa1c",
     "next-themes": "^0.2.1",
     "postcss": "8.4.23",
