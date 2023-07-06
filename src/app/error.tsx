@@ -18,14 +18,14 @@ export default function RootErrorPage(error: Error) {
 
   return (
     <>
-      <div className="container  flex flex-col h-screen items-center justify-center text-left  ">
-        <div className={`text-center mx-2`}>
-          <p className={`text-3xl font-semibold mb-2`}>Oops.</p>
+      <div className="container  flex h-screen flex-col items-center justify-center text-left  ">
+        <div className={`mx-2 text-center`}>
+          <p className={`mb-2 text-3xl font-semibold`}>Oops.</p>
           {/* @ts-ignore */}
           <p className={`text-md  mb-2 `}> {error.error.message}</p>
         </div>
         <div
-          className={`text-left text-sm max-w-[500px] my-2 p-2 px-5 border-t-[.1em] `}
+          className={`my-2 max-w-[500px] border-t-[.1em] p-2 px-5 text-left text-sm `}
         >
           An error occured and the team has been notified. If you are facing any
           more issues, please join our Discord.

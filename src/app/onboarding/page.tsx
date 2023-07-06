@@ -45,9 +45,9 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="flex flex-col px-10 py-10 min-h-screen box-border relative">
+    <div className="relative box-border flex min-h-screen flex-col px-10 py-10">
       {/* <span className="font-semibold text-3xl">Hey there.</span> */}
-      <div className="flex justify-center items-center h-full flex-1">
+      <div className="flex h-full flex-1 items-center justify-center">
         <form onSubmit={handleSubmit(handleOnboarding)}>
           <Card>
             <CardHeader>

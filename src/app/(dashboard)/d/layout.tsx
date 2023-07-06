@@ -95,9 +95,9 @@ export default function DashboardLayout({
     stores && (
       <div className={`flex flex-row`}>
         <Sidebar links={links} store={store} />
-        <div className={`flex flex-col w-full`}>
+        <div className={`flex w-full flex-col`}>
           <Header links={links} store={store} />
-          <div className="w-auto pt-4 h-screen">
+          <div className="h-screen w-auto pt-4">
             {children}
             <ToasterLoader />
             <TailwindIndicator />

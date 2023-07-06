@@ -20,7 +20,7 @@ export default async function Home({
 
   return (
     <div
-      className={`mx-14 max-w-2xl -px-8 py-8 space-y-6 lg:py-0 lg:py-14 ${roboto.className}`}
+      className={`-px-8 mx-14 max-w-2xl space-y-6 py-8 lg:py-0 lg:py-14 ${roboto.className}`}
     >
       <Image
         alt="Paypath logo"
@@ -35,7 +35,7 @@ export default async function Home({
         A new way to monitize your Discord server.
       </h1>
       <div
-        className={`text-base font-[300] text-black/50 dark:text-white/70 space-y-4 break-words ${roboto.className}`}
+        className={`space-y-4 break-words text-base font-[300] text-black/50 dark:text-white/70 ${roboto.className}`}
       >
         <p>
           Finding ways to monitize your business is hard, especially when trying

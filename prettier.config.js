@@ -1,8 +1,6 @@
-module.exports = {
-  trailingComma: "es5",
-  tabWidth: 2,
-  semi: true,
-  printWidth: 80,
-  useTabs: false,
-  endOfLine: "lf",
+/** @type {import("prettier").Config} */
+const config = {
+  plugins: [require.resolve("prettier-plugin-tailwindcss")],
 };
+
+module.exports = config;

@@ -7,13 +7,13 @@ export default function NotFound() {
   const { back } = useRouter();
 
   return (
-    <div className={`flex flex-col h-screen justify-center items-center`}>
-      <h2 className=" md:text-3xl font-semibold mb-4">
+    <div className={`flex h-screen flex-col items-center justify-center`}>
+      <h2 className=" mb-4 font-semibold md:text-3xl">
         Looks like you&apos;re lost.
       </h2>
       <p>
         Let&apos;s get you back{" "}
-        <a className="text-blue-500 cursor-pointer" onClick={() => back()}>
+        <a className="cursor-pointer text-blue-500" onClick={() => back()}>
           to where you were at
         </a>
         .
