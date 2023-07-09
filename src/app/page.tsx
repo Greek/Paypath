@@ -18,7 +18,7 @@ export default async function Home({
 
   return (
     <div
-      className={`-px-8 mx-14 max-w-2xl space-y-6 py-8 lg:py-10 ${pretendard.className}`}
+      className={`mx-8 max-w-2xl space-y-6 p-8 lg:py-10 ${pretendard.className}`}
     >
       <Image
         alt="Paypath logo"
@@ -36,8 +36,8 @@ export default async function Home({
         <p>
           Finding ways to monitize your business is hard, especially when trying
           to find the right platform to do it for you. Trust me, We&apos;ve been
-          there. Fees, expensive subscriptions, slow UI and overall bad experiences. You
-          name it. So we decided to take action.
+          there. Fees, expensive subscriptions, slow UI and overall bad
+          experiences. You name it. So we decided to take action.
         </p>
         <p>
           Paypath allows you to monitize your Discord server and other kinds of
