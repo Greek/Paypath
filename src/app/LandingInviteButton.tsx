@@ -10,7 +10,7 @@ export const LandingInviteButton = () => {
   return (
     <Button
       variant={"outline"}
-      className="group h-9 rounded-full bg-neutral-500/20 text-black shadow-none dark:border-white/10 dark:text-neutral-300"
+      className="group h-9 rounded-full bg-neutral-200/20 text-black shadow-none hover:border-black/20 dark:border-white/10 dark:text-neutral-300"
       onClick={() => {
         push(`https://discord.gg/3MPGTCPAEe`);
       }}
