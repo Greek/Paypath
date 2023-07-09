@@ -36,7 +36,7 @@ export default async function Home({
         <p>
           Finding ways to monitize your business is hard, especially when trying
           to find the right platform to do it for you. Trust me, We&apos;ve been
-          there. Fees, subscriptions, slow UI and overall bad experiences. You
+          there. Fees, expensive subscriptions, slow UI and overall bad experiences. You
           name it. So we decided to take action.
         </p>
         <p>
