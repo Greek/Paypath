@@ -20,6 +20,8 @@ export async function GET(req: NextRequest) {
   });
 
   if (!res.ok) {
+    console.error(await res.text());
+    console.error(await res.json());
     return new NextResponse("Unable to fetch guilds. Try logging out?", {
       status: 400,
     });
