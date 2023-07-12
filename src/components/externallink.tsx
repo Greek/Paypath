@@ -29,11 +29,11 @@ const ExternalLinkTo = React.forwardRef<
   <Link
     href={href as Url}
     ref={ref}
-    className={cn(`flex flex-row underline underline-offset-4`, className)}
+    className={cn(`inline-flex underline underline-offset-4`, className)}
     {...props}
   >
     {props.children}
-    <ArrowUpRight size={17} className={`ml-[.2em]`} />
+    <ArrowUpRight size={17} className={`ml-[.1em]`} />
   </Link>
 ));
 

@@ -3,6 +3,7 @@ import Image from "next/image";
 import font from "next/font/local";
 import { auth } from "./auth";
 import { LandingInviteButton } from "./LandingInviteButton";
+import { ExternalLinkTo } from "@/components/externallink";
 
 const pretendard = font({
   src: "../../public/assets/fonts/pretendard/PretendardVariable.woff2",
@@ -28,7 +29,7 @@ export default async function Home({
         className="rounded-md"
       ></Image>
       <h1 className={`text-2xl font-[500] dark:text-white/80`}>
-        A new way to monitize your Discord server.
+        A new way to sell your online chatrooms and resources.
       </h1>
       <div
         className={`space-y-4 break-words text-base font-[300] text-black/50 dark:text-white/70`}
@@ -36,14 +37,15 @@ export default async function Home({
         <p>
           Finding ways to monitize your business is hard, especially when trying
           to find the right platform to do it for you. Trust me, We&apos;ve been
-          there. Fees, expensive subscriptions, slow UI and overall bad
-          experiences. You name it. So we decided to take action.
+          there.
         </p>
         <p>
-          Paypath allows you to monitize your Discord server and other kinds of
-          resources all in one place. We want to enable individuals and
-          businesses to grow without any of the bloat and filler that comes with
-          other services. That&apos;s why we&apos;re building Paypath.
+          Paypath allows you to monitize online chatrooms and other kinds of
+          resources all in one place, with the help of{"  "}
+          <ExternalLinkTo href="https://stripe.com"> Stripe</ExternalLinkTo> to
+          handle transactions. We want to enable individuals and businesses to
+          grow without any of the bloat and filler that comes with other
+          services. That&apos;s why we&apos;re building Paypath.
         </p>
         <p>
           We want you to join the journey in building Paypath. Tell us what we
