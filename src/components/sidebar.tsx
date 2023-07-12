@@ -21,23 +21,23 @@ export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
   let pathname = usePathname() || "/";
 
   return (
-    <aside className="hidden md:flex top-1 md:flex-shrink-0 -mx-4 md:mx-0 md:px-0">
-      <nav className="flex flex-row w-60 shrink-0 md:flex-col items-start relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative border-r-[.05em]">
-        <div className="shrink-0 w-full">
+    <aside className="top-1 -mx-4 hidden md:mx-0 md:flex md:flex-shrink-0 md:px-0">
+      <nav className="fade relative flex w-60 shrink-0 scroll-pr-6 flex-row items-start border-r-[.05em] px-0 pb-0 md:relative md:flex-col md:overflow-auto">
+        <div className="w-full shrink-0">
           <div className="relative z-30">
             <DropdownMenu>
-              <DropdownMenuTrigger className="px-4 py-4 w-full text-left hover:bg-neutral-200 dark:hover:bg-neutral-100/10">
+              <DropdownMenuTrigger className="w-full px-4 py-4 text-left hover:bg-neutral-200 dark:hover:bg-neutral-100/10">
                 <span
                   className={
-                    "flex flex-row text-center items-center outline-none"
+                    "flex flex-row items-center text-center outline-none"
                   }
                 >
                   <StoreIcon size={24} className="mr-3" />{" "}
                   <div className="flex-1 grow overflow-hidden">
-                    <div className="text-black dark:text-white truncate text-sm font-medium text-left">
+                    <div className="truncate text-left text-sm font-medium text-black dark:text-white">
                       {store?.displayName ?? "n/a"}
                     </div>
-                    <div className="-mt-0.5 text-black dark:text-white truncate text-xs !text-opacity-50 text-left">
+                    <div className="-mt-0.5 truncate text-left text-xs text-black !text-opacity-50 dark:text-white">
                       {store?.name ?? "n/a"}
                     </div>
                   </div>
@@ -46,7 +46,7 @@ export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
             </DropdownMenu>
           </div>
         </div>
-        <div className="flex flex-row md:flex-col space-x-0 px-4 mb-2 mt-2 md:mt-0 w-full">
+        <div className="mb-2 mt-2 flex w-full flex-row space-x-0 px-4 md:mt-0 md:flex-col">
           {Object.entries(links).map(([link, { name, icon }]) => {
             const isActive = link == pathname;
             return (
@@ -54,9 +54,9 @@ export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
                 key={link}
                 href={link}
                 className={clsx(
-                  "flex flex-row align-middle items-center justify-center my-2 hover:bg-slate-100 rounded-full px-5 py-2 border border-neutral-300/40 shadow-sm",
+                  "my-2 flex flex-row items-center justify-center rounded-full border border-neutral-300/40 px-5 py-2 align-middle shadow-sm hover:bg-slate-100 dark:hover:bg-neutral-900",
                   { "text-neutral-600 dark:text-neutral-400": !isActive },
-                  { "bg-slate-100": isActive }
+                  { "bg-slate-100 dark:bg-neutral-800": isActive }
                 )}
               >
                 <span className="">{icon}</span>
