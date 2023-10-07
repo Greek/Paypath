@@ -8,6 +8,8 @@ Regardless, it was a good learning experience that helped me make use of differe
 develop a decent, but incomplete, backend system that achieves the MVP/goal of the app, as well as allowing me
 to bring out my more "design-y" side to the public. There's definitely a lot more I could've done better with this.
 
+A live demo is available at <https://paypath.app>.
+
 ## Setting up your environment
 
 First off, some prerequesites: [Node v18][node-18-download], [pnpm][pnpm-website], and [Docker (recommended)][docker-website].

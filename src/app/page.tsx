@@ -15,6 +15,7 @@ export default async function Home({
   searchParams: { error: string };
 }) {
   const session = await auth();
+  if (!session) redirect("/i/login");
   if (session) redirect("/d/overview");
 
   return (
