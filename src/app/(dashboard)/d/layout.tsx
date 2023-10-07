@@ -93,17 +93,25 @@ export default function DashboardLayout({
 
   return (
     stores && (
-      <div className={`flex flex-row`}>
-        <Sidebar links={links} store={store} />
-        <div className={`flex w-full flex-col`}>
-          <Header links={links} store={store} />
-          <div className="h-screen w-auto pt-4">
-            {children}
-            <ToasterLoader />
-            <TailwindIndicator />
+      <>
+        <div className="flex h-10 items-center justify-center bg-[#cf2929] p-4 text-black dark:bg-yellow-400">
+          <p>
+            Paypath is no longer maintained and may break at any moment. Live
+            transactions are not processed. <b>Use at your own risk.</b>
+          </p>
+        </div>
+        <div className={`flex flex-row`}>
+          <Sidebar links={links} store={store} />
+          <div className={`flex w-full flex-col`}>
+            <Header links={links} store={store} />
+            <div className="h-screen w-auto pt-4">
+              {children}
+              <ToasterLoader />
+              <TailwindIndicator />
+            </div>
           </div>
         </div>
-      </div>
+      </>
     )
   );
 }

@@ -42,3 +42,4 @@ scripts/venv
 
 .turbo
 src/app/_schemas
+db

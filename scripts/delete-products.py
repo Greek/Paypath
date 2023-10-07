@@ -1,12 +1,13 @@
 import stripe
 
-stripe.api_key = "sk_test_51LM1QMDJWMXKt75CJjuUtZaUY4SWsQUelLxfQlKBZfgk6XfA7Vn65zUjLscb8tZMtUJB6KluyxgcRo82op3stmG900xUpRUpYj"
+stripe.api_key = ""
 
 def delete_products() -> str: 
+    # print(stripe.app_info)
     for product in stripe.Product.list():
         try:
             stripe.Product.update(product, {"active": False})  
-            print( f"Bye {product.id}" )
+            print( f"Bye {product.name}" )
         except Exception as error:
             print(error)
     

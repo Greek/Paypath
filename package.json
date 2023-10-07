@@ -63,6 +63,7 @@
     "next-auth": "0.0.0-manual.e65faa1c",
     "next-themes": "^0.2.1",
     "postcss": "8.4.23",
+    "prettier": "^3.0.3",
     "react": "18.2.0",
     "react-currency-input-field": "^3.6.11",
     "react-dom": "18.2.0",

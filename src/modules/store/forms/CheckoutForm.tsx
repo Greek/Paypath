@@ -8,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { signOut, useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { CompletionContext } from "../providers/CompletionProvider";
@@ -59,10 +59,18 @@ export default function CheckoutForm({
   const stripe = useStripe();
   const elements = useElements();
 
+  useEffect(() => {
+    elements
+      ?.getElement("card")
+      ?.update({ style: { base: { color: "white" } } });
+  }, [stripe, elements]);
+
   const formSubmit = async (e: { email: string; name: string }) => {
     setStripeErrorMessage("");
     setFormSubmitting(true);
-    const cardElement = elements?.getElement("card");
+    const cardElement = elements
+      ?.getElement("card")
+      ?.update({ style: { base: { color: "white" } } });
 
     if (!stripe || !elements) {
       // Stripe.js hasn't yet loaded.
@@ -102,8 +110,8 @@ export default function CheckoutForm({
     // @ts-ignore
     <form onSubmit={handleSubmit(formSubmit)}>
       <div className={""}>
-        <div className={"space-y-4 flex justify-between flex-col"}>
-          <div className="pt-3 px-4">
+        <div className={"flex flex-col justify-between space-y-4"}>
+          <div className="px-4 pt-3">
             <label>
               Email{" "}
               <a className="text-blue-400" onClick={() => signOut()}>
@@ -125,7 +133,7 @@ export default function CheckoutForm({
           <div className="px-4">
             <label>Card</label>
             <CardElement
-              className={`w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:text-white`}
+              className={`h-9 w-full rounded-md border border-neutral-200 bg-transparent px-3 py-2 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-300`}
             />
             <TinyErrorMessage>
               {stripeErrorMessage as string}
@@ -151,7 +159,7 @@ export default function CheckoutForm({
           <div className="px-4">
             <Button
               type="submit"
-              className="w-full mb-4 rounded-full"
+              className="mb-4 w-full rounded-full"
               variant={"branded"}
               disabled={!!formSubmitting}
             >

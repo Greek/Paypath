@@ -7,7 +7,7 @@ export default function StoreLayout({
     <div
       className={`md:min-h-screen relative overflow-x-hidden flex flex-col justify-center`}
     >
-      <div className="relative md:mx-auto md:max-w-3xl sm:rounded-lg overflow-hidden sm:border shadow-xl">
+      <div className="relative md:mx-auto md:max-w-3xl sm:rounded-lg overflow-hidden border-neutral-800 sm:border shadow-xl">
         {children}
       </div>
     </div>

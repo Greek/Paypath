@@ -7,7 +7,7 @@ export default function Masthead({
   children: React.ReactElement | React.ReactElement[] | any;
 }) {
   return (
-    <div className={`border-b-[.05em] border-foreground-muted w-full`}>
+    <div className={`border-b-[.05em] border-b-neutral-800 border-foreground-muted w-full`}>
       <div className="flex flex-col lg:flex-row lg:justify-between px-12 pt-24 pb-20">
         {children}
       </div>

@@ -22,7 +22,7 @@ export const Sidebar: React.FC<Navbar> = ({ links, store }) => {
 
   return (
     <aside className="top-1 -mx-4 hidden md:mx-0 md:flex md:flex-shrink-0 md:px-0">
-      <nav className="fade relative flex w-60 shrink-0 scroll-pr-6 flex-row items-start border-r-[.05em] px-0 pb-0 md:relative md:flex-col md:overflow-auto">
+      <nav className="fade relative flex w-60 shrink-0 scroll-pr-6 flex-row items-start border-r-[.05em] border-r-neutral-800 px-0 pb-0 md:relative md:flex-col md:overflow-auto">
         <div className="w-full shrink-0">
           <div className="relative z-30">
             <DropdownMenu>

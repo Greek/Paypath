@@ -19,6 +19,7 @@ export async function GET(req: NextRequest) {
     return res;
   });
 
+
   if (!res.ok) {
     console.error(await res.text());
     console.error(await res.json());
@@ -28,7 +29,7 @@ export async function GET(req: NextRequest) {
   }
   let guildsEligible;
   guildsEligible = (await res.json()).filter((guild: APIGuild) => {
-    return guild.permissions == "140737488355327";
+    return guild.owner == true;
   });
 
   return NextResponse.json(guildsEligible);
