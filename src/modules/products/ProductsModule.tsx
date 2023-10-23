@@ -96,6 +96,7 @@ export default function ProductsModule() {
         .data as Store & { products: Product[] };
     },
     enabled: !!session,
+    refetchOnMount: false,
   });
 
   const {

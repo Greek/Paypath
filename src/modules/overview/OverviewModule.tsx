@@ -37,6 +37,7 @@ export default function OverviewModule({ params }: { params: { id: string } }) {
       return data;
     },
     enabled: !!selectedStore,
+    refetchOnMount: false,
   });
 
   return (

@@ -59,6 +59,7 @@ export default function LinksModule({
       return (await axios.get(`/api/store/${store?.id}/links`)).data as Link[];
     },
     enabled: !!store,
+    refetchOnMount: false,
   });
 
   return (
