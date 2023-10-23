@@ -1,5 +1,7 @@
 # Paypath
 
+> A platform allowing you to sell access to your Discord server.
+
 Paypath was a SaaS project designed to enable users to sell access to their Discord servers, and other
 kinds of content. It was in development during the summer of 2023 but died off shortly after because of
 complications with trying to run a business just a couple months before college was about to start.
