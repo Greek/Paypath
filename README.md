@@ -12,7 +12,7 @@ to bring out my more "design-y" side to the public. There's definitely a lot mor
 
 A live demo is available at <https://paypath.app>.
 
-Want to see Paypath in action? Purchase a Paypath product [here](https://paypath.app/mystore/4GI_px1CeyHI3SD79xbS4hUDDyahAxRV)! (enter 4242 4242 4242 4242 for the card number!)
+Want to see Paypath in action? Purchase a Paypath product [here](https://paypath.app/mystore/4GI_px1CeyHI3SD79xbS4hUDDyahAxRV)! (enter `4242 4242 4242 4242` for the card number!)
 
 ## Setting up your environment
 
