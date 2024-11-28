@@ -2,8 +2,8 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import font from "next/font/local";
 import { auth } from "./auth";
-import { LandingInviteButton } from "./LandingInviteButton";
-import { ExternalLinkTo } from "@/components/externallink";
+import { LandingInviteButton } from "../components/ui/landing/landing-invite-button";
+import { ExternalLinkTo } from "@/components/external-link";
 
 const pretendard = font({
   src: "../../public/assets/fonts/pretendard/PretendardVariable.woff2",

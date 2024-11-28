@@ -11,7 +11,7 @@ import {
   UserIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import ToasterLoader from "@/app/ToasterLoader";
+import ToasterLoader from "@/components/toaster-loader";
 import { auth } from "@/app/auth";
 import { prisma } from "@/lib/prisma";
 import { useSession } from "next-auth/react";

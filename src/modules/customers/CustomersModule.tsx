@@ -5,7 +5,7 @@ import {
   SectionIntroductionDescription,
   SectionIntroductionHeading,
   SectionIntroductionIcon,
-} from "@/components/sectionintroduction";
+} from "@/components/section-introduction";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -24,7 +24,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Moment from "react-moment";
-import LoadingIndicator from "@/components/loadingindicator";
+import LoadingIndicator from "@/components/loading-indicator";
 import { Skeleton } from "@/components/ui/skeleton";
 import Masthead, {
   MastheadButtonSet,

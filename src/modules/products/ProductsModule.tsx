@@ -29,13 +29,13 @@ import { columns } from "./table/columns";
 import { License, Product, Store } from "@prisma/client";
 import { APIRole } from "discord-api-types/v10";
 import { Plus, Upload } from "lucide-react";
-import { ExternalLinkTo } from "@/components/externallink";
+import { ExternalLinkTo } from "@/components/external-link";
 import {
   SectionIntroduction,
   SectionIntroductionDescription,
   SectionIntroductionHeading,
   SectionIntroductionIcon,
-} from "@/components/sectionintroduction";
+} from "@/components/section-introduction";
 import {
   Table,
   TableBody,
@@ -45,7 +45,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Moment from "react-moment";
-import LoadingIndicator from "@/components/loadingindicator";
+import LoadingIndicator from "@/components/loading-indicator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProductModel } from "@/app/_schemas";
 import { formatPrice } from "../store/PurchaseLinkModule";

@@ -1,7 +1,7 @@
 "use client";
 
-import { ExternalLinkTo } from "@/components/externallink";
-import LoadingIndicator from "@/components/loadingindicator";
+import { ExternalLinkTo } from "@/components/external-link";
+import LoadingIndicator from "@/components/loading-indicator";
 import Masthead, {
   MastheadButtonSet,
   MastheadHeading,
@@ -12,7 +12,7 @@ import {
   SectionIntroductionDescription,
   SectionIntroductionHeading,
   SectionIntroductionIcon,
-} from "@/components/sectionintroduction";
+} from "@/components/section-introduction";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {

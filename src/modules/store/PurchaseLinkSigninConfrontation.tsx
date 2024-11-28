@@ -1,6 +1,6 @@
 "use client";
 
-import SignInButton from "@/components/sign-in";
+import SignInButton from "@/components/ui/auth/sign-in-button";
 import { useEffect } from "react";
 
 export const PurchaseLinkSignInConfrontation = ({

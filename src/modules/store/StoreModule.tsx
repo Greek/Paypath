@@ -1,5 +1,5 @@
 import { auth } from "@/app/auth";
-import SignInButton, { AlternativeSignInButton } from "@/components/sign-in";
+import SignInButton, { AlternativeSignInButton } from "@/components/ui/auth/sign-in-button";
 import { Button } from "@/components/ui/button";
 import { APP_NAME, WEBSITE_URL } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";

@@ -15,7 +15,7 @@ import {
   PlusIcon,
   Trash,
 } from "lucide-react";
-import { ExternalLinkTo } from "@/components/externallink";
+import { ExternalLinkTo } from "@/components/external-link";
 import {
   DropdownMenu,
   DropdownMenuContent,
