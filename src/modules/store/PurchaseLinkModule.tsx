@@ -11,7 +11,7 @@ import { StoreIcon } from "lucide-react";
 import { CompletionContext } from "./providers/CompletionProvider";
 import LinkTag from "next/link";
 import { useSession } from "next-auth/react";
-import SignInButton from "@/components/sign-in";
+import SignInButton from "@/components/ui/auth/sign-in-button";
 import { WEBAPP_URL } from "@/lib/constants";
 
 export const formatPrice = (price: number | null) => {

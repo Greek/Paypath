@@ -18,7 +18,7 @@ import {
   Pencil,
   Trash,
 } from "lucide-react";
-import { LinkTo } from "@/components/externallink";
+import { LinkTo } from "@/components/external-link";
 import {
   DropdownMenu,
   DropdownMenuContent,

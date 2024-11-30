@@ -1,8 +1,8 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../components/auth-context";
 import { ThemeProvider } from "@/components/themes-provider";
-import { QueryContext } from "./QueryContext";
+import { QueryContext } from "../components/query-context";
 import { APP_NAME, WEBSITE_URL } from "@/lib/constants";
 
 const inter = Inter({ subsets: ["latin"] });

@@ -7,7 +7,7 @@ import { Clipboard, User as UserIcon } from "lucide-react";
 import Moment from "react-moment";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { LargeCard } from "@/components/largecard";
+import { LargeCard } from "@/components/large-card";
 import { formatPrice } from "./PurchaseLinkModule";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
