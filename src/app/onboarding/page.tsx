@@ -16,6 +16,8 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useAtom } from "jotai/react";
 import { selectedStoreAtom } from "@/lib/atoms";
+import { wait } from "@/lib/wait";
+import { APP_NAME } from "@/lib/constants";
 
 export interface OnboardingInput {
   name: string;
@@ -33,10 +35,8 @@ export default function Onboarding() {
       return (await axios.post("/ajax/store/onboarding", d)).data;
     },
     onSuccess(data, variables, context) {
-      console.log(data);
       setStore(data);
-      console.log("the store", store);
-      push("/d/overview");
+      wait(220).then(() => push("/d/overview"));
     },
   });
 
@@ -52,9 +52,10 @@ export default function Onboarding() {
           <Card>
             <CardHeader>
               <CardTitle>Let&apos;s get started.</CardTitle>
-              <CardDescription></CardDescription>
+              <CardDescription>Create your store to get started with {APP_NAME}.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-2">
+              <p>What do you want to call your store?</p>
               <Input
                 placeholder="Your store's name"
                 {...register("name", {
@@ -63,10 +64,9 @@ export default function Onboarding() {
                   maxLength: 20,
                 })}
               ></Input>
-              <Button type="submit">Let&apos;s go!</Button>
             </CardContent>
-            <CardFooter>
-              <p>Card Footer</p>
+            <CardFooter className="justify-end">
+              <Button type="submit">Let&apos;s go!</Button>
             </CardFooter>
           </Card>
         </form>
